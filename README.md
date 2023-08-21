@@ -23,3 +23,13 @@ int	usage(void)
 }
 ```
 from: https://github.com/agavrel/42_CheatSheet
+
+
+
+https://github.com/lavrenovamaria/42-philosophers
+https://www.geeksforgeeks.org/dining-philosophers-problem/
+https://medium.com/science-journal/the-dining-philosophers-problem-fded861c37ed
+https://www.chegg.com/homework-help/questions-and-answers/44-dining-philosophers-87[…]ilosophers-dining-philosophers-problem-proposed-dijk-q60256378
+https://cse.buffalo.edu/faculty/tkosar/cse421-521_fall2012/slides/09-Process_Synchronization_II_2spp.pdf
+http://web.cecs.pdx.edu/~harry/Blitz/version-1-0/InstructorInfo/DinPhilSolution.pdf
+https://github.com/MichelleJiam/LazyPhilosophersTester
