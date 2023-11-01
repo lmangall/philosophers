@@ -11,8 +11,73 @@ eating ➔ sleeping ➔ thinking.
 
 
 
+Youtube playlist:
+https://www.youtube.com/watch?v=kCGaRdArSnA&list=PLGU1kcPKHMKi41Py2kqxdvqYE3M9VhCHe&ab_channel=CodeVault
+
+on Codevault:
+What is a mutex ? (pthread_mutex)
+What are Threads
+What is a race condition
+
+github with explanation:
+https://github.com/TommyJD93/Philosophers
 
 
+pthread_create: This function is used in a multi-threaded program to create a new thread. It takes several arguments, including a pointer to a thread identifier, attributes for the new thread, the function the thread should execute, and the arguments to be passed to that function. Once called, it creates a new thread that starts executing the specified function concurrently with the calling thread.
+
+pthread_join: This function is used to wait for a specific thread to complete its execution. When you call pthread_join on a thread, the calling thread will block until the specified thread finishes. It also allows you to retrieve the return value of the joined thread. This is commonly used to synchronize threads and ensure that the main program or another thread waits for the completion of a specific task before proceeding.
+
+
+
+
+
+A pthread_mutex_t is a synchronization mechanism in the POSIX threads library used to prevent race conditions in multi-threaded programs. It allows threads to lock and unlock critical sections of code, ensuring that only one thread can access them at a time, thus preventing data corruption and race conditions.
+
+Lock: Locking a mutex means that a thread acquires ownership of the mutex, which indicates that it is entering a critical section of code. When a thread locks a mutex, it ensures that other threads attempting to lock the same mutex will be blocked until the mutex is unlocked.
+
+Unlock: Unlocking a mutex means that a thread releases ownership of the mutex, indicating that it is leaving the critical section. When a thread unlocks a mutex, it allows other threads to potentially acquire ownership of the mutex and enter the critical section.
+
+pthread_mutex_lock(&mutex)
+pthread_mutex_unlock(&mutex)
+
+
+
+
+
+
+
+
+
+
+
+
+```C
+// pthread_create
+pthread_t thread_id;
+pthread_create(&thread_id, NULL, start_routine, argument);
+
+```
+
+```C
+// pthread_join
+pthread_join(thread_id, &return_value);
+
+```
+
+
+
+```C
+
+```
+
+
+
+
+
+
+
+
+---
 
 
 
@@ -77,6 +142,7 @@ int usage(void)
     ft_putstr_fd(usage_str, 1);
     return (1);
 }
+```
 
 ## Resources
 
