@@ -2,6 +2,20 @@
 
 
 
+<img width="1309" alt="Screenshot 2023-11-02 at 11 48 12" src="https://github.com/lmangall/philosophers/assets/107299611/d917c3bc-ae0c-4b16-95ca-2c1a34dbddbf">
+<img width="1127" alt="Screenshot 2023-11-02 at 11 49 59" src="https://github.com/lmangall/philosophers/assets/107299611/8a044af0-f313-47b7-9c9b-21b6d0f6d04a">
+
+
+
+
+SCHEDULER
+
+
+
+
+
+
+
 each philosopher is implemented as a thread, 
 each  forks are implemented as semaphores. 
 Each philosopher thinks for a random amount of time, waits to pick up the forks in the correct order, eats for a random amount of time, and repeats. 
