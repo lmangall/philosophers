@@ -3,18 +3,6 @@
 #include "philo.h"
 
 
-typedef struct	s_data
-{
-	int	placeholder;
-
-}	t_data;
-
-void_init_data(t_data *data)
-{
-	data->placeholder = 0;
-}
-
-
 void *routine()
 {
 	while (1)
@@ -23,7 +11,7 @@ void *routine()
 		printf("timestamp_in_ms X has taken a fork\n");
 		//eat
 		printf("timestamp_in_ms X is eating\n");
-		sleep
+		//sleep
 		printf("timestamp_in_ms X is sleeping\n");
 		//think
 		printf("timestamp_in_ms X is thinking\n");

@@ -58,7 +58,13 @@ typedef struct s_data
  */
 int check_args(char **av);
 
-
+/**
+* @brief converts the string argument str to an integer (type int).
+* @param str − This is the string representation of an integral number.
+* @return This function returns the converted integral number as an int
+* value. If no valid conversion could be performed, it returns zero.
+*/
+int			ft_atoi(const char *str);
 
 
 
