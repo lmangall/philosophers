@@ -2,28 +2,61 @@
 
 #include "philo.h"
 
-
-void *routine()
+uint64_t	get_time(void)
 {
+	struct timeval	tv;
+	uint64_t		time_in_ms;
+
+	gettimeofday(&tv, NULL);
+	time_in_ms = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time_in_ms);
+}
+
+
+void	eat(t_data *data, t_philo *philo)
+{
+	pthread_mutex_lock(&data->forks[philo->id]);
+	pthread_mutex_lock(&data->forks[philo->id + 1]);
+	philo->status = EATING;
+	philo->eat_cont++;
+	printf("%llu %d is eating\n", get_time() - data->start_time, philo->id);
+	usleep(data->tto_eat * 1000);// Since there are 1000 microseconds in a millisecond, you can multiply tto_eat by 1000 to achieve the desired delay in microseconds.
+	pthread_mutex_unlock(&data->forks[philo->id]);
+	pthread_mutex_unlock(&data->forks[philo->id + 1]);
+}
+
+void	sleep(t_data *data, t_philo *philo)
+{
+	philo->status = SLEEPING;
+	printf("%llu %d is sleeping\n", get_time() - data->start_time, philo->id);
+	usleep(data->tto_sleep * 1000);
+}
+
+void	think(t_data *data, t_philo *philo)
+{
+	philo->status = THINKING;
+	printf("%llu %d is thinking\n", get_time() - data->start_time, philo->id);
+}
+
+void *routine(t_data *data, t_philo *philo)
+{
+	//check_death(data, philo);
 	while (1)
 	{
-		//take fork
-		printf("timestamp_in_ms X has taken a fork\n");
-		//eat
-		printf("timestamp_in_ms X is eating\n");
-		//sleep
-		printf("timestamp_in_ms X is sleeping\n");
-		//think
-		printf("timestamp_in_ms X is thinking\n");
+		eat(data, philo);
+		sleep(data, philo);
+		think(data, philo);
 	}
-	return (NULL);
-
 }
+
+
 
 void init_philo(t_data *data)
 {
 	int i;
 	pthread_t thread;
+
+	printf("init_philo\n");
 
 	i = 0;
 	while (i < data->nb_philo)
@@ -32,6 +65,19 @@ void init_philo(t_data *data)
 		pthread_detach(thread);
 		i++;
 	}
+}
+
+void	init_mutex(t_data *data)
+{
+	int i;
+
+	i = 0;
+	while (i < data->nb_philo)
+	{
+		pthread_mutex_init(&data->forks[i], NULL);
+		i++;
+	}
+	pthread_mutex_init(&data->lock, NULL);
 }
 
 void	init_data(t_data *data, int ac, char **av)
