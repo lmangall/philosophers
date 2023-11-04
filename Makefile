@@ -1,4 +1,4 @@
-SRCS = main.c utils.c
+SRCS = main.c utils.c init.c days_nights.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc

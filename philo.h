@@ -8,15 +8,17 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
-
 #define EATING 1
 #define SLEEPING 2
 #define THINKING 3
 #define DEAD 4
 
+// number_of_philosophers time_to_die time_to_eat time_to_sleep
+//[number_of_times_each_philosopher_must_eat]
+
 typedef struct s_philo 
 {
-	struct s_data	*data; 		/**< Pointer to the simulation data. */
+	struct s_data	*data; 		/**< Pointer to the data struct. */
 	pthread_t		t1;			 /**< Philosopher's thread. */
 	int				id;			/**< Philosopher's unique identifier. */
 	int				eat_cont; 	/**< Number of times the philosopher has eaten. */
@@ -38,14 +40,13 @@ typedef struct s_data
     int				tto_sleep;	/**< Time in milliseconds required for a philosopher to sleep. */
     int				nb_eat;		/**< Number of times each philosopher must eat (optional). */
     t_philo			*philos;	/**< Array of philosophers. */
-    uint64_t		death_time;	/**< Time in milliseconds when a philosopher will die if they haven't eaten. */
-    uint64_t		eat_time;	/**< Time in milliseconds required for a philosopher to eat. */
-    uint64_t		sleep_time;	/**< Time in milliseconds required for a philosopher to sleep. */
     uint64_t		start_time;	/**< Time when the simulation started. */
     pthread_mutex_t	*forks;		/**< Array of mutex locks for the forks. */
     pthread_mutex_t	lock;		/**< Mutex lock for controlling access to shared data. */
 } t_data;
 
+
+//                                in main.c :
 /**
  * @brief Check the validity of command line arguments for the dining philosophers program.
  *
@@ -61,7 +62,6 @@ typedef struct s_data
  * @return 1 if all arguments are valid, 0 if any argument is invalid.
  */
 int check_args(char **av);
-
 /**
 * @brief converts the string argument str to an integer (type int).
 * @param str − This is the string representation of an integral number.
@@ -70,6 +70,121 @@ int check_args(char **av);
 */
 int			ft_atoi(const char *str);
 
+//                                in init.c :
+
+/**
+ * Initialize the philosophers with the given data.
+ *
+ * @param data The data structure containing configuration.
+ */
+void init_philo(t_data *data);
+
+/**
+ * Initialize mutexes.
+ *
+ * @param data The data structure containing configuration.
+ */
+void init_mutex(t_data *data);
+
+/**
+ * Initialize the data structure with command-line arguments.
+ *
+ * @param data The data structure to initialize.
+ * @param ac   The number of command-line arguments.
+ * @param av   An array of command-line argument strings.
+ */
+void init_data(t_data *data, int ac, char **av);
+
+
+//                                in days_n_night
+/**
+ * Get the current time in milliseconds.
+ *
+ * @return The current time in milliseconds.
+ */
+uint64_t get_time(void);
+
+/**
+ * Initialize the philosophers with the given data.
+ *
+ * @param data The data structure containing configuration.
+ */
+void init_philo(t_data *data);
+
+/**
+ * Initialize mutexes.
+ *
+ * @param data The data structure containing configuration.
+ */
+void init_mutex(t_data *data);
+
+/**
+ * Initialize the data structure with command-line arguments.
+ *
+ * @param data The data structure to initialize.
+ * @param ac   The number of command-line arguments.
+ * @param av   An array of command-line argument strings.
+ */
+void init_data(t_data *data, int ac, char **av);
+
+
+//                                in utils.c :
+
+
+/**
+ * Simulate a philosopher eating.
+ *
+ * @param data  The data structure containing configuration.
+ * @param philo The philosopher's data.
+ */
+void eat(t_data *data, t_philo *philo);
+
+/**
+ * Simulate a philosopher sleeping.
+ *
+ * @param data  The data structure containing configuration.
+ * @param philo The philosopher's data.
+ */
+void phi_sleep(t_data *data, t_philo *philo);
+
+/**
+ * Simulate a philosopher thinking.
+ *
+ * @param data  The data structure containing configuration.
+ * @param philo The philosopher's data.
+ */
+void think(t_data *data, t_philo *philo);
+
+/**
+ * The main routine for a philosopher's behavior.
+ *
+ * @param arg The philosopher's data.
+ * @return NULL.
+ */
+void *routine(void *arg);
+
+/**
+ * Initialize the philosophers with the given data.
+ *
+ * @param data The data structure containing configuration.
+ */
+void init_philo(t_data *data);
+
+/**
+ * Initialize mutexes.
+ *
+ * @param data The data structure containing configuration.
+ */
+void init_mutex(t_data *data);
+
+/**
+ * Initialize the data structure with command-line arguments.
+ *
+ * @param data The data structure to initialize.
+ * @param ac   The number of command-line arguments.
+ * @param av   An array of command-line argument strings.
+ */
+void init_data(t_data *data, int ac, char **av);
 
 
 #endif
