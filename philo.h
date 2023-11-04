@@ -24,7 +24,9 @@ typedef struct s_philo
 	int				eat_cont; 	/**< Number of times the philosopher has eaten. */
 	int				status; 	/**< Current status of the philosopher (alive or dead). */
 	int				eating; 	/**< Flag indicating if the philosopher is currently eating. */
-	uint64_t		time_to_die;/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
+	int             dead_or_alive; /**< Flag indicating if the philosopher is currently dead or alive. */
+    uint64_t        last_eat;	/**< Time in milliseconds when the philosopher last ate. */
+    uint64_t		time_to_die;/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
 	pthread_mutex_t	lock;		/**< Mutex lock for this philosopher's state. */
 	pthread_mutex_t	*r_fork; 	/**< Mutex lock for the right fork. */
 	pthread_mutex_t	*l_fork; 	/**< Mutex lock for the left fork. */
@@ -35,10 +37,11 @@ typedef struct s_data
 {
     pthread_t		*tid;		/**< Array of philosopher threads. */
     int				nb_philo;	/**< Number of philosophers in the simulation. */
-    int				tto_die;	/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
+    uint64_t		tto_die;	/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
     int				tto_eat;	/**< Time in milliseconds required for a philosopher to eat. */
     int				tto_sleep;	/**< Time in milliseconds required for a philosopher to sleep. */
     int				nb_eat;		/**< Number of times each philosopher must eat (optional). */
+    int             nb_ate;     /**< Number of times each philosopher has eaten all his meals */
     t_philo			*philos;	/**< Array of philosophers. */
     uint64_t		start_time;	/**< Time when the simulation started. */
     pthread_mutex_t	*forks;		/**< Array of mutex locks for the forks. */
@@ -62,13 +65,8 @@ typedef struct s_data
  * @return 1 if all arguments are valid, 0 if any argument is invalid.
  */
 int check_args(char **av);
-/**
-* @brief converts the string argument str to an integer (type int).
-* @param str − This is the string representation of an integral number.
-* @return This function returns the converted integral number as an int
-* value. If no valid conversion could be performed, it returns zero.
-*/
-int			ft_atoi(const char *str);
+
+int	check_death(t_philo *philo);
 
 //                                in init.c :
 
@@ -80,13 +78,6 @@ int			ft_atoi(const char *str);
 void init_philo(t_data *data);
 
 /**
- * Initialize mutexes.
- *
- * @param data The data structure containing configuration.
- */
-void init_mutex(t_data *data);
-
-/**
  * Initialize the data structure with command-line arguments.
  *
  * @param data The data structure to initialize.
@@ -94,6 +85,14 @@ void init_mutex(t_data *data);
  * @param av   An array of command-line argument strings.
  */
 void init_data(t_data *data, int ac, char **av);
+
+/**
+ * Initialize mutexes.
+ *
+ * @param data The data structure containing configuration.
+ */
+//void init_mutex(t_data *data);
+
 
 
 //                                in days_n_night
@@ -103,34 +102,6 @@ void init_data(t_data *data, int ac, char **av);
  * @return The current time in milliseconds.
  */
 uint64_t get_time(void);
-
-/**
- * Initialize the philosophers with the given data.
- *
- * @param data The data structure containing configuration.
- */
-void init_philo(t_data *data);
-
-/**
- * Initialize mutexes.
- *
- * @param data The data structure containing configuration.
- */
-void init_mutex(t_data *data);
-
-/**
- * Initialize the data structure with command-line arguments.
- *
- * @param data The data structure to initialize.
- * @param ac   The number of command-line arguments.
- * @param av   An array of command-line argument strings.
- */
-void init_data(t_data *data, int ac, char **av);
-
-
-//                                in utils.c :
-
-
 /**
  * Simulate a philosopher eating.
  *
@@ -162,6 +133,17 @@ void think(t_data *data, t_philo *philo);
  * @return NULL.
  */
 void *routine(void *arg);
+
+
+//                                in utils.c :
+
+/**
+* @brief converts the string argument str to an integer (type int).
+* @param str − This is the string representation of an integral number.
+* @return This function returns the converted integral number as an int
+* value. If no valid conversion could be performed, it returns zero.
+*/
+int			ft_atoi(const char *str);
 
 /**
  * Initialize the philosophers with the given data.

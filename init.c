@@ -23,38 +23,40 @@ printf("control: init_philo while\n");
 		philo[i].eat_cont = 0;
 		philo[i].status = THINKING;
 		philo[i].data = data;
+		philo[i].dead_or_alive = 1;
+		philo[i].last_eat = get_time();
 		pthread_mutex_init(&philo[i].lock, NULL);
 		pthread_mutex_init(&data->forks[i], NULL);
-		pthread_create(&data->tid[i], NULL, routine, &philo[i]);//pass the data struct ?
+		//pthread_create(&data->tid[i], NULL, routine, &philo[i]);//pass the data struct ?
 		i++;
 	}
-	i = 0;
-	while (i < data->nb_philo)
-	{
-		pthread_join(data->tid[i], NULL);
-		i++;
-	}
+	//i = 0;
+	//while (i < data->nb_philo)
+	//{
+	//	pthread_join(data->tid[i], NULL);
+	//	i++;
+	//}
 }
 
-void	init_mutex(t_data *data)
-{
-	int i;
+// void	init_mutex(t_data *data)
+// {
+// 	int i;
 
-	i = 0;
-	while (i < data->nb_philo)
-	{
-		pthread_mutex_init(&data->forks[i], NULL);
-		i++;
-	}
-	pthread_mutex_init(&data->lock, NULL);
-}
+// 	i = 0;
+// 	while (i < data->nb_philo)
+// 	{
+// 		pthread_mutex_init(&data->forks[i], NULL);
+// 		i++;
+// 	}
+// 	pthread_mutex_init(&data->lock, NULL);
+// }
 
 void	init_data(t_data *data, int ac, char **av)
 {
 printf("control: init_data\n");
 
 	data->nb_philo = ft_atoi(av[1]);
-	data->tto_die = ft_atoi(av[2]);
+	data->tto_die = (u_int64_t) ft_atoi(av[2]);
 	data->tto_eat = ft_atoi(av[3]);
 	data->tto_sleep = ft_atoi(av[4]);
 	if (ac == 6)
@@ -67,3 +69,9 @@ printf("control: init_data\n");
 	
 	//init_mutex(data);
 }
+
+/*
+
+	data->tto_die = (u_int64_t) ft_atoi(argv[2]);
+
+}*/
