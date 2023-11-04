@@ -9,6 +9,11 @@
 #include <sys/types.h>
 
 
+#define EATING 1
+#define SLEEPING 2
+#define THINKING 3
+#define DEAD 4
+
 typedef struct s_philo 
 {
 	struct s_data	*data; 		/**< Pointer to the simulation data. */
@@ -39,7 +44,6 @@ typedef struct s_data
     uint64_t		start_time;	/**< Time when the simulation started. */
     pthread_mutex_t	*forks;		/**< Array of mutex locks for the forks. */
     pthread_mutex_t	lock;		/**< Mutex lock for controlling access to shared data. */
-    pthread_mutex_t	write;		/**< Mutex lock for writing output. */
 } t_data;
 
 /**

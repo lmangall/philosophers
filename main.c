@@ -25,7 +25,7 @@ void	eat(t_data *data, t_philo *philo)
 	pthread_mutex_unlock(&data->forks[philo->id + 1]);
 }
 
-void	sleep(t_data *data, t_philo *philo)
+void	phi_sleep(t_data *data, t_philo *philo)
 {
 	philo->status = SLEEPING;
 	printf("%llu %d is sleeping\n", get_time() - data->start_time, philo->id);
@@ -38,13 +38,14 @@ void	think(t_data *data, t_philo *philo)
 	printf("%llu %d is thinking\n", get_time() - data->start_time, philo->id);
 }
 
-void *routine(t_data *data, t_philo *philo)
+void *routine(void *data)
 {
+	t_data	*data = (t_data *)data;
 	//check_death(data, philo);
 	while (1)
 	{
 		eat(data, philo);
-		sleep(data, philo);
+		phi_sleep(data, philo);
 		think(data, philo);
 	}
 }
@@ -55,14 +56,28 @@ void init_philo(t_data *data)
 {
 	int i;
 	pthread_t thread;
+	s_philo *philo;
 
-	printf("init_philo\n");
-
+	philo = malloc(sizeof(s_philo) * data->nb_philo);
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
+	data->tid = malloc(sizeof(pthread_t) * data->nb_philo);
+	data->start_time = get_time();
 	i = 0;
 	while (i < data->nb_philo)
 	{
-		pthread_create(&thread, NULL, routine, NULL);
-		pthread_detach(thread);
+		philo[i].id = i;
+		philo[i].eat_cont = 0;
+		philo[i].status = THINKING;
+		philo[i].data = data;
+		pthread_mutex_init(&philo[i].lock, NULL);
+		pthread_mutex_init(&data->forks[i], NULL);
+		pthread_create(&data->tid[i], NULL, routine, &philo[i]);
+		i++;
+	}
+	i = 0;
+	while (i < data->nb_philo)
+	{
+		pthread_join(data->tid[i], NULL);
 		i++;
 	}
 }
