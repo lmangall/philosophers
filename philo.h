@@ -45,9 +45,9 @@ typedef struct s_data
     t_philo			*philos;	/**< Array of philosophers. */
     uint64_t		start_time;	/**< Time when the simulation started. */
     pthread_mutex_t	*forks;		/**< Array of mutex locks for the forks. */
-    pthread_mutex_t	lock;		/**< Mutex lock for controlling access to shared data. */
+    pthread_mutex_t	*lock;		/**< Mutex lock for controlling access to shared data. */
 } t_data;
-
+//is data->forks necessary ?
 
 //                                in main.c :
 /**
@@ -69,6 +69,8 @@ int check_args(char **av);
 int	check_death(t_philo *philo);
 
 //                                in init.c :
+
+void	init_forks(t_data *data);
 
 /**
  * Initialize the philosophers with the given data.

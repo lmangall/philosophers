@@ -1,7 +1,7 @@
 SRCS = main.c utils.c init.c day_n_night.c
 OBJS = $(SRCS:.c=.o)
 
-CC = cc
+CC = cc -g
 NAME = philosophers
 
 CFLAGS = -Wall -Wextra -Werror
