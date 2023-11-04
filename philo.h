@@ -66,7 +66,8 @@ typedef struct s_data
  */
 int check_args(char **av);
 
-int	check_death(t_philo *philo);
+void    *check_death(void *philo_pointer);
+void    a_table(t_data *data);
 
 //                                in init.c :
 

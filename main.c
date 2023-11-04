@@ -32,16 +32,20 @@ have a mutex on the print, so two don't print in the same time
 */
 
 //checks if a philo is dead or if he has eaten all his meals
-int	check_death(t_philo *philo)
+void	*check_death(void *philo_pointer)
 {
-printf("control: check_death\n");
+// printf("control: check_death\n");
+
+	t_philo	*philo = (t_philo *)philo_pointer;
+
+
 	while(philo->dead_or_alive == 1)
 	{
 		pthread_mutex_lock(&philo->lock);
 		if (get_time() - philo->last_eat > philo->data->tto_die)
 		{
 			printf("%llu %d died\n", get_time() - philo->data->start_time, philo->id);
-			return (1);//          FINISH   THE    PROGRAM
+			//exit (1);//          FINISH   THE    PROGRAM
 		}
 		if ((philo->eat_cont >= philo->data->nb_eat) && (philo->data->nb_eat != -1))
 		{
@@ -51,32 +55,32 @@ printf("control: check_death\n");
 			if (philo->data->nb_ate == philo->data->nb_philo)
 			{
 				printf("All philosophers ate %d times\n", philo->data->nb_eat);
-				return (1);//          FINISH   THE    PROGRAM
+				//return (1);//          FINISH   THE    PROGRAM
 			}
 			philo->eat_cont = -1;//This means that this philo has eaten all his meals
 		}
 		pthread_mutex_unlock(&philo->lock);
 		
 	}
-	return (0);
+	return (NULL);
 }
 
 void	a_table(t_data *data)
 {
-printf("control: a_table\n");
+// printf("control: a_table\n");
 	int i;
 
 	i = 0;
 	while (i < data->nb_philo)
 	{
-printf("control: a_table while\n");
-		pthread_create(&data->philos[i].t1, NULL, routine, &data->philos[i]);
+// printf("control: a_table while\n");
+		pthread_create(&data->tid[i], NULL, routine, &data->philos[i]);
 		i++;
 	}
 	i = 0;
 	while (i < data->nb_philo)
 	{
-printf("control: a_table while\n");
+// printf("control: a_table while\n");
 		pthread_join(data->philos[i].t1, NULL);
 		i++;
 	}

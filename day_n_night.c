@@ -13,17 +13,18 @@ uint64_t	get_time(void)
 
 void eat(t_data *data, t_philo *philo)
 {
-	printf("control: eat\n");
-	printf("philo->id: %d, data->forks: %p\n", philo->id, (void *)data->forks);
+// printf("control: eat\n");
+// printf("philo->id: %d, data->forks: %p\n", philo->id, (void *)data->forks);
 	pthread_mutex_lock(&data->forks[philo->id - 1]); // Use philo->id - 1
 	if(philo->id == data->nb_philo) // LAST PHILO, check this
 		pthread_mutex_lock(&data->forks[0]);
 	else
 		pthread_mutex_lock(&data->forks[philo->id]); // Use philo->id, not philo->id + 1
-printf("control1: eat, lock\n");
+// printf("control1: eat, lock\n");
 	philo->status = EATING;
 	philo->eat_cont++;
-printf("control2: eat, eat_cont: %d\n", philo->eat_cont);
+	philo->last_eat = get_time();
+// printf("control2: eat, eat_cont: %d\n", philo->eat_cont);
 	printf("%llu %d is eating\n", (get_time() - data->start_time), philo->id);
 	usleep(data->tto_eat * 1000);// Since there are 1000 microseconds in a millisecond, you can multiply tto_eat by 1000 to achieve the desired delay in microseconds.
 	pthread_mutex_unlock(&data->forks[philo->id]);
@@ -43,18 +44,18 @@ void	think(t_data *data, t_philo *philo)
 	printf("%llu %d is thinking\n", get_time() - data->start_time, philo->id);
 }
 
-void *routine(void *arg)
+void *routine(void *philo_pointer)
 {
-printf("control: routine\n");
-	t_philo	*philo = (t_philo *)arg;
-	check_death(philo);
+// printf("control: routine\n");
+	t_philo	*philo = (t_philo *)philo_pointer;
+
+	pthread_create(&philo->t1, NULL, check_death, philo);
 	// int i = 0;
 	// while (i < 10)
 	// {
 		eat(philo->data, philo);
-
-		// phi_sleep(philo->data, philo);
-		// think(philo->data, philo);
+		phi_sleep(philo->data, philo);
+		think(philo->data, philo);
 
 
 // i++;

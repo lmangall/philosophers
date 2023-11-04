@@ -18,8 +18,8 @@ void	print_data(t_data *data)
 
 void init_philo(t_data *data)
 {
-	printf("control: init_philo, nb_philo: %d\n", data->nb_philo);
-	printf("time: %llu\n", (get_time() - data->start_time));
+// printf("control: init_philo, nb_philo: %d\n", data->nb_philo);
+// printf("time: %llu\n", (get_time() - data->start_time));
 
 	int i;
 	t_philo *philo;
@@ -31,7 +31,7 @@ void init_philo(t_data *data)
 	i = 0;
 	while (i < data->nb_philo)
 	{
-		printf("control: init_philo while\n");
+// printf("control: init_philo while\n");
 		philo[i].id = i;
 		philo[i].eat_cont = 0;
 		philo[i].status = THINKING;
@@ -58,7 +58,7 @@ void init_philo(t_data *data)
 
 void	init_data(t_data *data, int ac, char **av)
 {
-printf("control: init_data\n");
+// printf("control: init_data\n");
 
 	data->nb_philo = ft_atoi(av[1]);
 	data->tto_die = (u_int64_t) ft_atoi(av[2]);
