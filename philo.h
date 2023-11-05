@@ -23,26 +23,28 @@ typedef struct s_philo
     pthread_t       eat;        /**< Philosopher's thread. */
 	int				id;			/**< Philosopher's unique identifier. */
 	int				eat_cont; 	/**< Number of times the philosopher has eaten. */
-	int				status; 	/**< Current status of the philosopher (alive or dead). */
+	// int				status; 	/**< Current status of the philosopher (alive or dead). */
 	int				eating; 	/**< Flag indicating if the philosopher is currently eating. */
 	int             dead_or_alive; /**< Flag indicating if the philosopher is currently dead or alive. */
     uint64_t        last_eat;	/**< Time in milliseconds when the philosopher last ate. */
     uint64_t		time_to_die;/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
 	pthread_mutex_t	lock;		/**< Mutex lock for this philosopher's state. */
-	pthread_mutex_t	*r_fork; 	/**< Mutex lock for the right fork. */
-	pthread_mutex_t	*l_fork; 	/**< Mutex lock for the left fork. */
+	// pthread_mutex_t	*r_fork; 	/**< Mutex lock for the right fork. */
+	// pthread_mutex_t	*l_fork; 	/**< Mutex lock for the left fork. */
+    pthread_mutex_t write;		/**< Mutex lock for writing to stdout. */
 } t_philo;
 
 
 typedef struct s_data 
 {
-    pthread_t		*tid;		/**< Array of philosopher threads. */
+    pthread_t		t0;         /**< Philosopher's thread. */
+    pthread_t       *threads;		/**< Philosopher's thread. */
     int				nb_philo;	/**< Number of philosophers in the simulation. */
     uint64_t		tto_die;	/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
     uint64_t		tto_eat;	/**< Time in milliseconds required for a philosopher to eat. */
     uint64_t		tto_sleep;	/**< Time in milliseconds required for a philosopher to sleep. */
     int				nb_eat;		/**< Number of times each philosopher must eat (optional). */
-    int             nb_ate;     /**< Number of times each philosopher has eaten all his meals */
+    int             nb_ate;     /**< Number of philosopher who has eaten all his meals */
     int             dead_phi;   /**< Number of philosophers that are dead */
     t_philo			*philos;	/**< Array of philosophers. */
     uint64_t		start_time;	/**< Time when the simulation started. */
@@ -68,7 +70,7 @@ typedef struct s_data
  */
 int check_args(char **av);
 
-void    *check_death(void *philo_pointer);
+void    *check_meals(void *philo_pointer);
 void    a_table(t_data *data);
 
 //                                in init.c :

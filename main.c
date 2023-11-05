@@ -66,15 +66,15 @@ have a mutex on the print, so two don't print in the same time
 // }
 
 //checks if any philo is dead or if all have eaten
-void	*check_death(void *data_pointer)
+void	*check_meals(void *data_pointer)
 {
 // printf("control: check_death\n");
 
 	t_data	*data = (t_data *)data_pointer;
-	int i;
+	// int i;
 
-	i = 0;
-	while(1)
+	// i = 0;
+	while(data->dead_phi == 0)
 	//while (data->nb_ate < data->nb_philo && data->nb_eat != -1)//-1 means they don't have a nbr of time to eat
 	{
 		// if (get_time() - data->start_time - data->philos[i].last_eat > data->tto_die)
@@ -83,19 +83,25 @@ void	*check_death(void *data_pointer)
 		// 	printf("%llu %d died\n", get_time() - data->start_time, data->philos[i].id);
 		// 	//exit (1);//          FINISH   THE    PROGRAM
 		// }
-			pthread_mutex_lock(data->lock);
-		if(data->dead_phi > 0)
-		{
-			printf("XXX died\n");
-			printf("%llu %d died\n", get_time() - data->start_time, data->philos[i].id);
-			exit (1);//          FINISH   THE    PROGRAM
-		}
-		if((data->nb_ate >= data->nb_eat) && (data->nb_eat != -1))
-		{
-				printf("All philosophers ate %d times\n", data->nb_eat);
-				exit (1);//          FINISH   THE    PROGRAM
-		}
-		pthread_mutex_unlock(data->lock);
+
+
+
+		// 	pthread_mutex_lock(data->lock);
+		// if(data->dead_phi > 0)
+		// {
+		// 	printf("XXX died\n");
+		// 	printf("%llu %d died\n", get_time() - data->start_time, data->philos[data->dead_phi].id);
+		// 	exit (1);//          FINISH   THE    PROGRAM
+		// }
+		// if((data->nb_ate >= data->nb_eat) && (data->nb_eat != -1))
+		// {
+		// 		printf("All philosophers ate %d times\n", data->nb_eat);
+		// 		exit (1);//          FINISH   THE    PROGRAM
+		// }
+		// pthread_mutex_unlock(data->lock);
+
+
+		 (void)data;
 		// i++;
 	}
 	return (NULL);
@@ -110,27 +116,31 @@ void	a_table(t_data *data)
 	i = 0;
 
 	//check for death
-	pthread_create(&data->tid[0], NULL, check_death, &data->philos[i]);
+	// if(data->nb_eat != -1)
+	// 	pthread_create(&data->t0, NULL, check_meals, &data->philos[0]);
 
-	while (i < data->nb_philo)
+	while (i < data->nb_philo)   //   CHANGE THIS
 	{
 // printf("control: a_table while\n");
-		pthread_create(&data->tid[i], NULL, routine, &data->philos[i]);
+		if (i % 2 == 0)
+			usleep(100);
+		pthread_create(&data->threads[i], NULL, routine, &data->philos[i]);
 		i++;
 	}
 	i = 0;
 	while (i < data->nb_philo)
 	{
 // printf("control: a_table while\n");
-		pthread_join(data->philos[i].t1, NULL);
+		pthread_join(data->threads[i], NULL);
 		i++;
 	}
 
-
-	pthread_join(data->tid[0], NULL);
+	// if(data->nb_eat != -1)
+	// 	pthread_join(data->t0, NULL);
 
 
 }
+
 
 
 int	main(int ac, char **av)
@@ -149,6 +159,7 @@ int	main(int ac, char **av)
 
 	t_data data;
 	init_data(&data, ac, av);
+	init_forks(&data);
 	init_philo(&data);
 	a_table(&data);
 
