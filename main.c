@@ -1,8 +1,6 @@
 
 #include "philo.h"
 
-
-
 int check_args(char **av)///                 change the minimum ?
 {
 	if (ft_atoi(av[1]) < 1)
@@ -17,53 +15,6 @@ int check_args(char **av)///                 change the minimum ?
 	// 	return (0);
 	return (1);
 }
-
-
-
-/*
-
-
-
-				WHAT JOIN DO AND WHEN TO DO IT ?
-
-have a mutex on the print, so two don't print in the same time
-
-
-*/
-
-//checks if a philo is dead or if he has eaten all his meals
-// void	*check_death(void *philo_pointer)
-// {
-// // printf("control: check_death\n");
-
-// 	t_philo	*philo = (t_philo *)philo_pointer;
-
-
-// 	while(philo->dead_or_alive == 1)
-// 	{
-// 		pthread_mutex_lock(&philo->lock);
-// 		if (get_time() - philo->last_eat > philo->data->tto_die)
-// 		{
-// 			printf("%llu %d died\n", get_time() - philo->data->start_time, philo->id);
-// 			//exit (1);//          FINISH   THE    PROGRAM
-// 		}
-// 		if ((philo->eat_cont >= philo->data->nb_eat) && (philo->data->nb_eat != -1))
-// 		{
-// 			pthread_mutex_lock(philo->data->lock);
-// 			philo->data->nb_ate++;
-// 			pthread_mutex_unlock(philo->data->lock);
-// 			if (philo->data->nb_ate == philo->data->nb_philo)
-// 			{
-// 				printf("All philosophers ate %d times\n", philo->data->nb_eat);
-// 				//return (1);//          FINISH   THE    PROGRAM
-// 			}
-// 			philo->eat_cont = -1;//This means that this philo has eaten all his meals
-// 		}
-// 		pthread_mutex_unlock(&philo->lock);
-		
-// 	}
-// 	return (NULL);
-// }
 
 //checks if any philo is dead or if all have eaten
 void	*check_meals(void *data_pointer)
@@ -121,16 +72,16 @@ void	a_table(t_data *data)
 
 	while (i < data->nb_philo)   //   CHANGE THIS
 	{
-// printf("control: a_table while\n");
-		if (i % 2 == 0)
-			usleep(100);
+		// if (i % 2 == 0)
+		//  	usleep(1);
+printf("-------- philo nbr %d (print from a_table()\n", i);
 		pthread_create(&data->threads[i], NULL, routine, &data->philos[i]);
 		i++;
 	}
 	i = 0;
 	while (i < data->nb_philo)
 	{
-// printf("control: a_table while\n");
+printf("-------- philo nbr %d JOINED (print from a_table()\n", i);
 		pthread_join(data->threads[i], NULL);
 		i++;
 	}
