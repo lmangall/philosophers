@@ -32,38 +32,75 @@ have a mutex on the print, so two don't print in the same time
 */
 
 //checks if a philo is dead or if he has eaten all his meals
-void	*check_death(void *philo_pointer)
+// void	*check_death(void *philo_pointer)
+// {
+// // printf("control: check_death\n");
+
+// 	t_philo	*philo = (t_philo *)philo_pointer;
+
+
+// 	while(philo->dead_or_alive == 1)
+// 	{
+// 		pthread_mutex_lock(&philo->lock);
+// 		if (get_time() - philo->last_eat > philo->data->tto_die)
+// 		{
+// 			printf("%llu %d died\n", get_time() - philo->data->start_time, philo->id);
+// 			//exit (1);//          FINISH   THE    PROGRAM
+// 		}
+// 		if ((philo->eat_cont >= philo->data->nb_eat) && (philo->data->nb_eat != -1))
+// 		{
+// 			pthread_mutex_lock(philo->data->lock);
+// 			philo->data->nb_ate++;
+// 			pthread_mutex_unlock(philo->data->lock);
+// 			if (philo->data->nb_ate == philo->data->nb_philo)
+// 			{
+// 				printf("All philosophers ate %d times\n", philo->data->nb_eat);
+// 				//return (1);//          FINISH   THE    PROGRAM
+// 			}
+// 			philo->eat_cont = -1;//This means that this philo has eaten all his meals
+// 		}
+// 		pthread_mutex_unlock(&philo->lock);
+		
+// 	}
+// 	return (NULL);
+// }
+
+//checks if any philo is dead or if all have eaten
+void	*check_death(void *data_pointer)
 {
 // printf("control: check_death\n");
 
-	t_philo	*philo = (t_philo *)philo_pointer;
+	t_data	*data = (t_data *)data_pointer;
+	int i;
 
-
-	while(philo->dead_or_alive == 1)
+	i = 0;
+	while(1)
+	//while (data->nb_ate < data->nb_philo && data->nb_eat != -1)//-1 means they don't have a nbr of time to eat
 	{
-		pthread_mutex_lock(&philo->lock);
-		if (get_time() - philo->last_eat > philo->data->tto_die)
+		// if (get_time() - data->start_time - data->philos[i].last_eat > data->tto_die)
+		// {
+		// 	printf("XXX died\n");
+		// 	printf("%llu %d died\n", get_time() - data->start_time, data->philos[i].id);
+		// 	//exit (1);//          FINISH   THE    PROGRAM
+		// }
+			pthread_mutex_lock(data->lock);
+		if(data->dead_phi > 0)
 		{
-			printf("%llu %d died\n", get_time() - philo->data->start_time, philo->id);
-			//exit (1);//          FINISH   THE    PROGRAM
+			printf("XXX died\n");
+			printf("%llu %d died\n", get_time() - data->start_time, data->philos[i].id);
+			exit (1);//          FINISH   THE    PROGRAM
 		}
-		if ((philo->eat_cont >= philo->data->nb_eat) && (philo->data->nb_eat != -1))
+		if((data->nb_ate >= data->nb_eat) && (data->nb_eat != -1))
 		{
-			pthread_mutex_lock(philo->data->lock);
-			philo->data->nb_ate++;
-			pthread_mutex_unlock(philo->data->lock);
-			if (philo->data->nb_ate == philo->data->nb_philo)
-			{
-				printf("All philosophers ate %d times\n", philo->data->nb_eat);
-				//return (1);//          FINISH   THE    PROGRAM
-			}
-			philo->eat_cont = -1;//This means that this philo has eaten all his meals
+				printf("All philosophers ate %d times\n", data->nb_eat);
+				exit (1);//          FINISH   THE    PROGRAM
 		}
-		pthread_mutex_unlock(&philo->lock);
-		
+		pthread_mutex_unlock(data->lock);
+		// i++;
 	}
 	return (NULL);
 }
+
 
 void	a_table(t_data *data)
 {
@@ -71,6 +108,10 @@ void	a_table(t_data *data)
 	int i;
 
 	i = 0;
+
+	//check for death
+	pthread_create(&data->tid[0], NULL, check_death, &data->philos[i]);
+
 	while (i < data->nb_philo)
 	{
 // printf("control: a_table while\n");
@@ -84,6 +125,11 @@ void	a_table(t_data *data)
 		pthread_join(data->philos[i].t1, NULL);
 		i++;
 	}
+
+
+	pthread_join(data->tid[0], NULL);
+
+
 }
 
 

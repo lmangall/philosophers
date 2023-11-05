@@ -18,8 +18,9 @@
 
 typedef struct s_philo 
 {
-	struct s_data	*data; 		/**< Pointer to the data struct. */
-	pthread_t		t1;			 /**< Philosopher's thread. */
+	struct s_data	*data;      /**< Pointer to the data struct. */
+	pthread_t		t1;			/**< Philosopher's thread. */
+    pthread_t       eat;        /**< Philosopher's thread. */
 	int				id;			/**< Philosopher's unique identifier. */
 	int				eat_cont; 	/**< Number of times the philosopher has eaten. */
 	int				status; 	/**< Current status of the philosopher (alive or dead). */
@@ -38,10 +39,11 @@ typedef struct s_data
     pthread_t		*tid;		/**< Array of philosopher threads. */
     int				nb_philo;	/**< Number of philosophers in the simulation. */
     uint64_t		tto_die;	/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
-    int				tto_eat;	/**< Time in milliseconds required for a philosopher to eat. */
-    int				tto_sleep;	/**< Time in milliseconds required for a philosopher to sleep. */
+    uint64_t		tto_eat;	/**< Time in milliseconds required for a philosopher to eat. */
+    uint64_t		tto_sleep;	/**< Time in milliseconds required for a philosopher to sleep. */
     int				nb_eat;		/**< Number of times each philosopher must eat (optional). */
     int             nb_ate;     /**< Number of times each philosopher has eaten all his meals */
+    int             dead_phi;   /**< Number of philosophers that are dead */
     t_philo			*philos;	/**< Array of philosophers. */
     uint64_t		start_time;	/**< Time when the simulation started. */
     pthread_mutex_t	*forks;		/**< Array of mutex locks for the forks. */
@@ -108,10 +110,9 @@ uint64_t get_time(void);
 /**
  * Simulate a philosopher eating.
  *
- * @param data  The data structure containing configuration.
  * @param philo The philosopher's data.
  */
-void eat(t_data *data, t_philo *philo);
+void *eat(void *philo_pointer);
 
 /**
  * Simulate a philosopher sleeping.

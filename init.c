@@ -5,8 +5,8 @@ void	print_data(t_data *data)
 {
 	printf("data->nb_philo: %d\n", data->nb_philo);
 	printf("data->tto_die: %llu\n", data->tto_die);
-	printf("data->tto_eat: %d\n", data->tto_eat);
-	printf("data->tto_sleep: %d\n", data->tto_sleep);
+	printf("data->tto_eat: %llu\n", data->tto_eat);
+	printf("data->tto_sleep: %llu\n", data->tto_sleep);
 	printf("data->nb_eat: %d\n", data->nb_eat);
 	printf("data->start_time: %llu\n", data->start_time);
 	printf("data->nb_ate: %d\n", data->nb_ate);
@@ -37,7 +37,8 @@ void init_philo(t_data *data)
 		philo[i].status = THINKING;
 		philo[i].data = data;
 		philo[i].dead_or_alive = 1;
-		philo[i].last_eat = get_time();
+		philo[i].last_eat = 0;
+		// pthread_mutex_init(&philo[i].eat, NULL);
 		pthread_mutex_init(&philo[i].lock, NULL);
 		i++;
 	}
@@ -60,14 +61,33 @@ void	init_data(t_data *data, int ac, char **av)
 {
 // printf("control: init_data\n");
 
+
+//print av
+int i = 0;
+printf("ac: %d\n", ac);
+while (i < ac)
+{
+	printf("%d: %s ", i, av[i]);
+	i++;
+}
+printf("\n");
+printf("av[5]: %d\n", ft_atoi(av[5]));
+
+
+printf("\n\n");
+
 	data->nb_philo = ft_atoi(av[1]);
 	data->tto_die = (u_int64_t) ft_atoi(av[2]);
-	data->tto_eat = ft_atoi(av[3]);
-	data->tto_sleep = ft_atoi(av[4]);
+	data->tto_eat = (u_int64_t) ft_atoi(av[3]);
+	data->tto_sleep = (u_int64_t) ft_atoi(av[4]);
 	if (ac == 6)
+	{
 		data->nb_eat = ft_atoi(av[5]);
+		printf("data->nb_eat: %d\n", data->nb_eat);
+	}
 	else
 		data->nb_eat = -1;
+	data->nb_ate = 0;
 	data->tid = malloc(sizeof(pthread_t) * data->nb_philo);
 	data->philos = malloc(sizeof(t_philo) * data->nb_philo);
 	data->start_time = get_time();
