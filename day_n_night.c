@@ -16,47 +16,36 @@ void *eat(void *philo_pointer)
 	t_data *data = philo->data;
 	int fork_locked = 0;
 
-
 	//check if has eaten all meals
 	if(philo->eat_cont != -1)//-1 means he has eaten all his meals
 		{
-		pthread_mutex_lock(&data->forks[philo->id + 1]);
+
+pthread_mutex_lock(&data->forks[philo->id + 1]);
 		pthread_mutex_lock(data->write);
 		printf("%llu %d has taken a fork\n", (get_time() - data->start_time), philo->id);
 		pthread_mutex_unlock(data->write);
+		
 		if(philo->id == data->nb_philo)
-		{
-			pthread_mutex_lock(&data->forks[0]);//if last philo, takes the first fork
-			fork_locked = 0;
-		}
+			fork_locked = 0;			//if last philo, takes the first fork
 		else
-		{
-			pthread_mutex_lock(&data->forks[philo->id]);
 			fork_locked = philo->id;
-		}
-		pthread_mutex_lock(data->write);
+
+pthread_mutex_lock(&data->forks[fork_locked]);
+	pthread_mutex_lock(data->write);
 		printf("%llu %d has taken a fork\n", (get_time() - data->start_time), philo->id);
-		pthread_mutex_unlock(data->write);
-		pthread_mutex_lock(&philo->lock);
+				pthread_mutex_lock(&philo->lock);
 		philo->eat_cont++;
-		// philo->status = EATING;
-		if(philo->eat_cont == data->nb_eat)
-		{
-			data->nb_ate++;//add this philo to the number of philos who have eaten all their meals
-			philo->eat_cont = -1;//this philo has eaten all his meals
-		}
-		pthread_mutex_lock(data->write);
 		printf("%llu %d is eating\n", (get_time() - data->start_time), philo->id);
-		pthread_mutex_unlock(data->write);
+	pthread_mutex_unlock(data->write);
 		
 		philo->last_eat = get_time();//last time ate
 
 		usleep(data->tto_eat * 1000);// time to eat => done in sleep function
-			pthread_mutex_unlock(&philo->lock);
-		}
+				pthread_mutex_unlock(&philo->lock);
 
-		pthread_mutex_unlock(&data->forks[philo->id + 1]);
-		pthread_mutex_unlock(&data->forks[fork_locked]);
+pthread_mutex_unlock(&data->forks[fork_locked]);
+pthread_mutex_unlock(&data->forks[philo->id + 1]);
+		}
 	
 	return (NULL);
 }
@@ -83,14 +72,16 @@ void	*check_death_or_meals(void *philo_pointer)
 {
 	t_philo	*philo = (t_philo *)philo_pointer;
 	t_data *data = philo->data;
-
-	while(data->dead_phi == 0)
+// printf("control: check_death_or_meals\n");
+	if(data->dead_phi == 0)
 	{
+// printf("control: check_death_or_meals while\n");
 		pthread_mutex_lock(&philo->lock);
 	
 		//check if has slept enough
 		if (get_time() - philo->last_eat > philo->data->tto_die)
 		{
+// printf("control: check_death_or_meals if\n");
 			pthread_mutex_lock(data->write);
 			printf("%llu %d died\n", get_time() - philo->data->start_time, philo->id);
 			exit (1);//          FINISH   THE    PROGRAM
@@ -101,8 +92,9 @@ void	*check_death_or_meals(void *philo_pointer)
 		}
 
 		//check if has eaten all meals
-		if(philo->eat_cont != -1)//-1 means he has eaten all his meals
+		if(philo->eat_cont > 0)//-1 means he has eaten all his meals
 		{
+// printf("control: check_death_or_meals if2\n");
 			if(philo->eat_cont == data->nb_eat)
 			{
 				pthread_mutex_lock(data->lock);
@@ -112,14 +104,6 @@ void	*check_death_or_meals(void *philo_pointer)
 			}
 		}
 
-		//check if any philo has eaten all his meals   => is this necessary ?
-		if(data->nb_ate == data->nb_philo)
-		{
-			pthread_mutex_lock(data->write);
-			printf("All philosophers ate %d times\n", data->nb_eat);
-			pthread_mutex_unlock(data->write);
-			exit (1);//          FINISH   THE    PROGRAM
-		}
 
 
 		pthread_mutex_unlock(&philo->lock);
@@ -131,14 +115,20 @@ void *routine(void *philo_pointer)
 {
 	t_philo	*philo = (t_philo *)philo_pointer;
 
+	// while(philo->data->dead_phi == 0)
+	// {
+	// pthread_create(&philo->eat, NULL, check_death_or_meals, philo);
+// printf("control: routine start\n");
+	// while(philo->data->dead_phi == 0)
 	while(philo->data->dead_phi == 0)
 	{
-	pthread_create(&philo->eat, NULL, check_death_or_meals, philo);
-	while(philo->data->dead_phi == 0)
 		eat(philo);
-	pthread_join(philo->eat, NULL);
+	// pthread_join(philo->eat, NULL);
 		phi_sleep(philo->data, philo);
 		think(philo->data, philo);
+		check_death_or_meals(philo);
 	}
+// printf("control: routine end\n");
+	// }
 	return (NULL);
 }

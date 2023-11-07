@@ -36,6 +36,14 @@ void	*check_meals(void *data_pointer)
 		// }
 
 
+		//check if any philo has eaten all his meals   => is this necessary ?
+		if(data->nb_ate == data->nb_philo)
+		{
+			pthread_mutex_lock(data->write);
+			printf("All philosophers ate %d times\n", data->nb_eat);
+			exit (1);//          FINISH   THE    PROGRAM
+			pthread_mutex_unlock(data->write);
+		}
 
 		// 	pthread_mutex_lock(data->lock);
 		// if(data->dead_phi > 0)
@@ -67,13 +75,16 @@ void	a_table(t_data *data)
 	i = 0;
 
 	//check for death
-	// if(data->nb_eat != -1)
-	// 	pthread_create(&data->t0, NULL, check_meals, &data->philos[0]);
+	if(data->nb_eat > 0)
+		pthread_create(&data->t0, NULL, check_meals, &data->philos[0]);
+
+
 
 	while (i < data->nb_philo)   //   CHANGE THIS
+	// while(data->dead_phi == 0)
 	{
-		// if (i % 2 == 0)
-		//  	usleep(1);
+		if (i % 2 == 0)
+		 	usleep(1);
 printf("-------- philo nbr %d (print from a_table()\n", i);
 		pthread_create(&data->threads[i], NULL, routine, &data->philos[i]);
 		i++;
@@ -86,11 +97,12 @@ printf("-------- philo nbr %d JOINED (print from a_table()\n", i);
 		i++;
 	}
 
-	// if(data->nb_eat != -1)
-	// 	pthread_join(data->t0, NULL);
+	if(data->nb_eat > 0)
+		pthread_join(data->t0, NULL);
 
 
 }
+
 
 
 
