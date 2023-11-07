@@ -28,6 +28,7 @@ void	*check_meals(void *data_pointer)
 	while(data->dead_phi == 0)
 	//while (data->nb_ate < data->nb_philo && data->nb_eat != -1)//-1 means they don't have a nbr of time to eat
 	{
+printf("        Control: check_meals\n");
 		// if (get_time() - data->start_time - data->philos[i].last_eat > data->tto_die)
 		// {
 		// 	printf("XXX died\n");
@@ -39,6 +40,7 @@ void	*check_meals(void *data_pointer)
 		//check if any philo has eaten all his meals   => is this necessary ?
 		if(data->nb_ate == data->nb_philo)
 		{
+printf("        Control: check_meals if\n");
 			pthread_mutex_lock(data->write);
 			printf("All philosophers ate %d times\n", data->nb_eat);
 			exit (1);//          FINISH   THE    PROGRAM
@@ -75,8 +77,8 @@ void	a_table(t_data *data)
 	i = 0;
 
 	//check for death
-	if(data->nb_eat > 0)
-		pthread_create(&data->t0, NULL, check_meals, &data->philos[0]);
+	// if(data->nb_eat > 0)
+	// 	pthread_create(&data->t0, NULL, check_meals, &data->philos[0]);
 
 
 
@@ -97,8 +99,8 @@ printf("-------- philo nbr %d JOINED (print from a_table()\n", i);
 		i++;
 	}
 
-	if(data->nb_eat > 0)
-		pthread_join(data->t0, NULL);
+	// if(data->nb_eat > 0)
+	// 	pthread_join(data->t0, NULL);
 
 
 }
