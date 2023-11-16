@@ -10,7 +10,6 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
-	echo "Compiled"
 
 clean:
 	rm -f $(OBJS)
