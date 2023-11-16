@@ -74,7 +74,7 @@ void	a_table(t_data *data)
 
 	//check for death
 	if(data->nb_eat > 0)
-	pthread_create(&data->t0, NULL, check_meals, &data->philos[0]);
+pthread_create(data->t0, NULL, check_meals, (void*)&data->philos[0]);
 
 
 
@@ -94,7 +94,7 @@ void	a_table(t_data *data)
 	}
 
 	if(data->nb_eat > 0)
-		pthread_join(data->t0, NULL);
+pthread_join(*data->t0, NULL);
 
 
 }

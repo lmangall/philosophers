@@ -7,6 +7,8 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <stdint.h>
+
 
 #define EATING 1
 #define SLEEPING 2
@@ -39,7 +41,7 @@ typedef struct s_data
     uint64_t		tto_eat;	/**< Time in milliseconds required for a philosopher to eat. */
     uint64_t		tto_sleep;	/**< Time in milliseconds required for a philosopher to sleep. */
     t_philo			*philos;	/**< Array of philosophers. */
-    pthread_t		t0;         /**< Philosopher's thread. */
+    pthread_t		*t0;         /**< Philosopher's thread. */
     pthread_t       *threads;	/**< Philosopher's thread. */
     pthread_mutex_t	*forks;		/**< Array of mutex locks for the forks. */
     pthread_mutex_t	*lock;		/**< Mutex lock for controlling access to shared data. */

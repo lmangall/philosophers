@@ -13,7 +13,6 @@ void	init_philo(t_data *data)
 	{
 		philo[i].data = data;
 		philo[i].id = i;
-		;
 		philo[i].eat_cont = 0;
 		philo[i].eating = 0;
 		philo[i].dead_or_alive = 1;
@@ -21,13 +20,12 @@ void	init_philo(t_data *data)
 		// philo[i].last_eat = get_time();		//makes it stop really fast
 		philo[i].last_eat = get_time(); // makes it go on for a while
 		// printf("   philo[%d].id: %d\n", i, philo[i].id);
-		// philo[i].time_to_die = data->tto_die;
 		pthread_mutex_init(&philo[i].lock, NULL);
 		i++;
 	}
-	printf("   data->nb_philo: %d\n", data->nb_philo);
-	printf("   philo[%d].id: %d\n", i, philo[i].id);
-	printf("   i: %d\n", i);
+	//printf("   data->nb_philo: %d\n", data->nb_philo);
+	//printf("   philo[%d].id: %d\n", i, philo[i].id);
+	//printf("   i: %d\n", i);
 }
 
 void	init_data(t_data *data, int ac, char **av)
