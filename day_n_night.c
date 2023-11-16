@@ -23,7 +23,7 @@ void	*eat(void *philo_pointer)
 	else
 	{
 		first_fork = philo->id;
-		second_fork = (philo->id + 1) % philo->data->nb_philo;
+		second_fork = (philo->id + 1) % philo->data->nb_philo;//check if correct given ther is no philo 0
 		if (first_fork > second_fork)
 		{
 			temp = first_fork;

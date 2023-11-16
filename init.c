@@ -12,7 +12,7 @@ void	init_philo(t_data *data)
 	while (i < (data->nb_philo))
 	{
 		philo[i].data = data;
-		philo[i].id = i;
+		philo[i].id = i + 1;
 		philo[i].eat_cont = 0;
 		philo[i].eating = 0;
 		philo[i].dead_or_alive = 1;
