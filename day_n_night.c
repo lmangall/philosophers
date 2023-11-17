@@ -83,11 +83,13 @@ void	*check_death_or_meals(void *philo_pointer)
 			//this may cause inwanted printing
 			pthread_mutex_unlock(data->write);
 			pthread_mutex_unlock(&philo->lock);
-			pthread_mutex_lock(data->write);
+			pthread_mutex_lock(data->lock);
 			data->dead_phi = 1;
 			pthread_mutex_unlock(data->lock);
+
+			pthread_mutex_lock(data->write);
 			printf("Setting dead_phi flag in philosopher %d\n", philo->id);
-		
+			pthread_mutex_unlock(data->write);
 			break;
 
 			//free_n_exit(data);
@@ -135,7 +137,10 @@ void	*routine(void *philo_pointer)
 			break;
 		phi_sleep(philo->data, philo);
 		think(philo->data, philo);
+printf("routine loop");
+
 	}
+printf("routine ");
 	pthread_join(philo->eat, NULL);
 	return (NULL);
 }

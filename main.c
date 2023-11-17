@@ -52,22 +52,26 @@ void	a_table(t_data *data)
 	if (data->nb_eat > 0)
 		pthread_create(data->t0, NULL, check_meals, (void *)&data->philos[0]);
 	//while (i < data->nb_philo) //   CHANGE THIS
-	while(data->dead_phi == 0 || i < data->nb_philo)
+	while(i < data->nb_philo)
 	{
 		// if (i % 2 == 0)
 		// 	usleep(1000);
 		pthread_create(&data->threads[i], NULL, routine, &data->philos[i]);
+		if (data->dead_phi == 1)
+			break;		
 		i++;
 		j++;
 	}
 	i = 0;
-	while (i < j)
+printf("before join");
+	while (i <= j)
 	{
 		pthread_join(data->threads[i], NULL);
 		i++;
 	}
 	if (data->nb_eat > 0)
 		pthread_join(*data->t0, NULL);
+printf("after_join");
 	if (data->dead_phi == 1)
 		free_n_exit(data);
 }
@@ -78,6 +82,7 @@ void	free_n_exit(t_data *data)
 	int	i;
 
 	i = 0;
+printf("free_and_exit");
 	while (i < data->nb_philo)
 	{
 		// pthread_join(data->philos[i].eat, NULL);
