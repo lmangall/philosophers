@@ -68,6 +68,7 @@ int check_args(char **av);
 
 void    *check_meals(void *philo_pointer);
 void    a_table(t_data *data);
+void	free_n_exit(t_data *data);
 
 //                                in init.c :
 

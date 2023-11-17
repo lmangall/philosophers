@@ -3,6 +3,11 @@
 
 int check_args(char **av)///                 change the minimum ?
 {
+	if(ft_atoi(av[1]) == 1)
+	{
+		printf("%d 1 died\n", ft_atoi(av[2]));
+		exit(1);
+	}
 	if (ft_atoi(av[1]) < 1)
 		return (0);
 	if (ft_atoi(av[2]) < 60)
@@ -116,6 +121,11 @@ void	free_n_exit(t_data *data)
 	free(data->forks);
 	free(data->threads);
 	free(data->philos);
+	free(data->t0);
+	free(data->lock);
+	free(data->write);
+	exit(1);
+
 }
 
 

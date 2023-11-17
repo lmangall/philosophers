@@ -57,9 +57,10 @@ void	init_forks(t_data *data)
 {
 	int i;
 
-	i = 0;
+	i = 1;
+	printf("   data->nb_philo: %d\n", data->nb_philo);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
-	while (i < data->nb_philo)
+	while (i <= data->nb_philo)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
