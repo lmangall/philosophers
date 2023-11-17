@@ -3,27 +3,7 @@
 
 
 
-1 philo = 1 fork so he should die
-
-
-1 mutex to check for death/ print so if 1 is dead it doesn't print more
-
-
-
-
-
-
-Is it ok if something gets written after a philo dies:
-8416 1 died
-8416 1 is thinking
-8416 1 has taken a fork
-8416 1 has taken a fork
-8416 1 is eating
-
-
-How to know if the prog is efficient enough ?
-
-
+clear && valgrind -s --tool=helgrind ./philosophers 4 200 60 60
 
 
 
