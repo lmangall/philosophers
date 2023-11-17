@@ -27,10 +27,6 @@ void	*eat(void *philo_pointer)
 			second_fork = 0;
 		pthread_mutex_lock(&philo->data->forks[first_fork]);
 		pthread_mutex_lock(&philo->data->forks[second_fork]);
-	pthread_mutex_lock(&philo->lock);
-	philo->last_eat = get_time();
-	philo->eat_cont++;
-	pthread_mutex_unlock(&philo->lock);
 		pthread_mutex_lock(philo->data->write);
 		printf("%llu %d has taken a fork\n", get_time()
 			- philo->data->start_time, philo->id);
@@ -39,7 +35,11 @@ void	*eat(void *philo_pointer)
 		printf("%llu %d is eating\n", get_time() - philo->data->start_time,
 			philo->id);
 		pthread_mutex_unlock(philo->data->write);
-		usleep(philo->data->tto_eat * 1000);
+		pthread_mutex_lock(&philo->lock);
+		usleep(philo->data->tto_eat * 1000);//this is done before: first eat, then write time last eate
+		philo->last_eat = get_time();
+		philo->eat_cont++;
+		pthread_mutex_unlock(&philo->lock);
 		pthread_mutex_unlock(&philo->data->forks[first_fork]);
 		pthread_mutex_unlock(&philo->data->forks[second_fork]);
 	}
