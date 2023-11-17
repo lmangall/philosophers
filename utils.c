@@ -2,15 +2,15 @@
 
 int	ft_atoi(const char *str)
 {
-	int	nb;
-	int	i;
-	int	mult;
+	int nb;
+	int i;
+	int mult;
 
 	nb = 0;
 	i = 0;
 	mult = 1;
-	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\r'
-		||str[i] == '\t' || str[i] == '\v' || str[i] == '\f')
+	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\r' || str[i] == '\t'
+		|| str[i] == '\v' || str[i] == '\f')
 	{
 		i++;
 	}

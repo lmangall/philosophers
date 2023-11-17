@@ -1,9 +1,9 @@
 
 #include "philo.h"
 
-int check_args(char **av)///                 change the minimum ?
+int	check_args(char **av) ///                 change the minimum ?
 {
-	if(ft_atoi(av[1]) == 1)
+	if (ft_atoi(av[1]) == 1)
 	{
 		printf("%d 1 died\n", ft_atoi(av[2]));
 		exit(1);
@@ -21,75 +21,41 @@ int check_args(char **av)///                 change the minimum ?
 	return (1);
 }
 
-//checks if any philo is dead or if all have eaten
+// checks if any philo is dead or if all have eaten
 void	*check_meals(void *data_pointer)
 {
-// printf("control: check_death\n");
+	t_data	*data;
 
-	t_data	*data = (t_data *)data_pointer;
-	// int i;
-
-	// i = 0;
-	while(data->dead_phi == 0)
-	//while (data->nb_ate < data->nb_philo && data->nb_eat != -1)//-1 means they don't have a nbr of time to eat
+	data = (t_data *)data_pointer;
+	while (data->dead_phi == 0)
 	{
-		// if (get_time() - data->start_time - data->philos[i].last_eat > data->tto_die)
-		// {
-		// 	printf("XXX died\n");
-		// 	printf("%llu %d died\n", get_time() - data->start_time, data->philos[i].id);
-		// 	//exit (1);//          FINISH   THE    PROGRAM
-		// }
-
-
-		//check if any philo has eaten all his meals   => is this necessary ?
-		if(data->nb_ate == data->nb_philo)
+		if (data->nb_ate == data->nb_philo)
 		{
 			pthread_mutex_lock(data->write);
 			printf("All philosophers ate %d times\n", data->nb_eat);
 			pthread_mutex_unlock(data->write);
-			exit (1);//          FINISH   THE    PROGRAM
+			exit(1); //          FINISH   THE    PROGRAM
 		}
-
-		// 	pthread_mutex_lock(data->lock);
-		// if(data->dead_phi > 0)
-		// {
-		// 	printf("XXX died\n");
-		// 	printf("%llu %d died\n", get_time() - data->start_time, data->philos[data->dead_phi].id);
-		// 	exit (1);//          FINISH   THE    PROGRAM
-		// }
-		// if((data->nb_ate >= data->nb_eat) && (data->nb_eat != -1))
-		// {
-		// 		printf("All philosophers ate %d times\n", data->nb_eat);
-		// 		exit (1);//          FINISH   THE    PROGRAM
-		// }
-		// pthread_mutex_unlock(data->lock);
-
-
-		 (void)data;
-		// i++;
+		(void)data;
 	}
 	return (NULL);
 }
 
 void	a_table(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
-
-	//check for death
-	if(data->nb_eat > 0)
-pthread_create(data->t0, NULL, check_meals, (void*)&data->philos[0]);
-
-
-
-	while (i < data->nb_philo)   //   CHANGE THIS
+	// check for death
+	if (data->nb_eat > 0)
+		pthread_create(data->t0, NULL, check_meals, (void *)&data->philos[0]);
+	while (i < data->nb_philo) //   CHANGE THIS
 	// while(data->dead_phi == 0)
 	{
 		// if (i % 2 == 0)
 		// 	usleep(1000);
 		pthread_create(&data->threads[i], NULL, routine, &data->philos[i]);
-		i++;			
+		i++;
 	}
 	i = 0;
 	while (i < data->nb_philo)
@@ -97,17 +63,14 @@ pthread_create(data->t0, NULL, check_meals, (void*)&data->philos[0]);
 		pthread_join(data->threads[i], NULL);
 		i++;
 	}
-
-	if(data->nb_eat > 0)
-pthread_join(*data->t0, NULL);
-
-
+	if (data->nb_eat > 0)
+		pthread_join(*data->t0, NULL);
 }
 
-//write a fuction that free the memory and exits
+// write a fuction that free the memory and exits
 void	free_n_exit(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < data->nb_philo)
@@ -125,13 +88,11 @@ void	free_n_exit(t_data *data)
 	free(data->lock);
 	free(data->write);
 	exit(1);
-
 }
-
 
 int	main(int ac, char **av)
 {
-		if (ac < 5 || ac > 6)
+	if (ac < 5 || ac > 6)
 	{
 		printf("Error: wrong number of arguments\n");
 		return (0);
@@ -150,6 +111,5 @@ int	main(int ac, char **av)
 	a_table(&data);
 	free_n_exit(&data);
 
-
-  return (0);
+	return (0);
 }

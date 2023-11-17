@@ -23,9 +23,9 @@ void	init_philo(t_data *data)
 		pthread_mutex_init(&philo[i].lock, NULL);
 		i++;
 	}
-	//printf("   data->nb_philo: %d\n", data->nb_philo);
-	//printf("   philo[%d].id: %d\n", i, philo[i].id);
-	//printf("   i: %d\n", i);
+	// printf("   data->nb_philo: %d\n", data->nb_philo);
+	// printf("   philo[%d].id: %d\n", i, philo[i].id);
+	// printf("   i: %d\n", i);
 }
 
 void	init_data(t_data *data, int ac, char **av)
@@ -58,7 +58,6 @@ void	init_forks(t_data *data)
 	int i;
 
 	i = 1;
-	printf("   data->nb_philo: %d\n", data->nb_philo);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
 	while (i <= data->nb_philo)
 	{

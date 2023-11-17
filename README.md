@@ -2,6 +2,36 @@
 
 
 
+
+1 philo = 1 fork so he should die
+
+
+1 mutex to check for death/ print so if 1 is dead it doesn't print more
+
+
+
+
+
+
+Is it ok if something gets written after a philo dies:
+8416 1 died
+8416 1 is thinking
+8416 1 has taken a fork
+8416 1 has taken a fork
+8416 1 is eating
+
+
+How to know if the prog is efficient enough ?
+
+
+
+
+
+
+
+
+
+
 <img width="1309" alt="Screenshot 2023-11-02 at 11 48 12" src="https://github.com/lmangall/philosophers/assets/107299611/d917c3bc-ae0c-4b16-95ca-2c1a34dbddbf">
 <img width="1127" alt="Screenshot 2023-11-02 at 11 49 59" src="https://github.com/lmangall/philosophers/assets/107299611/8a044af0-f313-47b7-9c9b-21b6d0f6d04a">
 

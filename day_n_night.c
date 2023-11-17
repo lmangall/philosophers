@@ -22,7 +22,7 @@ void	*eat(void *philo_pointer)
 	else
 	{
 		first_fork = philo->id;
-		second_fork = (philo->id + 1);// % philo->data->nb_philo;//check if correct given ther is no philo 0
+		second_fork = (philo->id + 1); //% philo->data->nb_philo;//check if correct given ther is no philo 0
 		if (first_fork == philo->data->nb_philo)
 			second_fork = 0;
 		pthread_mutex_lock(&philo->data->forks[first_fork]);
@@ -36,7 +36,7 @@ void	*eat(void *philo_pointer)
 			philo->id);
 		pthread_mutex_unlock(philo->data->write);
 		pthread_mutex_lock(&philo->lock);
-		usleep(philo->data->tto_eat * 1000);//this is done before: first eat, then write time last eate
+		usleep(philo->data->tto_eat * 1000); // this is done before: first eat, then write time last eate
 		philo->last_eat = get_time();
 		philo->eat_cont++;
 		pthread_mutex_unlock(&philo->lock);
@@ -80,7 +80,7 @@ void	*check_death_or_meals(void *philo_pointer)
 				philo->id);
 			// pthread_mutex_unlock(data->write);
 			free_n_exit(data);
-	//		exit(1);
+			//		exit(1);
 		}
 		if (philo->eat_cont > 0)
 		{
