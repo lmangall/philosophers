@@ -44,7 +44,7 @@ void	init_data(t_data *data, int ac, char **av)
 	data->tto_die = (u_int64_t)ft_atoi(av[2]);
 	data->tto_eat = (u_int64_t)ft_atoi(av[3]);
 	data->tto_sleep = (u_int64_t)ft_atoi(av[4]);
-	data->philos = malloc(sizeof(t_philo) * data->nb_philo);
+	//data->philos = malloc(sizeof(t_philo) * data->nb_philo);
 	data->t0 = malloc(sizeof(pthread_t));
 	data->threads = malloc(sizeof(pthread_t) * data->nb_philo);
 	data->lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
@@ -57,9 +57,9 @@ void	init_forks(t_data *data)
 {
 	int i;
 
-	i = 1;
+	i = 0;
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
-	while (i <= data->nb_philo)
+	while (i < data->nb_philo)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
