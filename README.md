@@ -5,6 +5,7 @@
 
 clear && valgrind -s --tool=helgrind ./philosophers 4 200 60 60
 
+printf("Thread %lu in check_death_or_meals\n", pthread_self());
 
 
 

@@ -56,6 +56,7 @@ void	a_table(t_data *data)
 	{
 		// if (i % 2 == 0)
 		// 	usleep(1000);
+printf("  i = %d, nb_philo = %d \n", i, data->nb_philo);
 		pthread_create(&data->threads[i], NULL, routine, &data->philos[i]);
 		if (data->dead_phi == 1)
 			break;		
@@ -63,7 +64,7 @@ void	a_table(t_data *data)
 		j++;
 	}
 	i = 0;
-printf("before join");
+printf("before join\n");
 	while (i <= j)
 	{
 		pthread_join(data->threads[i], NULL);
@@ -71,36 +72,36 @@ printf("before join");
 	}
 	if (data->nb_eat > 0)
 		pthread_join(*data->t0, NULL);
-printf("after_join");
+printf("after_join\n");
 	if (data->dead_phi == 1)
 		free_n_exit(data);
 }
 
 // write a fuction that free the memory and exits
-void	free_n_exit(t_data *data)
+void free_n_exit(t_data *data)
 {
-	int	i;
+    int i;
 
-	i = 0;
-printf("free_and_exit");
-	while (i < data->nb_philo)
-	{
-		// pthread_join(data->philos[i].eat, NULL);
-		// pthread_join(data->threads[i], NULL);
-		pthread_mutex_destroy(&data->forks[i]);
-		pthread_mutex_destroy(&data->philos[i].lock);
-		i++;
-	}
-	// pthread_join(*data->t0, NULL);
-	pthread_mutex_destroy(data->write);
-	pthread_mutex_destroy(data->lock);
-	free(data->forks);
-	free(data->threads);
-	free(data->philos);
-	free(data->t0);
-	free(data->lock);
-	free(data->write);
-	exit(1);
+    i = 0;
+
+pthread_mutex_unlock(data->lock);
+pthread_mutex_unlock(data->write);
+
+    while (i < data->nb_philo)
+    {
+        pthread_mutex_destroy(&data->forks[i]);
+        pthread_mutex_destroy(&data->philos[i].lock);
+        i++;
+    }
+    pthread_mutex_destroy(data->write);
+    pthread_mutex_destroy(data->lock);
+    free(data->forks);
+    free(data->threads);
+    free(data->philos);
+    free(data->t0);
+    free(data->lock);
+    free(data->write);
+    exit(1);
 }
 
 int	main(int ac, char **av)

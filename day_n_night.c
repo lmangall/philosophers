@@ -19,7 +19,7 @@ void	*eat(void *philo_pointer)
 	philo = (t_philo *)philo_pointer;
 	if (philo->eat_cont == -1)
 		return (NULL);
-	else
+	while (philo->data->dead_phi == 0)
 	{
 		first_fork = philo->id;
 		second_fork = (philo->id + 1); //% philo->data->nb_philo;//check if correct given ther is no philo 0
@@ -39,9 +39,20 @@ void	*eat(void *philo_pointer)
 		usleep(philo->data->tto_eat * 1000); // this is done before: first eat, then write time last eate
 		philo->last_eat = get_time();
 		philo->eat_cont++;
+// if (philo->data->dead_phi == 1)
+// {
+// printf("dead condition\n");
+// 		pthread_mutex_unlock(&philo->lock);
+// 		pthread_mutex_unlock(&philo->data->forks[first_fork - 1]);
+// 		pthread_mutex_unlock(&philo->data->forks[second_fork - 1]);
+// return (NULL);
+// }
 		pthread_mutex_unlock(&philo->lock);
 		pthread_mutex_unlock(&philo->data->forks[first_fork - 1]);
 		pthread_mutex_unlock(&philo->data->forks[second_fork - 1]);
+printf("end of eat for philo %d\n", philo->id);
+
+
 	}
 	return (NULL);
 }
@@ -82,15 +93,19 @@ void	*check_death_or_meals(void *philo_pointer)
 
 			//this may cause inwanted printing
 			pthread_mutex_unlock(data->write);
-			pthread_mutex_unlock(&philo->lock);
 			pthread_mutex_lock(data->lock);
 			data->dead_phi = 1;
-			pthread_mutex_unlock(data->lock);
+			//pthread_mutex_unlock(data->lock);
 
 			pthread_mutex_lock(data->write);
+
 			printf("Setting dead_phi flag in philosopher %d\n", philo->id);
-			pthread_mutex_unlock(data->write);
-			break;
+			pthread_mutex_unlock(&philo->lock);
+
+			// pthread_mutex_unlock(data->lock);
+			// pthread_mutex_unlock(data->write);
+
+			return(NULL);
 
 			//free_n_exit(data);
 			//		exit(1);
@@ -133,14 +148,22 @@ void	*routine(void *philo_pointer)
 	while (philo->eat_cont != -1)
 	{
 		eat(philo);
+printf("routine loop 0\n");
 		if (philo->data->dead_phi == 1)
+		{
+printf("routine loop 0.1\n");
 			break;
+
+
+		}
 		phi_sleep(philo->data, philo);
 		think(philo->data, philo);
-printf("routine loop");
+printf("routine loop\n");
 
 	}
-printf("routine ");
+printf("routine \n");
 	pthread_join(philo->eat, NULL);
+printf("joined? \n");
+
 	return (NULL);
 }
