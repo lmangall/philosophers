@@ -55,7 +55,10 @@ void	a_table(t_data *data)
 		pthread_create(&data->threads[i], NULL, routine, &data->philos[i]);
 		threads_created++;
 		if (data->dead_phi == 1)
+		{
+			printf("breaking\n");
 			break;		
+		}
 		i++;
 	}
 	i = 0;
@@ -77,8 +80,8 @@ void free_n_exit(t_data *data)
 
     i = 0;
 
-pthread_mutex_unlock(data->lock);
-pthread_mutex_unlock(data->write);
+// pthread_mutex_unlock(data->lock);
+// pthread_mutex_unlock(data->write);
 
     while (i < data->nb_philo)
     {
