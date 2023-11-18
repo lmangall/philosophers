@@ -32,6 +32,7 @@ void	*eat(void *philo_pointer)
 		if (first_fork == philo->data->nb_philo)
 			second_fork = 1;
 	// printf("in while in eat for philo %d\n", philo->id);
+		pthread_mutex_lock(&philo->lock);
 		pthread_mutex_lock(&philo->data->forks[first_fork - 1]);
 		pthread_mutex_lock(&philo->data->forks[second_fork - 1]);
 				if (philo->data->dead_phi == 1)
@@ -49,7 +50,6 @@ void	*eat(void *philo_pointer)
 		printf("%lu %d is eating\n", get_time() - philo->data->start_time,
 			philo->id);
 		pthread_mutex_unlock(philo->data->write);
-		pthread_mutex_lock(&philo->lock);
 		philo->eating = 1;
 		usleep(philo->data->tto_eat * 1000); // this is done before: first eat, then write time last eate
 		philo->last_eat = get_time();
