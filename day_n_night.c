@@ -102,8 +102,8 @@ void	*check_death_or_meals(void *philo_pointer)
 			printf("Setting dead_phi flag in philosopher %d\n", philo->id);
 			pthread_mutex_unlock(&philo->lock);
 
-			// pthread_mutex_unlock(data->lock);
-			// pthread_mutex_unlock(data->write);
+			pthread_mutex_unlock(data->lock);
+			pthread_mutex_unlock(data->write);
 
 			return(NULL);
 
