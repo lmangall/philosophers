@@ -44,35 +44,28 @@ void	*check_meals(void *data_pointer)
 void	a_table(t_data *data)
 {
 	int	i;
-	int	j;
+	int	threads_created;
 
 	i = 0;
-	j = 0;
-	// check for death
+	threads_created = 0;
 	if (data->nb_eat > 0)
 		pthread_create(data->t0, NULL, check_meals, (void *)&data->philos[0]);
-	//while (i < data->nb_philo) //   CHANGE THIS
 	while(i < data->nb_philo)
 	{
-		// if (i % 2 == 0)
-		// 	usleep(1000);
-printf("  i = %d, nb_philo = %d \n", i, data->nb_philo);
 		pthread_create(&data->threads[i], NULL, routine, &data->philos[i]);
+		threads_created++;
 		if (data->dead_phi == 1)
 			break;		
 		i++;
-		j++;
 	}
 	i = 0;
-printf("before join\n");
-	while (i <= j)
+	while (i < threads_created)
 	{
 		pthread_join(data->threads[i], NULL);
 		i++;
 	}
 	if (data->nb_eat > 0)
 		pthread_join(*data->t0, NULL);
-printf("after_join\n");
 	if (data->dead_phi == 1)
 		free_n_exit(data);
 }
