@@ -8,12 +8,8 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <stdint.h>
+# include <stdbool.h>
 
-
-#define EATING 1
-#define SLEEPING 2
-#define THINKING 3
-#define DEAD 4
 
 typedef struct s_philo 
 {
@@ -41,8 +37,8 @@ typedef struct s_data
     uint64_t		tto_eat;	/**< Time in milliseconds required for a philosopher to eat. */
     uint64_t		tto_sleep;	/**< Time in milliseconds required for a philosopher to sleep. */
     t_philo			*philos;	/**< Array of philosophers. */
-    pthread_t		*t0;         /**< Philosopher's thread. */
-    pthread_t       *threads;	/**< Philosopher's thread. */
+    pthread_t		*death_thread;         /**< Philosopher's thread. */
+    //pthread_t       *threads;	/**< Philosopher's thread. */
     pthread_mutex_t	*forks;		/**< Array of mutex locks for the forks. */
     pthread_mutex_t	*lock;		/**< Mutex lock for controlling access to shared data. */
     pthread_mutex_t *write;		/**< Mutex lock for writing to stdout. */
@@ -72,104 +68,28 @@ void	free_n_exit(t_data *data);
 
 //                                in init.c :
 
-void	init_forks(t_data *data);
-
-/**
- * Initialize the philosophers with the given data.
- *
- * @param data The data structure containing configuration.
- */
-void init_philo(t_data *data);
-
-/**
- * Initialize the data structure with command-line arguments.
- *
- * @param data The data structure to initialize.
- * @param ac   The number of command-line arguments.
- * @param av   An array of command-line argument strings.
- */
-void init_data(t_data *data, int ac, char **av);
-
-/**
- * Initialize mutexes.
- *
- * @param data The data structure containing configuration.
- */
-//void init_mutex(t_data *data);
-
+void    init_forks(t_data *data);
+void    init_philo(t_data *data);
+void    init_data(t_data *data, int ac, char **av);
 
 
 //                                in days_n_night
-/**
- * Get the current time in milliseconds.
- *
- * @return The current time in milliseconds.
- */
-uint64_t get_time(void);
-/**
- * Simulate a philosopher eating.
- *
- * @param philo The philosopher's data.
- */
+
 void *eat(void *philo_pointer);
-
-/**
- * Simulate a philosopher sleeping.
- *
- * @param data  The data structure containing configuration.
- * @param philo The philosopher's data.
- */
-void phi_sleep(t_data *data, t_philo *philo);
-
-/**
- * Simulate a philosopher thinking.
- *
- * @param data  The data structure containing configuration.
- * @param philo The philosopher's data.
- */
-void think(t_data *data, t_philo *philo);
-
-/**
- * The main routine for a philosopher's behavior.
- *
- * @param arg The philosopher's data.
- * @return NULL.
- */
 void *routine(void *arg);
 
 
+void	delay(uint64_t start_time);
+void output(t_philo *philo, int status);
+void *check_death_or_meals(void *data_pointer);
+int death(t_data *data);
+
 //                                in utils.c :
+int		    ft_atoi(const char *str);
+int         dead(t_data *data);
+uint64_t	get_time(void);
+int         ft_usleep(useconds_t time);
 
-/**
-* @brief converts the string argument str to an integer (type int).
-* @param str − This is the string representation of an integral number.
-* @return This function returns the converted integral number as an int
-* value. If no valid conversion could be performed, it returns zero.
-*/
-int			ft_atoi(const char *str);
-
-/**
- * Initialize the philosophers with the given data.
- *
- * @param data The data structure containing configuration.
- */
-void init_philo(t_data *data);
-
-/**
- * Initialize mutexes.
- *
- * @param data The data structure containing configuration.
- */
-void init_mutex(t_data *data);
-
-/**
- * Initialize the data structure with command-line arguments.
- *
- * @param data The data structure to initialize.
- * @param ac   The number of command-line arguments.
- * @param av   An array of command-line argument strings.
- */
-void init_data(t_data *data, int ac, char **av);
 
 
 #endif

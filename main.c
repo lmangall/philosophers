@@ -41,6 +41,17 @@ void	*check_meals(void *data_pointer)
 	return (NULL);
 }
 
+
+// int	ft_usleep(useconds_t time)
+// {
+// 	u_int64_t	start;
+
+// 	start = get_time();
+// 	while ((get_time() - start) < time)
+// 		usleep(time / 10);
+// 	return (0);
+// }
+
 void	a_table(t_data *data)
 {
 	int	i;
@@ -48,29 +59,23 @@ void	a_table(t_data *data)
 
 	i = 0;
 	threads_created = 0;
-	if (data->nb_eat > 0)
-		pthread_create(data->t0, NULL, check_meals, (void *)&data->philos[0]);
 	while(i < data->nb_philo)
 	{
-		pthread_create(&data->threads[i], NULL, routine, &data->philos[i]);
+		pthread_create(&data->philos[i].t1, NULL, routine, &data->philos[i]);
 		threads_created++;
-		if (data->dead_phi == 1)
-		{
-			printf("breaking\n");
-			break;		
-		}
 		i++;
 	}
 	i = 0;
+	// if (pthread_create(data->death_thread, NULL, check_death_or_meals, &data) == 1)
+	// 	printf("   XXXXXXXXXXX\n");
+	pthread_create(data->death_thread, NULL, check_death_or_meals, &data);
 	while (i < threads_created)
 	{
-		pthread_join(data->threads[i], NULL);
+		pthread_join(data->philos[i].t1, NULL);
 		i++;
 	}
-	if (data->nb_eat > 0)
-		pthread_join(*data->t0, NULL);
-	if (data->dead_phi == 1)
-		free_n_exit(data);
+	pthread_join(*data->death_thread, NULL);
+	free_n_exit(data);
 }
 
 // write a fuction that free the memory and exits
@@ -92,9 +97,9 @@ void free_n_exit(t_data *data)
     pthread_mutex_destroy(data->write);
     pthread_mutex_destroy(data->lock);
     free(data->forks);
-    free(data->threads);
+    //free(data->threads);
     free(data->philos);
-    free(data->t0);
+    //free(data->t0);
     free(data->lock);
     free(data->write);
     exit(1);

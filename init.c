@@ -1,8 +1,8 @@
 
 #include "philo.h"
 
-void	init_philo(t_data *data)
-{
+	void	init_philo(t_data *data)
+	{
 	int		i;
 	t_philo	*philo;
 
@@ -19,14 +19,18 @@ void	init_philo(t_data *data)
 		// philo[i].last_eat = data->start_time;		//makes it stop really fast
 		// philo[i].last_eat = get_time();		//makes it stop really fast
 		philo[i].last_eat = get_time(); // makes it go on for a while
+		// philo[i].t1 = malloc(sizeof(pthread_t));
+		// philo[i].eat = malloc(sizeof(pthread_t));     this ini works with data
+
 		// printf("   philo[%d].id: %d\n", i, philo[i].id);
-		pthread_mutex_init(&philo[i].lock, NULL);
+		//pthread_mutex_init(&philo->t1, NULL);
+		//pthread_mutex_init(&philo->lock, NULL);
 		i++;
 	}
 	// printf("   data->nb_philo: %d\n", data->nb_philo);
 	// printf("   philo[%d].id: %d\n", i, philo[i].id);
 	// printf("   i: %d\n", i);
-}
+	}
 
 void	init_data(t_data *data, int ac, char **av)
 {
@@ -40,13 +44,14 @@ void	init_data(t_data *data, int ac, char **av)
 		data->nb_eat = -1;
 	data->nb_ate = 0;
 	data->dead_phi = 0;
-	data->start_time = get_time();
+	//data->start_time = get_time();
+	data->start_time = get_time() + (data->nb_philo * 2 * 10);
 	data->tto_die = (u_int64_t)ft_atoi(av[2]);
 	data->tto_eat = (u_int64_t)ft_atoi(av[3]);
 	data->tto_sleep = (u_int64_t)ft_atoi(av[4]);
 	//data->philos = malloc(sizeof(t_philo) * data->nb_philo);
-	data->t0 = malloc(sizeof(pthread_t));
-	data->threads = malloc(sizeof(pthread_t) * data->nb_philo);
+	data->death_thread = malloc(sizeof(pthread_t));
+	// data->threads = malloc(sizeof(pthread_t) * data->nb_philo);
 	data->lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	data->write = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(data->lock, NULL);

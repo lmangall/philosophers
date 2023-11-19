@@ -27,3 +27,32 @@ int	ft_atoi(const char *str)
 	}
 	return (mult * nb);
 }
+
+
+int	ft_usleep(useconds_t time)
+{
+	u_int64_t	start;
+
+	start = get_time();
+	while ((get_time() - start) < time)
+		usleep(time / 10);
+	return (0);
+}
+
+
+
+uint64_t	get_time(void)
+{
+	struct timeval	tv;
+	uint64_t		time_in_ms;
+
+	gettimeofday(&tv, NULL);
+	time_in_ms = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time_in_ms);
+}
+
+
+int	dead(t_data *data)
+{
+	return (data->dead_phi);
+}

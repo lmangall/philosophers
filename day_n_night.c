@@ -1,13 +1,94 @@
 #include "philo.h"
+#define FORK_1  0
+#define FORK_2  1
+#define EAT  2
+#define SLEEP 3
+#define THINK 4
+#define DIED 5
 
-uint64_t	get_time(void)
+// int	ft_usleep(useconds_t time)
+// {
+// 	u_int64_t	start;
+
+// 	start = get_time();
+// 	while ((get_time() - start) < time)
+// 		usleep(time / 10);
+// 	return (0);
+// }
+
+void output(t_philo *philo, int status)
 {
-	struct timeval	tv;
-	uint64_t		time_in_ms;
+    pthread_mutex_lock(philo->data->write);
 
-	gettimeofday(&tv, NULL);
-	time_in_ms = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-	return (time_in_ms);
+    // if (has_simulation_stopped(philo->table) == true && reaper_report == false)
+    // {
+    //     pthread_mutex_unlock(&philo->table->write_lock);
+    //     return;
+    // }
+
+    if (status == FORK_1 || status == FORK_2)
+        printf("%lu %d has taken a fork\n", get_time() - philo->data->start_time, philo->id);
+    else if (status == EAT)
+        printf("%lu %d is eating\n", get_time() - philo->data->start_time, philo->id);
+    else if (status == SLEEP)
+        printf("%lu %d is sleeping\n", get_time() - philo->data->start_time, philo->id);
+    else if (status == THINK)
+        printf("%lu %d is thinking\n", get_time() - philo->data->start_time, philo->id);
+    else if (status == DIED)
+        printf("%lu %d is dead\n", get_time() - philo->data->start_time, philo->id);
+    pthread_mutex_unlock(philo->data->write);
+}
+
+
+
+
+// uint64_t	get_time(void)
+// {
+// 	struct timeval	tv;
+// 	uint64_t		time_in_ms;
+
+// 	gettimeofday(&tv, NULL);
+// 	time_in_ms = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+// 	return (time_in_ms);
+// }
+
+// int	dead(t_data *data)
+// {
+// 	return (data->dead_phi);
+// }
+
+
+void	phi_sleep(t_philo *philo)
+{
+	if (philo->data->dead_phi == 0)
+	{
+		output(philo, SLEEP);
+		usleep(philo->data->tto_sleep * 1000);
+		pthread_mutex_unlock(&philo->lock);
+	}
+}
+
+void	think(t_philo *philo)
+{
+	output(philo, THINK);
+
+}
+
+void	philo_sleep(uint64_t sleep_time)
+{
+	uint64_t	wake_up;
+
+	wake_up = get_time() + sleep_time;
+	while (get_time() < wake_up)
+	{
+		usleep(100);
+	}
+}
+
+void	delay(uint64_t start_time)
+{
+	while (get_time() < start_time)
+		continue ;
 }
 
 void	*eat(void *philo_pointer)
@@ -17,126 +98,68 @@ void	*eat(void *philo_pointer)
 	int		second_fork;
 
 	philo = (t_philo *)philo_pointer;
-// printf("inside eat for philo %d\n", philo->id);
-	if (philo->eat_cont == -1 || philo->data->dead_phi == 1)
-		{
-		printf("returned eat for philo %d\n", philo->id);
-		return (NULL);
-		}
-	// printf("after return eat for philo %d\n", philo->id);
 
-	while (philo->data->dead_phi == 0)
-	{
 		first_fork = philo->id;
 		second_fork = (philo->id + 1); //% philo->data->nb_philo;//check if correct given ther is no philo 0
 		if (first_fork == philo->data->nb_philo)
 			second_fork = 1;
-	// printf("in while in eat for philo %d\n", philo->id);
-		pthread_mutex_lock(&philo->lock);
 		pthread_mutex_lock(&philo->data->forks[first_fork - 1]);
+		output(philo, FORK_1);
 		pthread_mutex_lock(&philo->data->forks[second_fork - 1]);
-				if (philo->data->dead_phi == 1)
-					{
-					printf("BAAACK%d\n", philo->id);
-							pthread_mutex_unlock(&philo->data->forks[first_fork - 1]);
-					pthread_mutex_unlock(&philo->data->forks[second_fork - 1]);
-					return (NULL);
-					}
-		pthread_mutex_lock(philo->data->write);
-		printf("%lu %d has taken a fork\n", get_time()
-			- philo->data->start_time, philo->id);
-		printf("%lu %d has taken a fork\n", get_time()
-			- philo->data->start_time, philo->id);
-		printf("%lu %d is eating\n", get_time() - philo->data->start_time,
-			philo->id);
-		pthread_mutex_unlock(philo->data->write);
+		output(philo, FORK_2);
+		output(philo, EAT);
+		pthread_mutex_lock(&philo->lock);
 		philo->eating = 1;
-		usleep(philo->data->tto_eat * 1000); // this is done before: first eat, then write time last eate
 		philo->last_eat = get_time();
+		//ft_usleep(philo->data->tto_eat * 1000); // this is done before: first eat, then write time last eate
+		philo_sleep(philo->data->tto_eat);
 		philo->eat_cont++;
 		philo->eating = 0;
 		pthread_mutex_unlock(&philo->lock);
-		pthread_mutex_unlock(&philo->data->forks[first_fork - 1]);
 		pthread_mutex_unlock(&philo->data->forks[second_fork - 1]);
+		pthread_mutex_unlock(&philo->data->forks[first_fork - 1]);
 // printf("end of eat for philo %d\n", philo->id);
-	}
 	return (NULL);
 }
 
-void	phi_sleep(t_data *data, t_philo *philo)
+
+
+int death(t_data *data)
 {
-	if (philo->data->dead_phi == 0)
+	int i;
+
+	i = 0;
+	while(i++ < data->nb_philo)
+	{
+		if (get_time() - data->philos[i].last_eat > data->tto_die)
 		{
-		pthread_mutex_lock(&philo->lock);
-		pthread_mutex_lock(data->write);
-		printf("%lu %d is sleeping\n", get_time() - data->start_time, philo->id);
-		pthread_mutex_unlock(data->write);
-		usleep(data->tto_sleep * 1000);
-		pthread_mutex_unlock(&philo->lock);
-		}
-}
-
-void	think(t_data *data, t_philo *philo)
-{
-	if (philo->data->dead_phi == 1)
-		{
-		pthread_mutex_lock(data->write);
-		printf("%lu %d is thinking\n", get_time() - data->start_time, philo->id);
-		pthread_mutex_unlock(data->write);
-		}
-}
-
-void *check_death_or_meals(void *philo_pointer) {
-    t_philo *philo = (t_philo *)philo_pointer;
-    t_data *data = philo->data;
-// printf("from check death: philo->data->dead_phi == %d\n", philo->data->dead_phi);
-    while (data->dead_phi == 0 && philo->eat_cont != -1) {
-        pthread_mutex_lock(&philo->lock);
-
-		if (get_time() - philo->last_eat > philo->data->tto_die)
-		{
-            pthread_mutex_lock(data->write);
-            printf("%lu %d died\n", get_time() - philo->data->start_time, philo->id);
-            pthread_mutex_unlock(data->write);
-
+			printf("   dead\n");
             pthread_mutex_lock(data->lock);
+            pthread_mutex_lock(&data->philos[i].lock);
+            output(&data->philos[i], DIED);
             data->dead_phi = 1;
-// printf("XXXdata->dead_phi == %d\n", data->dead_phi);
-
-            pthread_mutex_unlock(data->lock);
-
-            pthread_mutex_unlock(&philo->lock);
-            return (NULL);
+			//pthread_mutex_unlock(data->lock);
+            return (1);
         }
-        if (philo->eat_cont > 0) 
-		{
-            if ((philo->eat_cont >= data->nb_eat) && (data->nb_eat != -1)) {
-                pthread_mutex_lock(data->lock);
-                data->nb_ate++;
-                pthread_mutex_unlock(data->lock);
+		
+	}
+		return(0);
+}
 
-                if (data->nb_ate == data->nb_philo) {
-                    pthread_mutex_lock(data->write);
-                    printf("All philosophers ate %d times\n", data->nb_eat);
-                    pthread_mutex_unlock(data->write);
-                    exit(1);
-                }
-                philo->eat_cont = -1;
-            }
-        }
-        if (data->nb_ate == data->nb_philo) 
-		{
-            pthread_mutex_lock(data->write);
-            printf("All philosophers ate %d times\n", data->nb_eat);
-            pthread_mutex_unlock(data->write);
-            exit(1);
-        }
-        pthread_mutex_unlock(&philo->lock);
-        usleep(1000);
-    }
+void *check_death_or_meals(void *data_pointer) 
+{
+    t_data *data = (t_data *)data_pointer;
 
+	delay(data->start_time);
+	while (true)
+	{
+		if (death(data) == 1)
+			return (NULL);
+		usleep(1000);
+	}
     return (NULL);
 }
+
 
 
 void	*routine(void *philo_pointer)
@@ -144,29 +167,20 @@ void	*routine(void *philo_pointer)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_pointer;
-	pthread_create(&philo->eat, NULL, check_death_or_meals, philo);
-    //pthread_detach(philo->eat);
-        if (philo->data->dead_phi == 1)
-		{
-				pthread_join(philo->eat, NULL);
-				return (NULL);
-		}
-// printf("philo->data->dead_phi == %d\n", philo->data->dead_phi);
-	while (philo->eat_cont != -1 && philo->data->dead_phi == 0)
+
+    pthread_mutex_lock(&philo->lock);
+	philo->last_eat = philo->data->start_time;
+	pthread_mutex_unlock(&philo->lock);
+
+	delay(philo->data->start_time);
+	if (philo->id % 2)
+		ft_usleep(1);
+	while (dead(philo->data) == 0)
 	{
 		eat(philo);
-        if (philo->data->dead_phi == 1)
-		{
-				pthread_join(philo->eat, NULL);
-				return (NULL);
-		}
-		phi_sleep(philo->data, philo);
-		think(philo->data, philo);
-// printf("routine loop\n");
+		think(philo);
+		phi_sleep(philo);
 	}
-// printf("routine \n");
-	pthread_join(philo->eat, NULL);
-// printf("joined? \n");
 
 	return (NULL);
 }
