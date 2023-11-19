@@ -28,18 +28,16 @@ int	ft_atoi(const char *str)
 	return (mult * nb);
 }
 
-
-int	ft_usleep(useconds_t time)
+void	ft_usleep(uint64_t time)
 {
-	u_int64_t	start;
+	uint64_t	wake_up;
 
-	start = get_time();
-	while ((get_time() - start) < time)
-		usleep(time / 10);
-	return (0);
+	wake_up = get_time() + time;
+	while (get_time() < wake_up)
+	{
+		usleep(10);//or 		continue ;
+	}
 }
-
-
 
 uint64_t	get_time(void)
 {
@@ -50,7 +48,6 @@ uint64_t	get_time(void)
 	time_in_ms = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 	return (time_in_ms);
 }
-
 
 int	dead(t_data *data)
 {

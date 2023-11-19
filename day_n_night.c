@@ -39,31 +39,13 @@ void output(t_philo *philo, int status)
     pthread_mutex_unlock(philo->data->write);
 }
 
-
-
-
-// uint64_t	get_time(void)
-// {
-// 	struct timeval	tv;
-// 	uint64_t		time_in_ms;
-
-// 	gettimeofday(&tv, NULL);
-// 	time_in_ms = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-// 	return (time_in_ms);
-// }
-
-// int	dead(t_data *data)
-// {
-// 	return (data->dead_phi);
-// }
-
-
 void	phi_sleep(t_philo *philo)
 {
 	if (philo->data->dead_phi == 0)
 	{
+		pthread_mutex_lock(&philo->lock);
 		output(philo, SLEEP);
-		usleep(philo->data->tto_sleep * 1000);
+		ft_usleep(philo->data->tto_sleep * 1000);
 		pthread_mutex_unlock(&philo->lock);
 	}
 }
@@ -71,19 +53,18 @@ void	phi_sleep(t_philo *philo)
 void	think(t_philo *philo)
 {
 	output(philo, THINK);
-
 }
 
-void	philo_sleep(uint64_t sleep_time)
-{
-	uint64_t	wake_up;
+// void	philo_sleep(uint64_t sleep_time)
+// {
+// 	uint64_t	wake_up;
 
-	wake_up = get_time() + sleep_time;
-	while (get_time() < wake_up)
-	{
-		usleep(100);
-	}
-}
+// 	wake_up = get_time() + sleep_time;
+// 	while (get_time() < wake_up)
+// 	{
+// 		usleep(100);
+// 	}
+// }
 
 void	delay(uint64_t start_time)
 {
@@ -112,7 +93,7 @@ void	*eat(void *philo_pointer)
 		philo->eating = 1;
 		philo->last_eat = get_time();
 		//ft_usleep(philo->data->tto_eat * 1000); // this is done before: first eat, then write time last eate
-		philo_sleep(philo->data->tto_eat);
+		ft_usleep(philo->data->tto_eat);
 		philo->eat_cont++;
 		philo->eating = 0;
 		pthread_mutex_unlock(&philo->lock);
