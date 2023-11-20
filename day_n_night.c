@@ -6,16 +6,6 @@
 #define THINK 4
 #define DIED 5
 
-// int	ft_usleep(useconds_t time)
-// {
-// 	u_int64_t	start;
-
-// 	start = get_time();
-// 	while ((get_time() - start) < time)
-// 		usleep(time / 10);
-// 	return (0);
-// }
-
 void output(t_philo *philo, int status)
 {
     pthread_mutex_lock(philo->data->write);
@@ -55,23 +45,6 @@ void	think(t_philo *philo)
 	output(philo, THINK);
 }
 
-// void	philo_sleep(uint64_t sleep_time)
-// {
-// 	uint64_t	wake_up;
-
-// 	wake_up = get_time() + sleep_time;
-// 	while (get_time() < wake_up)
-// 	{
-// 		usleep(100);
-// 	}
-// }
-
-void	delay(uint64_t start_time)
-{
-	while (get_time() < start_time)
-		continue ;
-}
-
 void	*eat(void *philo_pointer)
 {
 	t_philo	*philo;
@@ -95,43 +68,76 @@ void	*eat(void *philo_pointer)
 	return (NULL);
 }
 
-
-
-int death(t_data *data)
-{
-	int i;
-
-	i = 0;
-	while(i++ < data->nb_philo)
-	{
-		if (get_time() - data->philos[i].last_eat > data->tto_die)
-		{
-			printf("   dead\n");
-            pthread_mutex_lock(data->lock);
-            pthread_mutex_lock(&data->philos[i].lock);
-            output(&data->philos[i], DIED);
-            data->dead_phi = 1;
-			pthread_mutex_unlock(data->lock);
-			pthread_mutex_unlock(&data->philos[i].lock);
-            return (1);
-        }
-		
-	}
-		return(0);
-}
+// int death(t_data *data)
+// {
+// 	int i;
+// 	i = 0;
+// 	// printf("           i: %d  data->nb_philo: %d\n", i, data->nb_philo);
+// 	while(i < data->nb_philo)
+// printf("               XX§XX\n");
+// 	{
+// 		if (get_time() - data->philos[i].last_eat > data->tto_die)
+// 		{
+// 			printf("   dead\n");
+//             pthread_mutex_lock(data->lock);
+//             pthread_mutex_lock(&data->philos[i].lock);
+//             output(&data->philos[i], DIED);
+//             data->dead_phi = 1;
+// 			pthread_mutex_unlock(data->lock);
+// 			pthread_mutex_unlock(&data->philos[i].lock);
+//             return (1);
+//         }
+// 		i++;
+// 	}
+// 	i = 0;
+// 		return(0);
+// }
 
 void *check_death_or_meals(void *data_pointer) 
 {
     t_data *data = (t_data *)data_pointer;
+	int i;
+		printf("\n\n       nb_philo: %d\n", data->nb_philo);
 
+	i = 0;
 	delay(data->start_time);
-	while (true)
+	// while (data->dead_phi == 0)
+	// {
+	// 	if (data->nb_ate == data->nb_philo)
+	// 	{
+	// 		pthread_mutex_lock(data->write);
+	// 		printf("All philosophers ate %d times\n", data->nb_eat);
+	// 		pthread_mutex_unlock(data->write);
+	// 		exit(1); //          FINISH   THE    PROGRAM
+	// 	}
+	// 	(void)data;
+	// }
+	// return (NULL);
+
+	(void)i;
+
+	while(1)
 	{
-		if (death(data) == 1)
+		// printf("   dead_phi: %d\n", data->dead_phi);
+		// printf("   nb_philo: %d\n", data->nb_philo);
+	while (i < data->nb_philo)
+	{
+		if (get_time() - data->philos[i].last_eat > data->tto_die)
+		{
+			printf("   dead\n");
+			pthread_mutex_lock(data->lock);
+			pthread_mutex_lock(&data->philos[i].lock);
+			output(&data->philos[i], DIED);
+			data->dead_phi = 1;
+			pthread_mutex_unlock(data->lock);
+			pthread_mutex_unlock(&data->philos[i].lock);
 			return (NULL);
-		usleep(1000);
+		}
+		i++;
 	}
-    return (NULL);
+	 i = 0;
+	}
+	return (NULL);
 }
 
 

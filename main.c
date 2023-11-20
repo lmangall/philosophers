@@ -66,16 +66,17 @@ void	a_table(t_data *data)
 		i++;
 	}
 	i = 0;
-	// if (pthread_create(data->death_thread, NULL, check_death_or_meals, &data) == 1)
-	// 	printf("   XXXXXXXXXXX\n");
+	printf("\n\n       nb_philo: %d\n", data->nb_philo);
+	if (pthread_create(data->death_thread, NULL, check_death_or_meals, data) == 1)
+		printf("   XXXXXXXXXXX\n");
 	// pthread_create(data->death_thread, NULL, check_death_or_meals, &data);
 	while (i < threads_created)
 	{
 		pthread_join(data->philos[i].t1, NULL);
 		i++;
 	}
-	// pthread_join(*data->death_thread, NULL);
-	// free_n_exit(data);
+	pthread_join(*data->death_thread, NULL);
+	free_n_exit(data);
 }
 
 // write a fuction that free the memory and exits

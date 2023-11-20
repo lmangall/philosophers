@@ -53,3 +53,10 @@ int	dead(t_data *data)
 {
 	return (data->dead_phi);
 }
+
+
+void	delay(uint64_t start_time)
+{
+	while (get_time() < start_time)
+		continue ;
+}
