@@ -68,7 +68,7 @@ void	a_table(t_data *data)
 	i = 0;
 	// if (pthread_create(data->death_thread, NULL, check_death_or_meals, &data) == 1)
 	// 	printf("   XXXXXXXXXXX\n");
-	pthread_create(data->death_thread, NULL, check_death_or_meals, &data);
+	// pthread_create(data->death_thread, NULL, check_death_or_meals, &data);
 	while (i < threads_created)
 	{
 		pthread_join(data->philos[i].t1, NULL);
