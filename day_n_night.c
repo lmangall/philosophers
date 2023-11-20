@@ -45,7 +45,7 @@ void	phi_sleep(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->lock);
 		output(philo, SLEEP);
-		ft_usleep(philo->data->tto_sleep * 1000);
+		ft_usleep(philo->data->tto_sleep);
 		pthread_mutex_unlock(&philo->lock);
 	}
 }
@@ -75,15 +75,8 @@ void	delay(uint64_t start_time)
 void	*eat(void *philo_pointer)
 {
 	t_philo	*philo;
-	// int		first_fork;
-	// int		second_fork;
 
 	philo = (t_philo *)philo_pointer;
-
-		// first_fork = philo->id;
-		// second_fork = (philo->id + 1); //% philo->data->nb_philo;//check if correct given ther is no philo 0
-		// if (first_fork == philo->data->nb_philo)
-		// 	second_fork = 1;
 		pthread_mutex_lock(&philo->data->forks[philo->fork_l]);
 		output(philo, FORK_1);
 		pthread_mutex_lock(&philo->data->forks[philo->fork_r]);
@@ -92,7 +85,6 @@ void	*eat(void *philo_pointer)
 		pthread_mutex_lock(&philo->lock);
 		philo->eating = 1;
 		philo->last_eat = get_time();
-		//ft_usleep(philo->data->tto_eat * 1000); // this is done before: first eat, then write time last eate
 		ft_usleep(philo->data->tto_eat);
 		philo->eat_cont++;
 		philo->eating = 0;
@@ -112,17 +104,17 @@ int death(t_data *data)
 	i = 0;
 	while(i++ < data->nb_philo)
 	{
-		// if (get_time() - data->philos[i].last_eat > data->tto_die)
-		// {
-		// 	printf("   dead\n");
-        //     pthread_mutex_lock(data->lock);
-        //     pthread_mutex_lock(&data->philos[i].lock);
-        //     output(&data->philos[i], DIED);
-        //     data->dead_phi = 1;
-		// 	pthread_mutex_unlock(data->lock);
-		// 	pthread_mutex_unlock(&data->philos[i].lock);
-        //     return (1);
-        // }
+		if (get_time() - data->philos[i].last_eat > data->tto_die)
+		{
+			printf("   dead\n");
+            pthread_mutex_lock(data->lock);
+            pthread_mutex_lock(&data->philos[i].lock);
+            output(&data->philos[i], DIED);
+            data->dead_phi = 1;
+			pthread_mutex_unlock(data->lock);
+			pthread_mutex_unlock(&data->philos[i].lock);
+            return (1);
+        }
 		
 	}
 		return(0);
@@ -150,12 +142,12 @@ void	*routine(void *philo_pointer)
 
 	philo = (t_philo *)philo_pointer;
 
-    pthread_mutex_lock(&philo->lock);
-	pthread_mutex_unlock(&philo->lock);
+    // pthread_mutex_lock(&philo->lock);
+	// pthread_mutex_unlock(&philo->lock);
 
 	delay(philo->data->start_time);
 	if (philo->id % 2)
-		ft_usleep(10);
+		ft_usleep(1);
 	while (dead(philo->data) == 0)
 	{
 		eat(philo);

@@ -91,8 +91,26 @@ int death(t_data *data);
 //                                in utils.c :
 int		    ft_atoi(const char *str);
 int         dead(t_data *data);
-uint64_t	get_time(void);
-void         ft_usleep(uint64_t time);
+/**
+ * @brief Sleeps for a specified amount of time.
+ *
+ * This function puts the calling thread to sleep for the specified time duration.
+ * It uses a busy-wait loop to ensure accurate sleep time.
+ *
+ * @param time The duration to sleep in microseconds.
+ * @ingroup time_utils
+ */
+void ft_usleep(uint64_t time);
+/**
+ * @brief Gets the current time in milliseconds.
+ *
+ * This function retrieves the current time using the gettimeofday system call
+ * and returns it in milliseconds.
+ *
+ * @return The current time in milliseconds.
+ * @ingroup time_utils
+ */
+uint64_t get_time(void);
 
 
 

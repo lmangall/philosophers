@@ -74,8 +74,8 @@ void	a_table(t_data *data)
 		pthread_join(data->philos[i].t1, NULL);
 		i++;
 	}
-	pthread_join(*data->death_thread, NULL);
-	free_n_exit(data);
+	// pthread_join(*data->death_thread, NULL);
+	// free_n_exit(data);
 }
 
 // write a fuction that free the memory and exits
