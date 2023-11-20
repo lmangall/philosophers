@@ -75,18 +75,18 @@ void	delay(uint64_t start_time)
 void	*eat(void *philo_pointer)
 {
 	t_philo	*philo;
-	int		first_fork;
-	int		second_fork;
+	// int		first_fork;
+	// int		second_fork;
 
 	philo = (t_philo *)philo_pointer;
 
-		first_fork = philo->id;
-		second_fork = (philo->id + 1); //% philo->data->nb_philo;//check if correct given ther is no philo 0
-		if (first_fork == philo->data->nb_philo)
-			second_fork = 1;
-		pthread_mutex_lock(&philo->data->forks[first_fork - 1]);
+		// first_fork = philo->id;
+		// second_fork = (philo->id + 1); //% philo->data->nb_philo;//check if correct given ther is no philo 0
+		// if (first_fork == philo->data->nb_philo)
+		// 	second_fork = 1;
+		pthread_mutex_lock(&philo->data->forks[philo->fork_l]);
 		output(philo, FORK_1);
-		pthread_mutex_lock(&philo->data->forks[second_fork - 1]);
+		pthread_mutex_lock(&philo->data->forks[philo->fork_r]);
 		output(philo, FORK_2);
 		output(philo, EAT);
 		pthread_mutex_lock(&philo->lock);
@@ -97,8 +97,8 @@ void	*eat(void *philo_pointer)
 		philo->eat_cont++;
 		philo->eating = 0;
 		pthread_mutex_unlock(&philo->lock);
-		pthread_mutex_unlock(&philo->data->forks[second_fork - 1]);
-		pthread_mutex_unlock(&philo->data->forks[first_fork - 1]);
+		pthread_mutex_unlock(&philo->data->forks[philo->fork_r]);
+		pthread_mutex_unlock(&philo->data->forks[philo->fork_l]);
 // printf("end of eat for philo %d\n", philo->id);
 	return (NULL);
 }

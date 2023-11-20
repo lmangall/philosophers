@@ -1,6 +1,27 @@
 
 #include "philo.h"
 
+
+void	distrib_forks(t_philo *philo)
+{
+	if (philo->id % 2)
+	{
+		philo->fork_l = philo->id;
+		if (philo->id == philo->data->nb_philo)
+			philo->fork_r = 0;
+		else
+			philo->fork_r = philo->id + 1; 
+	}
+	else
+	{
+		philo->fork_r = philo->id;
+		if (philo->id == philo->data->nb_philo)
+			philo->fork_l = 0;
+		else
+			philo->fork_l = philo->id + 1;
+	}
+}
+
 	void	init_philo(t_data *data)
 	{
 	int		i;
@@ -18,13 +39,14 @@
 		philo[i].dead_or_alive = 1;
 		// philo[i].last_eat = data->start_time;		//makes it stop really fast
 		// philo[i].last_eat = get_time();		//makes it stop really fast
-		philo[i].last_eat = get_time(); // makes it go on for a while
+		philo[i].last_eat = data->start_time;
 		// philo[i].t1 = malloc(sizeof(pthread_t));
 		// philo[i].eat = malloc(sizeof(pthread_t));     this ini works with data
 
 		// printf("   philo[%d].id: %d\n", i, philo[i].id);
 		//pthread_mutex_init(&philo->t1, NULL);
 		//pthread_mutex_init(&philo->lock, NULL);
+		distrib_forks(&philo[i]);
 		i++;
 	}
 	// printf("   data->nb_philo: %d\n", data->nb_philo);

@@ -18,6 +18,10 @@ typedef struct s_philo
 	int				eat_cont; 	/**< Number of times the philosopher has eaten. */
 	int				eating; 	/**< Flag indicating if the philosopher is currently eating. */
 	int             dead_or_alive; /**< Flag indicating if the philosopher is currently dead or alive. */
+    // pthread_mutex_t    *fork_l;	/**< Philosopher's left fork. */
+    // pthread_mutex_t    *fork_r;	/**< Philosopher's right fork. */
+    int             fork_l;     /**< Philosopher's left fork. */
+    int             fork_r;     /**< Philosopher's right fork. */
     uint64_t        last_eat;	/**< Time in milliseconds when the philosopher last ate. */
     // uint64_t		time_to_die;/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
 	pthread_t		t1;			/**< Philosopher's thread. */
@@ -67,7 +71,7 @@ void    a_table(t_data *data);
 void	free_n_exit(t_data *data);
 
 //                                in init.c :
-
+void	distrib_forks(t_philo *philo);
 void    init_forks(t_data *data);
 void    init_philo(t_data *data);
 void    init_data(t_data *data, int ac, char **av);
