@@ -66,37 +66,34 @@ void	a_table(t_data *data)
 		i++;
 	}
 	i = 0;
-	printf("\n\n       nb_philo: %d\n", data->nb_philo);
 	if (pthread_create(data->death_thread, NULL, check_death_or_meals, data) == 1)
-		printf("   XXXXXXXXXXX\n");
 	// pthread_create(data->death_thread, NULL, check_death_or_meals, &data);
 	while (i < threads_created)
 	{
 		pthread_join(data->philos[i].t1, NULL);
 		i++;
 	}
-	// pthread_mutex_unlock(data->write);
 	pthread_join(*data->death_thread, NULL);
 	free_n_exit(data);
 }
-
-// write a fuction that free the memory and exits
+//important: the mutex is unlocked before being destroyed
 void free_n_exit(t_data *data)
 {
     int i;
 
     i = 0;
 
-// pthread_mutex_unlock(data->lock);
-// pthread_mutex_unlock(data->write);
-
     while (i < data->nb_philo)
     {
+		pthread_mutex_unlock(&data->forks[i]);
         pthread_mutex_destroy(&data->forks[i]);
         pthread_mutex_destroy(&data->philos[i].lock);
         i++;
     }
+
+	pthread_mutex_unlock(data->write);
     pthread_mutex_destroy(data->write);
+	pthread_mutex_unlock(data->lock);
     pthread_mutex_destroy(data->lock);
     free(data->forks);
     //free(data->threads);

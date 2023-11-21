@@ -82,9 +82,11 @@ void    init_data(t_data *data, int ac, char **av);
 void *eat(void *philo_pointer);
 void *routine(void *arg);
 
+void 	meal_tracker(t_philo *philo);
+
 
 void	delay(uint64_t start_time);
-void output(t_philo *philo, int status);
+int output(t_philo *philo, int status);
 void *check_death_or_meals(void *data_pointer);
 int death(t_data *data);
 
