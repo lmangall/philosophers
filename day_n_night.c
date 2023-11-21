@@ -42,7 +42,8 @@ void	phi_sleep(t_philo *philo)
 
 void	think(t_philo *philo)
 {
-	output(philo, THINK);
+	if (philo->data->dead_phi == 0)
+		output(philo, THINK);
 }
 
 void	*eat(void *philo_pointer)
@@ -50,20 +51,22 @@ void	*eat(void *philo_pointer)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_pointer;
-		pthread_mutex_lock(&philo->data->forks[philo->fork_l]);
-		output(philo, FORK_1);
-		pthread_mutex_lock(&philo->data->forks[philo->fork_r]);
-		output(philo, FORK_2);
-		output(philo, EAT);
-		pthread_mutex_lock(&philo->lock);
-		philo->eating = 1;
-		philo->last_eat = get_time();
-		ft_usleep(philo->data->tto_eat);
-		philo->eat_cont++;
-		philo->eating = 0;
-		pthread_mutex_unlock(&philo->lock);
-		pthread_mutex_unlock(&philo->data->forks[philo->fork_r]);
-		pthread_mutex_unlock(&philo->data->forks[philo->fork_l]);
+	if(philo->data->dead_phi == 1)
+		return (NULL);
+	pthread_mutex_lock(&philo->data->forks[philo->fork_l]);
+	output(philo, FORK_1);
+	pthread_mutex_lock(&philo->data->forks[philo->fork_r]);
+	output(philo, FORK_2);
+	output(philo, EAT);
+	pthread_mutex_lock(&philo->lock);
+	philo->eating = 1;
+	philo->last_eat = get_time();
+	ft_usleep(philo->data->tto_eat);
+	philo->eat_cont++;
+	philo->eating = 0;
+	pthread_mutex_unlock(&philo->lock);
+	pthread_mutex_unlock(&philo->data->forks[philo->fork_r]);
+	pthread_mutex_unlock(&philo->data->forks[philo->fork_l]);
 // printf("end of eat for philo %d\n", philo->id);
 	return (NULL);
 }
@@ -114,32 +117,29 @@ void *check_death_or_meals(void *data_pointer)
 	// }
 	// return (NULL);
 
-	(void)i;
 
-	while(1)
-	{
 		// printf("   dead_phi: %d\n", data->dead_phi);
 		// printf("   nb_philo: %d\n", data->nb_philo);
-	while (i < data->nb_philo)
-	{
-		if (get_time() - data->philos[i].last_eat > data->tto_die)
-		{
-			printf("   dead\n");
-			pthread_mutex_lock(data->lock);
-			pthread_mutex_lock(&data->philos[i].lock);
-			output(&data->philos[i], DIED);
-			data->dead_phi = 1;
-			pthread_mutex_unlock(data->lock);
-			pthread_mutex_unlock(&data->philos[i].lock);
-			return (NULL);
-		}
-		i++;
-	}
-	 i = 0;
-	}
-	return (NULL);
-}
 
+    while (1)
+    {
+        while (i < data->nb_philo)
+        {
+            if (get_time() - data->philos[i].last_eat > data->tto_die)
+            {
+                pthread_mutex_lock(data->lock);
+                data->dead_phi = 1;
+                output(&data->philos[i], DIED);
+				// pthread_mutex_lock(data->write);
+                pthread_mutex_unlock(data->lock);
+                return (NULL);
+            }
+            i++;
+        }
+        i = 0;  // Reset i to 0 after the inner while loop
+    }
+    return (NULL);
+}
 
 
 void	*routine(void *philo_pointer)
