@@ -54,56 +54,77 @@ void	*check_meals(void *data_pointer)
 
 void	a_table(t_data *data)
 {
-	int	i;
-	int	threads_created;
+	int	thread_nbr;
+
+	thread_nbr = 0;
+	while(thread_nbr < data->nb_philo)
+	{
+		pthread_create(&data->philos[thread_nbr].t1, NULL, routine, &data->philos[thread_nbr]);
+		thread_nbr++;
+	}
+	data->thread_nbr = thread_nbr;
+	printf("      thread_nbr: %d\n", thread_nbr);
+	pthread_mutex_lock(data->lock);
+	data->death_thread_id = 0;
+	pthread_mutex_unlock(data->lock);
+	pthread_create(data->death_thread, NULL, check_death_or_meals, data);
+}
+
+//important: the mutex is unlocked before being destroyed
+
+void join_threads(t_data *data) 
+{
+	int i;
 
 	i = 0;
-	threads_created = 0;
-	while(i < data->nb_philo)
+    while (i < data->thread_nbr) 
 	{
-		pthread_create(&data->philos[i].t1, NULL, routine, &data->philos[i]);
-		threads_created++;
+        if (data->threads[i] != -1) 
+		{
+            pthread_join(data->philos[i].t1, NULL);
+			data->threads[i] = -1;
+        }
 		i++;
-	}
-	i = 0;
-	printf("      threads_created: %d\n", threads_created);
-	if (pthread_create(data->death_thread, NULL, check_death_or_meals, data) == 1)
-		printf("    error creating death thread\n");
-		// pthread_create(data->death_thread, NULL, check_death_or_meals, &data);
-	while (i < threads_created)
-	{
-		pthread_join(data->philos[i].t1, NULL);
-		i++;
-	}
-	pthread_join(*data->death_thread, NULL);
-	free_n_exit(data);
+    }
 }
-//important: the mutex is unlocked before being destroyed
+
+
 void free_n_exit(t_data *data)
 {
-    int i;
+printf("free_n_exit\n");
+	int i;
 
-    i = 0;
+	i = 0;
+	join_threads(data);
+printf("joined all threads\n");
 
-    while (i < data->nb_philo)
-    {
+	if(data->death_thread_id == 1)
+	{
+		pthread_join(*data->death_thread, NULL);
+		data->death_thread_id = 0;
+		printf("death thread joined\n");
+	}
+	i = 0;
+
+	while (i < data->nb_philo)
+	{
 		pthread_mutex_unlock(&data->forks[i]);
-        pthread_mutex_destroy(&data->forks[i]);
-        pthread_mutex_destroy(&data->philos[i].lock);
-        i++;
-    }
+		pthread_mutex_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&data->philos[i].lock);
+		i++;
+	}
 
 	pthread_mutex_unlock(data->write);
-    pthread_mutex_destroy(data->write);
+	pthread_mutex_destroy(data->write);
 	pthread_mutex_unlock(data->lock);
-    pthread_mutex_destroy(data->lock);
-    free(data->forks);
-    //free(data->threads);
-    free(data->philos);
-    //free(data->t0);
-    free(data->lock);
-    free(data->write);
-    exit(1);
+	pthread_mutex_destroy(data->lock);
+	free(data->forks);
+	//free(data->threads);
+	free(data->philos);
+	//free(data->t0);
+	free(data->lock);
+	free(data->write);
+	exit(1);
 }
 
 int	main(int ac, char **av)

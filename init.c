@@ -67,7 +67,11 @@ void	init_data(t_data *data, int ac, char **av)
 	data->nb_ate = 0;
 	data->dead_phi = 0;
 	data->finished = 0;
+	data->thread_nbr = 0;
 	//data->start_time = get_time();
+	data->threads = malloc(sizeof(int) * data->nb_philo);
+	data->death_thread_id = 0;
+	data->printed_end = 0;
 	data->start_time = get_time() + (data->nb_philo * 2 * 10);
 	data->tto_die = (u_int64_t)ft_atoi(av[2]);
 	data->tto_eat = (u_int64_t)ft_atoi(av[3]);

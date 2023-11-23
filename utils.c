@@ -49,9 +49,15 @@ uint64_t	get_time(void)
 	return (time_in_ms);
 }
 
-int	dead(t_data *data)
+int	finish(t_data *data)
 {
-	return (data->dead_phi);
+	if(data->dead_phi == 1)
+		return (1);
+	if(data->finished == 1)
+		return (1);
+	else
+		return (0);
+
 }
 
 
