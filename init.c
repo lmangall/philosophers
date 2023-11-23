@@ -66,6 +66,7 @@ void	init_data(t_data *data, int ac, char **av)
 		data->nb_eat = -1;
 	data->nb_ate = 0;
 	data->dead_phi = 0;
+	data->finished = 0;
 	//data->start_time = get_time();
 	data->start_time = get_time() + (data->nb_philo * 2 * 10);
 	data->tto_die = (u_int64_t)ft_atoi(av[2]);

@@ -36,6 +36,7 @@ typedef struct s_data
     int				nb_eat;		/**< Number times each philo must eat (optional). */
     int             nb_ate;     /**< Number of philosopher who has eaten all his meals */
     int             dead_phi;   /**< Number of philosophers that are dead */
+    int             finished;
     uint64_t		start_time;	/**< Time when the simulation started. */
     uint64_t		tto_die;	/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
     uint64_t		tto_eat;	/**< Time in milliseconds required for a philosopher to eat. */
@@ -82,7 +83,7 @@ void    init_data(t_data *data, int ac, char **av);
 void *eat(void *philo_pointer);
 void *routine(void *arg);
 
-void 	meal_tracker(t_philo *philo);
+int 	meal_tracker(t_philo *philo);
 
 
 void	delay(uint64_t start_time);
