@@ -49,11 +49,13 @@ uint64_t	get_time(void)
 	return (time_in_ms);
 }
 
-int	finish(t_data *data)
+int	finish(t_philo *philo)
 {
-	if(data->dead_phi == 1)
+	if(philo->data->dead_phi == 1)
 		return (1);
-	if(data->finished == 1)
+	if(philo->data->finished == 1)
+		return (1);
+	if(philo->eat_cont == -1)
 		return (1);
 	else
 		return (0);

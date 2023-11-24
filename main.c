@@ -92,39 +92,53 @@ void join_threads(t_data *data)
 void free_n_exit(t_data *data)
 {
 printf("free_n_exit\n");
-	int i;
-
-	i = 0;
-	join_threads(data);
-printf("joined all threads\n");
-
-	if(data->death_thread_id == 1)
+	data->thread_nbr--;
+	// ft_usleep(10);
+if (data->thread_nbr == 0)
 	{
-		pthread_join(*data->death_thread, NULL);
-		data->death_thread_id = 0;
-		printf("death thread joined\n");
-	}
-	i = 0;
+			printf("freeing all\n");
 
-	while (i < data->nb_philo)
+		int i;
+
+		i = 0;
+		join_threads(data);
+	printf("joined all threads\n");
+
+		if(data->death_thread_id == 1)
+		{
+			pthread_join(*data->death_thread, NULL);
+			data->death_thread_id = 0;
+			printf("death thread joined\n");
+		}
+		i = 0;
+		
+		while (i < data->nb_philo)
+		{
+printf("  in while, i = %d\n", i);
+			pthread_mutex_unlock(&data->forks[i]);
+			pthread_mutex_destroy(&data->forks[i]);
+			pthread_mutex_unlock(&data->philos[i].lock);
+			pthread_mutex_destroy(&data->philos[i].lock);
+			i++;
+		}
+		pthread_mutex_unlock(data->write);
+		pthread_mutex_destroy(data->write);
+		pthread_mutex_unlock(data->lock);
+		pthread_mutex_destroy(data->lock);
+		free(data->forks);
+		//free(data->threads);
+		free(data->philos);
+		//free(data->t0);
+		free(data->lock);
+		free(data->write);
+		exit(1);
+	}
+	else
 	{
-		pthread_mutex_unlock(&data->forks[i]);
-		pthread_mutex_destroy(&data->forks[i]);
-		pthread_mutex_destroy(&data->philos[i].lock);
-		i++;
+		printf("freeing all = next time\n");
+		ft_usleep(100);
 	}
 
-	pthread_mutex_unlock(data->write);
-	pthread_mutex_destroy(data->write);
-	pthread_mutex_unlock(data->lock);
-	pthread_mutex_destroy(data->lock);
-	free(data->forks);
-	//free(data->threads);
-	free(data->philos);
-	//free(data->t0);
-	free(data->lock);
-	free(data->write);
-	exit(1);
 }
 
 int	main(int ac, char **av)
@@ -147,6 +161,6 @@ int	main(int ac, char **av)
 	init_philo(&data);
 	a_table(&data);
 	free_n_exit(&data);
-
+	ft_usleep(1000000);
 	return (0);
 }

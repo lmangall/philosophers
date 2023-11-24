@@ -38,8 +38,7 @@ int output(t_philo *philo, int status)
 	}
 	else if ((status == ALL) && (philo->data->finished == 0 || philo->data->dead_phi == 0) && philo->data->printed_end == 0)
 	{
-		printf("All philosophers ate %d times\n", philo->data->nb_eat);
-			philo->data->printed_end = 1;
+		printf("\033[31mAll philosophers ate %d times\033[0m\n", philo->data->nb_eat);			philo->data->printed_end = 1;
 		 	free_n_exit(philo->data);
 			// return (0);
 	}
@@ -113,16 +112,13 @@ void	*eat(void *philo_pointer)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_pointer;
-	if(philo->data->dead_phi == 1 || philo->data->finished == 1)
-		return (NULL);
+	if(finish(philo))
+		free_n_exit(philo->data);
 	pthread_mutex_lock(&philo->data->forks[philo->fork_l]);
-	if (!output(philo, FORK_1))
-		return (NULL);
+	output(philo, FORK_1);
 	pthread_mutex_lock(&philo->data->forks[philo->fork_r]);
-	if (!output(philo, FORK_2))
-		return (NULL);	
-	if (!output(philo, EAT))
-		return (NULL);
+	output(philo, FORK_2);
+	output(philo, EAT);
 	pthread_mutex_lock(&philo->lock);
 	philo->eating = 1;
 	philo->last_eat = get_time();
@@ -198,14 +194,16 @@ void	*routine(void *philo_pointer)
 	delay(philo->data->start_time);
 	if (philo->id % 2)
 		ft_usleep(1);
-	while (finish(philo->data) == 0)
+	while (1)
 	{
-		if(philo->eat_cont == -1)
+		if(finish(philo) == 1)
 			break;
 		eat(philo);
-		if((philo->data->finished == 1 || philo->data->dead_phi == 1))
-		 	free_n_exit(philo->data);
+		if(finish(philo) == 1)
+			break;
 		think(philo);
+		if(finish(philo) == 1)
+			break;
 		phi_sleep(philo);
 	}
 	free_n_exit(philo->data);

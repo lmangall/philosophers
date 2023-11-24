@@ -84,20 +84,20 @@ void    init_data(t_data *data, int ac, char **av);
 
 //                                in days_n_night
 
-void *eat(void *philo_pointer);
-void *routine(void *arg);
+void    *eat(void *philo_pointer);
+void    *routine(void *arg);
 
 int 	meal_tracker(t_philo *philo);
 
 
-void	delay(uint64_t start_time);
-int output(t_philo *philo, int status);
-void *check_death_or_meals(void *data_pointer);
-int death(t_data *data);
+void    delay(uint64_t start_time);
+int     output(t_philo *philo, int status);
+void    *check_death_or_meals(void *data_pointer);
+int     death(t_data *data);
 
 //                                in utils.c :
 int		    ft_atoi(const char *str);
-int         finish(t_data *data);
+int         finish(t_philo *philo);
 /**
  * @brief Sleeps for a specified amount of time.
  *
@@ -107,7 +107,7 @@ int         finish(t_data *data);
  * @param time The duration to sleep in microseconds.
  * @ingroup time_utils
  */
-void ft_usleep(uint64_t time);
+void        ft_usleep(uint64_t time);
 /**
  * @brief Gets the current time in milliseconds.
  *
@@ -117,7 +117,7 @@ void ft_usleep(uint64_t time);
  * @return The current time in milliseconds.
  * @ingroup time_utils
  */
-uint64_t get_time(void);
+uint64_t    get_time(void);
 
 
 
