@@ -59,7 +59,10 @@ void	a_table(t_data *data)
 	thread_nbr = 0;
 	while(thread_nbr < data->nb_philo)
 	{
-		pthread_create(&data->philos[thread_nbr].t1, NULL, routine, &data->philos[thread_nbr]);
+		if (pthread_create(&data->philos[thread_nbr].t1, NULL, routine, &data->philos[thread_nbr]) != 0)
+   			printf("problem\n");
+		ft_usleep(1);
+
 		thread_nbr++;
 	}
 	data->thread_nbr = thread_nbr;
@@ -68,6 +71,25 @@ void	a_table(t_data *data)
 	data->death_thread_id = 0;
 	pthread_mutex_unlock(data->lock);
 	pthread_create(data->death_thread, NULL, check_death_or_meals, data);
+	printf("control\n");
+
+	while(1)
+	{
+		if(finish(&data->philos[0]) == 1)
+		{
+			free_n_exit(data);
+			break;
+		}
+	}
+	
+	// if (data->thread_nbr > 0)
+	// {
+	// 	printf("waiting\n");
+	// 	while (data->thread_nbr != 0)
+	// 	{
+	// 		ft_usleep(100);
+	// 	}
+	// }
 }
 
 //important: the mutex is unlocked before being destroyed
@@ -92,7 +114,11 @@ void join_threads(t_data *data)
 void free_n_exit(t_data *data)
 {
 printf("free_n_exit\n");
+ 	 pthread_mutex_lock(data->lock);
 	data->thread_nbr--;
+	pthread_mutex_unlock(data->lock);
+printf("      thread_nbr: %d\n", data->thread_nbr);
+
 	// ft_usleep(10);
 if (data->thread_nbr == 0)
 	{
@@ -135,8 +161,8 @@ printf("  in while, i = %d\n", i);
 	}
 	else
 	{
-		printf("freeing all = next time\n");
-		ft_usleep(100);
+		while (data->thread_nbr == 0)
+			ft_usleep(10);
 	}
 
 }
@@ -160,7 +186,6 @@ int	main(int ac, char **av)
 	init_forks(&data);
 	init_philo(&data);
 	a_table(&data);
-	free_n_exit(&data);
-	ft_usleep(1000000);
+	// ft_usleep(100);
 	return (0);
 }

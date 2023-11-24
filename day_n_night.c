@@ -22,16 +22,16 @@ int output(t_philo *philo, int status)
 
 
 	if ((status == FORK_1 || status == FORK_2) && (philo->data->finished == 0 && philo->data->dead_phi == 0))
-		printf("%llu %d has taken a fork\n", get_time() - philo->data->start_time, philo->id);
+		printf("%lu %d has taken a fork\n", get_time() - philo->data->start_time, philo->id);
 	else if ((status == EAT) && (philo->data->finished == 0 && philo->data->dead_phi == 0))
-		printf("%llu %d is eating\n", get_time() - philo->data->start_time, philo->id);
+		printf("%lu %d is eating\n", get_time() - philo->data->start_time, philo->id);
 	else if ((status == SLEEP) && (philo->data->finished == 0 && philo->data->dead_phi == 0))
-		printf("%llu %d is sleeping\n", get_time() - philo->data->start_time, philo->id);
+		printf("%lu %d is sleeping\n", get_time() - philo->data->start_time, philo->id);
 	else if ((status == THINK) && (philo->data->finished == 0 && philo->data->dead_phi == 0))
-		printf("%llu %d is thinking\n", get_time() - philo->data->start_time, philo->id);
+		printf("%lu %d is thinking\n", get_time() - philo->data->start_time, philo->id);
 	else if (((status == DIED) || (philo->data->finished == 1 || philo->data->dead_phi == 1)) && philo->data->printed_end == 0)
 	{
-		printf("%llu %d is dead\n", get_time() - philo->data->start_time, philo->id);
+		printf("%lu %d is dead\n", get_time() - philo->data->start_time, philo->id);
 			philo->data->printed_end = 1;
 		 	free_n_exit(philo->data);
 			// return (0);
@@ -187,13 +187,17 @@ void *check_death_or_meals(void *data_pointer)
 
 void	*routine(void *philo_pointer)
 {
+	printf("control -1\n");
+
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_pointer;
+	printf("control 0\n");
 
 	delay(philo->data->start_time);
 	if (philo->id % 2)
 		ft_usleep(1);
+	printf("control 1\n");
 	while (1)
 	{
 		if(finish(philo) == 1)

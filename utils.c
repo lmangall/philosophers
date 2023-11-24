@@ -52,11 +52,20 @@ uint64_t	get_time(void)
 int	finish(t_philo *philo)
 {
 	if(philo->data->dead_phi == 1)
+	{
+		printf("finish 1\n");
 		return (1);
+	}
 	if(philo->data->finished == 1)
+	{
+		printf("finish 2\n");
 		return (1);
+	}
 	if(philo->eat_cont == -1)
+	{
+		printf("finish 3\n");
 		return (1);
+	}
 	else
 		return (0);
 
