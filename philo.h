@@ -29,7 +29,8 @@ typedef struct s_philo
     int             fork_l;     /**< Philosopher's left fork. */
     int             fork_r;     /**< Philosopher's right fork. */
     uint64_t        last_eat;	/**< Time in milliseconds when the philosopher last ate. */
-	pthread_t		*t1;			/**< Philosopher's thread. */
+    uint64_t        tto_die;	/**< Time in milliseconds when the philosopher last ate. */
+    pthread_t		*t1;			/**< Philosopher's thread. */
     pthread_t       *eat;        /**< Philosopher's thread. */
 	pthread_mutex_t	lock;		/**< Mutex lock for this philosopher's state. */
 } t_philo;
@@ -56,6 +57,7 @@ typedef struct s_data
     pthread_mutex_t	*forks;		/**< Array of mutex locks for the forks. */
     pthread_mutex_t	lock;		/**< Mutex lock for controlling access to shared data. */
     pthread_mutex_t write;		/**< Mutex lock for writing to stdout. */
+    pthread_mutex_t dead_phi_lock;
 } t_data;
 
 //                                in main.c :
@@ -103,11 +105,13 @@ int     death(t_data *data);
 
 //                                in utils.c :
 int		    ft_atoi(const char *str);
-int         finish(t_data *data);
+int		finished(t_data *data);
 void        ft_usleep(uint64_t time);
 uint64_t    get_time(void);
 void         *check_all_ate(void *data_pointer);
-
+int 		must_die(t_philo *philo);
+int         all_ate(t_data *data);
+int is_even(t_philo *philo);
 
 
 #endif

@@ -3,10 +3,47 @@
 
 
 
+
+
+
+
+
+
+
+in phi_sleep, philo is locked and in output the finished function try to lock it
+
+
+
+
+
+
+
+
+
+
+
 clear && valgrind -s --tool=helgrind ./philosophers 4 200 60 60
+
+
+--tool=drd
+
+4 310 200 100 = die
+
+
+valgrind -q --leak-check=yes --show-leak-kinds=all ./philosophers 4 310 200 100
+
+
+valgrind --leak-check=yes --show-leak-kinds=all ./philosophers 4 310 200 100
+
 
 printf("Thread %lu in check_death_or_meals\n", pthread_self());
 
+
+
+
+
+https://github.com/abdeljalil-salhi/philosophers
+https://github.com/clemedon/philosophers
 
 
 

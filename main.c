@@ -28,6 +28,7 @@ void a_table(t_data *data)
 	thread_nbr = 0;
 	if(data->nb_eat != -1)
 	{
+		printf("\nCHECKING\n");
 		pthread_create(data->meals, NULL, check_all_ate, data);
 	}
 	while (thread_nbr < data->nb_philo)
