@@ -26,11 +26,9 @@ void a_table(t_data *data)
 	int thread_nbr;
 
 	thread_nbr = 0;
-	printf("data->nb_eat = %d\n", data->nb_eat);
 	if(data->nb_eat != -1)
 	{
 		pthread_create(data->meals, NULL, check_all_ate, data);
-		printf("dasdsadsadsadsa\n");
 	}
 	while (thread_nbr < data->nb_philo)
 	{
@@ -53,7 +51,6 @@ void a_table(t_data *data)
 
 void free_n_exit(t_data *data)
 {
-printf("free_n_exit\n");
 	int i;
 
 	i = 0;

@@ -35,8 +35,6 @@ void	distrib_forks(t_philo *philo)
 		philo[i].t1 = malloc(sizeof(pthread_t));
 		philo[i].eat = malloc(sizeof(pthread_t));
 		pthread_mutex_init(&philo->lock, NULL);
-		// distrib_forks(&philo[i]);
-		// printf("   philo[%d].fork_l: %d, philo[%d].fork_r: %d\n", i, philo[i].fork_l, i, philo[i].fork_r);
 		i++;
 	}
 	}
@@ -47,7 +45,6 @@ void	init_data(t_data *data, int ac, char **av)
 	if (ac == 6)
 	{
 		data->nb_eat = ft_atoi(av[5]);
-		printf("data->nb_eat: %d\n", data->nb_eat);
 	}
 	else
 		data->nb_eat = -1;
@@ -94,7 +91,6 @@ void	init_forks(t_data *data)
 			data->philos[i].fork_l = i;
 			data->philos[i].fork_r = (i + 1) % data->nb_philo;
 		}
-		printf("   philo[%d].fork_l: %d, philo[%d].fork_r: %d\n", i, data->philos[i].fork_l, i, data->philos[i].fork_r);
 		i++;
 	}
 }
