@@ -26,12 +26,9 @@ typedef struct s_philo
 	int				eat_cont; 	/**< Number of times the philosopher has eaten. */
 	int				eating; 	/**< Flag indicating if the philosopher is currently eating. */
 	int             dead_or_alive; /**< Flag indicating if the philosopher is currently dead or alive. */
-    // pthread_mutex_t    *fork_l;	/**< Philosopher's left fork. */
-    // pthread_mutex_t    *fork_r;	/**< Philosopher's right fork. */
     int             fork_l;     /**< Philosopher's left fork. */
     int             fork_r;     /**< Philosopher's right fork. */
     uint64_t        last_eat;	/**< Time in milliseconds when the philosopher last ate. */
-    // uint64_t		time_to_die;/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
 	pthread_t		*t1;			/**< Philosopher's thread. */
     pthread_t       *eat;        /**< Philosopher's thread. */
 	pthread_mutex_t	lock;		/**< Mutex lock for this philosopher's state. */
@@ -57,8 +54,8 @@ typedef struct s_data
     pthread_t		*death_thread;         /**< Philosopher's thread. */
     pthread_t       *meals;
     pthread_mutex_t	*forks;		/**< Array of mutex locks for the forks. */
-    pthread_mutex_t	*lock;		/**< Mutex lock for controlling access to shared data. */
-    pthread_mutex_t *write;		/**< Mutex lock for writing to stdout. */
+    pthread_mutex_t	lock;		/**< Mutex lock for controlling access to shared data. */
+    pthread_mutex_t write;		/**< Mutex lock for writing to stdout. */
 } t_data;
 
 //                                in main.c :

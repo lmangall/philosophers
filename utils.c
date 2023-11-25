@@ -49,24 +49,6 @@ uint64_t	get_time(void)
 	return (time_in_ms);
 }
 
-int	finish(t_data *data)
-{
-	if(data->dead_phi == 1)
-	{
-		// printf("philo id:%d  - finish :dead_phi= 1\n", philo->id);
-		return (1);
-	}
-	if(data->finished == 1)
-	{
-		// printf("philo id:%d  - finish :finished = 1\n", philo->id);
-		return (1);
-	}
-
-	else
-		return (0);
-
-}
-
 void	delay(uint64_t start_time)
 {
 	while (get_time() < start_time)
@@ -77,16 +59,16 @@ void	delay(uint64_t start_time)
 void	*check_all_ate(void *data_pointer)
 {
 	t_data *data = (t_data *)data_pointer;
-	while(!(finish(data)))
+	while (!(data->dead_phi))
 	{
 		if ((data->nb_ate == data->nb_philo) && (data->nb_eat != -1))
 		{
-			pthread_mutex_lock(data->lock);
-			data->finished = 1;
-			pthread_mutex_unlock(data->lock);
-			pthread_mutex_lock(data->write);
+			pthread_mutex_lock(&data->lock);
+			data->dead_phi = 1;
+			pthread_mutex_unlock(&data->lock);
+			pthread_mutex_lock(&data->write);
 			printf("\033[31mAll philosophers ate %d times\033[0m\n", data->nb_eat);
-			pthread_mutex_unlock(data->write);
+			pthread_mutex_unlock(&data->write);
 			return (NULL);
 		}
 	}

@@ -33,6 +33,7 @@ void a_table(t_data *data)
 	while (thread_nbr < data->nb_philo)
 	{
 		pthread_create(data->philos[thread_nbr].t1, NULL, routine, &data->philos[thread_nbr]);
+		pthread_create(data->philos[thread_nbr].eat, NULL, check_death_or_meals, &data->philos[thread_nbr]);
 		thread_nbr++;
 	}
 
@@ -42,6 +43,7 @@ void a_table(t_data *data)
 	while (thread_nbr < data->nb_philo)
 	{
 		pthread_join(*(data->philos[thread_nbr].t1), NULL);
+		pthread_join(*(data->philos[thread_nbr].eat), NULL);
 		thread_nbr++;
 	}
 		if(data->nb_eat != -1)
@@ -57,20 +59,19 @@ void free_n_exit(t_data *data)
 	i = 0;
 	while (i < data->nb_philo)
 	{
-		pthread_mutex_unlock(&data->forks[i]);
+
 		pthread_mutex_destroy(&data->forks[i]);
-		pthread_mutex_unlock(&data->philos[i].lock);
 		pthread_mutex_destroy(&data->philos[i].lock);
+		// free(data->philos[i].t1);
+		// free(data->philos[i].eat);
 		i++;
 	}
-	pthread_mutex_unlock(data->write);
-	pthread_mutex_destroy(data->write);
-	pthread_mutex_unlock(data->lock);
-	pthread_mutex_destroy(data->lock);
-	free(data->forks);
-	free(data->philos);
-	free(data->lock);
-	free(data->write);
+	pthread_mutex_destroy(&data->write);
+	pthread_mutex_destroy(&data->lock);
+	// free(data->forks);
+	// free(data->philos);
+	// free(data->lock);
+	// free(data->write);
 	exit(1);
 }
 
