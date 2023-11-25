@@ -19,17 +19,18 @@ int output(t_philo *philo, int status)
 	else if (status == DIED)
 	{
 		printf("\033[91m%lu %d is dead\033[0m\n", get_time() - philo->data->start_time, philo->id);
-		    pthread_mutex_lock(philo->data->lock);
-			philo->data->printed_end = 1;
-		    pthread_mutex_unlock(philo->data->lock);
+		    // pthread_mutex_lock(philo->data->lock);
+			// philo->data->printed_end = 1;
+		    // pthread_mutex_unlock(philo->data->lock);
 	}
 	else if (status == ALL)
 	{
 		printf("\033[31mAll philosophers ate %d times\033[0m\n", philo->data->nb_eat);
-		    pthread_mutex_lock(philo->data->lock);
-			philo->data->printed_end = 1;
-		    pthread_mutex_unlock(philo->data->lock);
+		    // pthread_mutex_lock(philo->data->lock);
+			// philo->data->printed_end = 1;
+		    // pthread_mutex_unlock(philo->data->lock);
 	}
+
 	pthread_mutex_unlock(philo->data->write);
 
 	return (1);
@@ -88,11 +89,23 @@ int	eat(void *philo_pointer)
 	philo = (t_philo *)philo_pointer;
 	if(finish(philo->data))
 		return (0);
+	// if(philo->eat_cont == -1)
+	// 	return (0);
 	pthread_mutex_lock(&philo->data->forks[philo->fork_l]);
 	output(philo, FORK_1);
+	if(finish(philo->data))
+		{
+			pthread_mutex_unlock(&philo->data->forks[philo->fork_l]);
+			return (0);
+		}
 	pthread_mutex_lock(&philo->data->forks[philo->fork_r]);
 	output(philo, FORK_2);
 	output(philo, EAT);
+		{
+			pthread_mutex_unlock(&philo->data->forks[philo->fork_l]);
+			pthread_mutex_unlock(&philo->data->forks[philo->fork_r]);
+			return (0);
+		}
 	pthread_mutex_lock(&philo->lock);
 	philo->eating = 1;
 	philo->last_eat = get_time();
@@ -136,18 +149,16 @@ void	*routine(void *philo_pointer)
 	philo = (t_philo *)philo_pointer;
 
 	pthread_create(philo->eat, NULL, check_death_or_meals, philo);
-
-
 	delay(philo->data->start_time);
 	if (philo->id % 2)
 		ft_usleep(1);
-	while (!(finish(philo->data)))
+	while (!(finish(philo->data)))// && philo->eat_cont != -1)
 	{
 		eat(philo);
 		think(philo);
 		phi_sleep(philo);
+		
 	}
-
 	pthread_join(*(philo->eat), NULL);
 
 	return (NULL);

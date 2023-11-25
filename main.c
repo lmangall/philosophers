@@ -38,6 +38,7 @@ void a_table(t_data *data)
 
 	// pthread_create(data->death_thread, NULL, check_death_or_meals, data);
 	thread_nbr = 0;
+	
 	while (thread_nbr < data->nb_philo)
 	{
 		pthread_join(*(data->philos[thread_nbr].t1), NULL);

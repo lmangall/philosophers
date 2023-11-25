@@ -79,9 +79,6 @@ void	*check_all_ate(void *data_pointer)
 	t_data *data = (t_data *)data_pointer;
 	while(!(finish(data)))
 	{
-// printf("Value of data->nb_ate: \033[0;34m%d\033[0m\n", data->nb_ate); // Blue color
-// printf("Value of data->nb_philo: \033[0;33m%d\033[0m\n", data->nb_philo); // Yellow color
-// printf("Value of (data->nb_eat): \033[0;31m%d\033[0m\n", (data->nb_eat)); // Red color
 		if ((data->nb_ate == data->nb_philo) && (data->nb_eat != -1))
 		{
 			pthread_mutex_lock(data->lock);
