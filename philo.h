@@ -106,7 +106,7 @@ int     death(t_data *data);
 
 //                                in utils.c :
 int		    ft_atoi(const char *str);
-int         finish(t_philo *philo);
+int         finish(t_data *data);
 void        ft_usleep(uint64_t time);
 uint64_t    get_time(void);
 int         check_all_ate(t_data *data);
