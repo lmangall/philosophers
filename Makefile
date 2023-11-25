@@ -4,7 +4,7 @@ OBJS = $(SRCS:.c=.o)
 CC = cc -g
 NAME = philosophers
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pthread
 
 all: $(NAME)
 

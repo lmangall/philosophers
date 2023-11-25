@@ -21,151 +21,52 @@ int	check_args(char **av) ///                 change the minimum ?
 	return (1);
 }
 
-// checks if any philo is dead or if all have eaten
-void	*check_meals(void *data_pointer)
+void a_table(t_data *data)
 {
-	t_data	*data;
+    int thread_nbr;
 
-	data = (t_data *)data_pointer;
-	while (data->dead_phi == 0)
-	{
-		if (data->nb_ate == data->nb_philo)
-		{
-			pthread_mutex_lock(data->write);
-			printf("All philosophers ate %d times\n", data->nb_eat);
-			pthread_mutex_unlock(data->write);
-			exit(1); //          FINISH   THE    PROGRAM
-		}
-		(void)data;
-	}
-	return (NULL);
-}
-
-
-// int	ft_usleep(useconds_t time)
-// {
-// 	u_int64_t	start;
-
-// 	start = get_time();
-// 	while ((get_time() - start) < time)
-// 		usleep(time / 10);
-// 	return (0);
-// }
-
-void	a_table(t_data *data)
-{
-	int	thread_nbr;
-
-	thread_nbr = 0;
-	while(thread_nbr < data->nb_philo)
-	{
-		if (pthread_create(&data->philos[thread_nbr].t1, NULL, routine, &data->philos[thread_nbr]) != 0)
-   			printf("problem\n");
-		ft_usleep(1);
-
-		thread_nbr++;
-	}
-	data->thread_nbr = thread_nbr;
-	printf("      thread_nbr: %d\n", thread_nbr);
-	pthread_mutex_lock(data->lock);
-	data->death_thread_id = 0;
-	pthread_mutex_unlock(data->lock);
-	pthread_create(data->death_thread, NULL, check_death_or_meals, data);
-	printf("control\n");
-
-	while(1)
-	{
-		if(finish(&data->philos[0]) == 1)
-		{
-			free_n_exit(data);
-			break;
-		}
-	}
-	
-	// if (data->thread_nbr > 0)
-	// {
-	// 	printf("waiting\n");
-	// 	while (data->thread_nbr != 0)
-	// 	{
-	// 		ft_usleep(100);
-	// 	}
-	// }
-}
-
-//important: the mutex is unlocked before being destroyed
-
-void join_threads(t_data *data) 
-{
-	int i;
-
-	i = 0;
-    while (i < data->thread_nbr) 
-	{
-        if (data->threads[i] != -1) 
-		{
-            pthread_join(data->philos[i].t1, NULL);
-			data->threads[i] = -1;
-        }
-		i++;
+    thread_nbr = 0;
+    while (thread_nbr < data->nb_philo)
+    {
+        pthread_create(data->philos[thread_nbr].t1, NULL, routine, &data->philos[thread_nbr]);
+        thread_nbr++;
     }
-}
 
+    pthread_create(data->death_thread, NULL, check_death_or_meals, data);
+    thread_nbr = 0;
+    while (thread_nbr < data->nb_philo)
+    {
+        pthread_join(*(data->philos[thread_nbr].t1), NULL);
+        thread_nbr++;
+    }
+    pthread_join(*(data->death_thread), NULL);
+}
 
 void free_n_exit(t_data *data)
 {
 printf("free_n_exit\n");
- 	 pthread_mutex_lock(data->lock);
-	data->thread_nbr--;
-	pthread_mutex_unlock(data->lock);
-printf("      thread_nbr: %d\n", data->thread_nbr);
+	int i;
 
-	// ft_usleep(10);
-if (data->thread_nbr == 0)
-	{
-			printf("freeing all\n");
-
-		int i;
-
-		i = 0;
-		join_threads(data);
-	printf("joined all threads\n");
-
-		if(data->death_thread_id == 1)
-		{
-			pthread_join(*data->death_thread, NULL);
-			data->death_thread_id = 0;
-			printf("death thread joined\n");
-		}
-		i = 0;
-		
-		while (i < data->nb_philo)
-		{
-printf("  in while, i = %d\n", i);
-			pthread_mutex_unlock(&data->forks[i]);
-			pthread_mutex_destroy(&data->forks[i]);
-			pthread_mutex_unlock(&data->philos[i].lock);
-			pthread_mutex_destroy(&data->philos[i].lock);
-			i++;
-		}
-		pthread_mutex_unlock(data->write);
-		pthread_mutex_destroy(data->write);
-		pthread_mutex_unlock(data->lock);
-		pthread_mutex_destroy(data->lock);
-		free(data->forks);
-		//free(data->threads);
-		free(data->philos);
-		//free(data->t0);
-		free(data->lock);
-		free(data->write);
-		exit(1);
-	}
-	else
-	{
-		while (data->thread_nbr == 0)
-			ft_usleep(10);
-	}
-
+	i = 0;
+    while (i < data->nb_philo)
+    {
+        pthread_mutex_unlock(&data->forks[i]);
+        pthread_mutex_destroy(&data->forks[i]);
+        pthread_mutex_unlock(&data->philos[i].lock);
+        pthread_mutex_destroy(&data->philos[i].lock);
+        i++;
+    }
+    pthread_mutex_unlock(data->write);
+    pthread_mutex_destroy(data->write);
+    pthread_mutex_unlock(data->lock);
+    pthread_mutex_destroy(data->lock);
+    free(data->forks);
+    free(data->philos);
+    free(data->lock);
+    free(data->write);
+    exit(1);
 }
+
 
 int	main(int ac, char **av)
 {
@@ -183,9 +84,9 @@ int	main(int ac, char **av)
 
 	t_data data;
 	init_data(&data, ac, av);
-	init_forks(&data);
 	init_philo(&data);
+	init_forks(&data);
 	a_table(&data);
-	// ft_usleep(100);
+	free_n_exit(&data);
 	return (0);
 }

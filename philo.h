@@ -24,8 +24,8 @@ typedef struct s_philo
     int             fork_r;     /**< Philosopher's right fork. */
     uint64_t        last_eat;	/**< Time in milliseconds when the philosopher last ate. */
     // uint64_t		time_to_die;/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
-	pthread_t		t1;			/**< Philosopher's thread. */
-    pthread_t       eat;        /**< Philosopher's thread. */
+	pthread_t		*t1;			/**< Philosopher's thread. */
+    // pthread_t       eat;        /**< Philosopher's thread. */
 	pthread_mutex_t	lock;		/**< Mutex lock for this philosopher's state. */
 } t_philo;
 
@@ -47,7 +47,6 @@ typedef struct s_data
     uint64_t		tto_sleep;	/**< Time in milliseconds required for a philosopher to sleep. */
     t_philo			*philos;	/**< Array of philosophers. */
     pthread_t		*death_thread;         /**< Philosopher's thread. */
-    //pthread_t       *threads;	/**< Philosopher's thread. */
     pthread_mutex_t	*forks;		/**< Array of mutex locks for the forks. */
     pthread_mutex_t	*lock;		/**< Mutex lock for controlling access to shared data. */
     pthread_mutex_t *write;		/**< Mutex lock for writing to stdout. */
@@ -85,7 +84,9 @@ void    init_data(t_data *data, int ac, char **av);
 //                                in days_n_night
 
 void    *eat(void *philo_pointer);
-void    *routine(void *arg);
+int	phi_sleep(t_philo *philo);
+int	think(t_philo *philo);
+void    *routine(void *philo_pointer);
 
 int 	meal_tracker(t_philo *philo);
 
@@ -98,25 +99,7 @@ int     death(t_data *data);
 //                                in utils.c :
 int		    ft_atoi(const char *str);
 int         finish(t_philo *philo);
-/**
- * @brief Sleeps for a specified amount of time.
- *
- * This function puts the calling thread to sleep for the specified time duration.
- * It uses a busy-wait loop to ensure accurate sleep time.
- *
- * @param time The duration to sleep in microseconds.
- * @ingroup time_utils
- */
 void        ft_usleep(uint64_t time);
-/**
- * @brief Gets the current time in milliseconds.
- *
- * This function retrieves the current time using the gettimeofday system call
- * and returns it in milliseconds.
- *
- * @return The current time in milliseconds.
- * @ingroup time_utils
- */
 uint64_t    get_time(void);
 
 
