@@ -74,20 +74,26 @@ void	delay(uint64_t start_time)
 }
 
 
-int	check_all_ate(t_data *data)
+void	*check_all_ate(void *data_pointer)
 {
-printf("MMAAARRKK\n");
-	if ((data->nb_ate == data->nb_philo) && (data->nb_eat != -1))
+	t_data *data = (t_data *)data_pointer;
+	while(!(finish(data)))
 	{
-	pthread_mutex_lock(data->write);
-	printf("\033[31mAll philosophers ate %d times\033[0m\n", data->nb_eat);
-	pthread_mutex_unlock(data->write);
-	// output(&data->philos[0], ALL);        DOES NOT WORK
-	pthread_mutex_lock(data->lock);
-	// data->dead_phi = 1;
-	data->finished = 1;
-	pthread_mutex_unlock(data->lock);
-	return (1);
+// printf("Value of data->nb_ate: \033[0;34m%d\033[0m\n", data->nb_ate); // Blue color
+// printf("Value of data->nb_philo: \033[0;33m%d\033[0m\n", data->nb_philo); // Yellow color
+// printf("Value of (data->nb_eat): \033[0;31m%d\033[0m\n", (data->nb_eat)); // Red color
+		if ((data->nb_ate == data->nb_philo) && (data->nb_eat != -1))
+		{
+			pthread_mutex_lock(data->write);
+			printf("\033[31mAll philosophers ate %d times\033[0m\n", data->nb_eat);
+			pthread_mutex_unlock(data->write);
+			// output(&data->philos[0], ALL);        DOES NOT WORK
+			pthread_mutex_lock(data->lock);
+			// data->dead_phi = 1;
+			data->finished = 1;
+			pthread_mutex_unlock(data->lock);
+			return (NULL);
+		}
 	}
-	return (0);
+	return (NULL);
 }

@@ -33,6 +33,7 @@ void	distrib_forks(t_philo *philo)
 		philo[i].dead_or_alive = 1;
 		philo[i].last_eat = data->start_time;
 		philo[i].t1 = malloc(sizeof(pthread_t));
+		philo[i].eat = malloc(sizeof(pthread_t));
 		pthread_mutex_init(&philo->lock, NULL);
 		// distrib_forks(&philo[i]);
 		// printf("   philo[%d].fork_l: %d, philo[%d].fork_r: %d\n", i, philo[i].fork_l, i, philo[i].fork_r);
@@ -62,6 +63,7 @@ void	init_data(t_data *data, int ac, char **av)
 	data->tto_eat = (u_int64_t)ft_atoi(av[3]);
 	data->tto_sleep = (u_int64_t)ft_atoi(av[4]);
 	data->death_thread = malloc(sizeof(pthread_t));
+	data->meals = malloc(sizeof(pthread_t));
 	data->lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	data->write = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(data->lock, NULL);

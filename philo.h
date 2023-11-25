@@ -33,7 +33,7 @@ typedef struct s_philo
     uint64_t        last_eat;	/**< Time in milliseconds when the philosopher last ate. */
     // uint64_t		time_to_die;/**< Time in milliseconds before a philosopher dies if they haven't eaten. */
 	pthread_t		*t1;			/**< Philosopher's thread. */
-    // pthread_t       eat;        /**< Philosopher's thread. */
+    pthread_t       *eat;        /**< Philosopher's thread. */
 	pthread_mutex_t	lock;		/**< Mutex lock for this philosopher's state. */
 } t_philo;
 
@@ -55,11 +55,11 @@ typedef struct s_data
     uint64_t		tto_sleep;	/**< Time in milliseconds required for a philosopher to sleep. */
     t_philo			*philos;	/**< Array of philosophers. */
     pthread_t		*death_thread;         /**< Philosopher's thread. */
+    pthread_t       *meals;
     pthread_mutex_t	*forks;		/**< Array of mutex locks for the forks. */
     pthread_mutex_t	*lock;		/**< Mutex lock for controlling access to shared data. */
     pthread_mutex_t *write;		/**< Mutex lock for writing to stdout. */
 } t_data;
-//is data->forks necessary ?
 
 //                                in main.c :
 /**
@@ -101,7 +101,7 @@ int 	meal_tracker(t_philo *philo);
 
 void    delay(uint64_t start_time);
 int     output(t_philo *philo, int status);
-void    *check_death_or_meals(void *data_pointer);
+void    *check_death_or_meals(void *philo_pointer);
 int     death(t_data *data);
 
 //                                in utils.c :
@@ -109,7 +109,7 @@ int		    ft_atoi(const char *str);
 int         finish(t_data *data);
 void        ft_usleep(uint64_t time);
 uint64_t    get_time(void);
-int         check_all_ate(t_data *data);
+void         *check_all_ate(void *data_pointer);
 
 
 

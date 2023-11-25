@@ -26,20 +26,29 @@ void a_table(t_data *data)
 	int thread_nbr;
 
 	thread_nbr = 0;
+	printf("data->nb_eat = %d\n", data->nb_eat);
+	if(data->nb_eat != -1)
+	{
+		pthread_create(data->meals, NULL, check_all_ate, data);
+		printf("dasdsadsadsadsa\n");
+	}
 	while (thread_nbr < data->nb_philo)
 	{
 		pthread_create(data->philos[thread_nbr].t1, NULL, routine, &data->philos[thread_nbr]);
 		thread_nbr++;
 	}
 
-	pthread_create(data->death_thread, NULL, check_death_or_meals, data);
+	// pthread_create(data->death_thread, NULL, check_death_or_meals, data);
 	thread_nbr = 0;
 	while (thread_nbr < data->nb_philo)
 	{
 		pthread_join(*(data->philos[thread_nbr].t1), NULL);
 		thread_nbr++;
 	}
-	pthread_join(*(data->death_thread), NULL);
+		if(data->nb_eat != -1)
+			pthread_join(*data->meals, NULL);
+
+	// pthread_join(*(data->death_thread), NULL);
 }
 
 void free_n_exit(t_data *data)
