@@ -10,6 +10,14 @@
 #include <stdint.h>
 # include <stdbool.h>
 
+#define FORK_1  0
+#define FORK_2  1
+#define EAT  	2
+#define SLEEP 	3
+#define THINK 	4
+#define DIED 	5
+#define ALL 	6
+
 
 typedef struct s_philo 
 {
@@ -83,9 +91,9 @@ void    init_data(t_data *data, int ac, char **av);
 
 //                                in days_n_night
 
-void    *eat(void *philo_pointer);
-int	phi_sleep(t_philo *philo);
-int	think(t_philo *philo);
+int    eat(void *philo_pointer);
+int     phi_sleep(t_philo *philo);
+int     think(t_philo *philo);
 void    *routine(void *philo_pointer);
 
 int 	meal_tracker(t_philo *philo);
@@ -101,6 +109,7 @@ int		    ft_atoi(const char *str);
 int         finish(t_philo *philo);
 void        ft_usleep(uint64_t time);
 uint64_t    get_time(void);
+int         check_all_ate(t_data *data);
 
 
 

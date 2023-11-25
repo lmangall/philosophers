@@ -23,23 +23,23 @@ int	check_args(char **av) ///                 change the minimum ?
 
 void a_table(t_data *data)
 {
-    int thread_nbr;
+	int thread_nbr;
 
-    thread_nbr = 0;
-    while (thread_nbr < data->nb_philo)
-    {
-        pthread_create(data->philos[thread_nbr].t1, NULL, routine, &data->philos[thread_nbr]);
-        thread_nbr++;
-    }
+	thread_nbr = 0;
+	while (thread_nbr < data->nb_philo)
+	{
+		pthread_create(data->philos[thread_nbr].t1, NULL, routine, &data->philos[thread_nbr]);
+		thread_nbr++;
+	}
 
-    pthread_create(data->death_thread, NULL, check_death_or_meals, data);
-    thread_nbr = 0;
-    while (thread_nbr < data->nb_philo)
-    {
-        pthread_join(*(data->philos[thread_nbr].t1), NULL);
-        thread_nbr++;
-    }
-    pthread_join(*(data->death_thread), NULL);
+	pthread_create(data->death_thread, NULL, check_death_or_meals, data);
+	thread_nbr = 0;
+	while (thread_nbr < data->nb_philo)
+	{
+		pthread_join(*(data->philos[thread_nbr].t1), NULL);
+		thread_nbr++;
+	}
+	pthread_join(*(data->death_thread), NULL);
 }
 
 void free_n_exit(t_data *data)
@@ -48,23 +48,23 @@ printf("free_n_exit\n");
 	int i;
 
 	i = 0;
-    while (i < data->nb_philo)
-    {
-        pthread_mutex_unlock(&data->forks[i]);
-        pthread_mutex_destroy(&data->forks[i]);
-        pthread_mutex_unlock(&data->philos[i].lock);
-        pthread_mutex_destroy(&data->philos[i].lock);
-        i++;
-    }
-    pthread_mutex_unlock(data->write);
-    pthread_mutex_destroy(data->write);
-    pthread_mutex_unlock(data->lock);
-    pthread_mutex_destroy(data->lock);
-    free(data->forks);
-    free(data->philos);
-    free(data->lock);
-    free(data->write);
-    exit(1);
+	while (i < data->nb_philo)
+	{
+		pthread_mutex_unlock(&data->forks[i]);
+		pthread_mutex_destroy(&data->forks[i]);
+		pthread_mutex_unlock(&data->philos[i].lock);
+		pthread_mutex_destroy(&data->philos[i].lock);
+		i++;
+	}
+	pthread_mutex_unlock(data->write);
+	pthread_mutex_destroy(data->write);
+	pthread_mutex_unlock(data->lock);
+	pthread_mutex_destroy(data->lock);
+	free(data->forks);
+	free(data->philos);
+	free(data->lock);
+	free(data->write);
+	exit(1);
 }
 
 
