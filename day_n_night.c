@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:52 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 14:33:42 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:40:13 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@ int	output(t_philo *philo, int status)
 		printf("%lu %d is thinking\n", get_time() - philo->data->start_time,
 			philo->id);
 	else if (status == DIED)
-		printf("%lu %d is dead\n", get_time() - philo->data->start_time,
-			philo->id);
-	else if (status == ALL)
-		printf("All philosophers ate %d times\n", philo->data->nb_eat);
+		if (!(finished(philo->data)))
+			printf("%lu %d is dead\n",
+				get_time() - philo->data->start_time, philo->id);
 	pthread_mutex_unlock(&philo->data->write);
 	return (1);
 }
