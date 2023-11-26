@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:40:46 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 14:19:32 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 14:38:00 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ uint64_t	get_time(void)
 void	delay(t_data *data)
 {
 	uint64_t	time;
+
 	pthread_mutex_lock(&data->lock);
 	time = data->start_time;
 	pthread_mutex_unlock(&data->lock);
