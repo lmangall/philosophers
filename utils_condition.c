@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:34:51 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 13:36:43 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 13:40:26 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,12 @@ int	all_ate(t_data *data)
 
 int	is_even(t_philo *philo)
 {
-	int is_even;
+	int	is_even;
 
 	is_even = 0;
 	pthread_mutex_lock(&philo->lock);
-
 	if (philo->id % 2)
 		is_even = 1;
 	pthread_mutex_unlock(&philo->lock);
-
 	return (is_even);
 }

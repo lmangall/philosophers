@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:57 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 13:17:04 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 13:40:15 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	ft_atoi(const char *str)
 {
-	int nb;
-	int i;
-	int mult;
+	int	nb;
+	int	i;
+	int	mult;
 
 	nb = 0;
 	i = 0;
@@ -42,7 +42,9 @@ int	ft_atoi(const char *str)
 
 void	*check_all_ate(void *data_pointer)
 {
-	t_data *data = (t_data *)data_pointer;
+	t_data	*data;
+
+	data = (t_data *)data_pointer;
 	while (!(finished(data)))
 	{
 		if (all_ate(data))
