@@ -63,6 +63,7 @@ void	init_data(t_data *data, int ac, char **av)
 	else
 		data->nb_eat = -1;
 	data->nb_ate = 0;
+	data->dead_phi = 0;
 	data->thread_nbr = 0;
 	data->threads = malloc(sizeof(int) * data->nb_philo);
 	if (!data->threads)

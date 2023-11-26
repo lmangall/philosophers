@@ -23,7 +23,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread #-fsanitize=thread
 
 # Target executable
-NAME = philosophers
+NAME = philo
 
 # Targets
 all: $(OBJDIR) $(NAME)
