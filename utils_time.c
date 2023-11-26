@@ -8,7 +8,7 @@ void	ft_usleep(uint64_t time)
 	wake_up = get_time() + time;
 	while (get_time() < wake_up)
 	{
-		usleep(10);//or 		continue ;
+		usleep(10); // or 		continue ;
 	}
 }
 
