@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:14:01 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 17:18:16 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 23:25:41 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ void	a_table(t_data *data)
 	thread_nbr = 0;
 	if (data->nb_eat != -1)
 		pthread_create(data->meals, NULL, check_all_ate, data);
+	
+	pthread_mutex_lock(&data->lock);
+	data->start_time = get_time();
+	pthread_mutex_unlock(&data->lock);
 	while (thread_nbr < data->nb_philo)
 	{
 		pthread_create(data->philos[thread_nbr].t1, NULL, routine,
@@ -77,7 +81,11 @@ void	*routine(void *philo_pointer)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_pointer;
-	delay(philo->data);
+
+	pthread_mutex_lock(&philo->data->lock);
+	philo->last_eat = philo->data->start_time;
+	pthread_mutex_unlock(&philo->data->lock);
+	//delay(philo->data);
 	if (is_even(philo))
 		ft_usleep(1);
 	while (!(finished(philo->data)))

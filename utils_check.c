@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:57 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 17:20:08 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 23:37:13 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	*check_all_ate(void *data_pointer)
 	t_data	*data;
 
 	data = (t_data *)data_pointer;
-	delay(data);
+	// delay(data);
 	while (!(finished(data)))
 	{
 		if (all_ate(data))
@@ -62,17 +62,14 @@ void	*check_all_ate(void *data_pointer)
 int	meal_tracker(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->lock);
-	pthread_mutex_lock(&philo->lock);
 	if (philo->eat_cont == philo->data->nb_eat && philo->data->nb_eat != -1
 		&& philo->eat_cont != -1)
 	{
 		philo->data->nb_ate++;
 		philo->eat_cont = -1;
-		pthread_mutex_unlock(&philo->lock);
 		pthread_mutex_unlock(&philo->data->lock);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->lock);
 	pthread_mutex_unlock(&philo->data->lock);
 	return (0);
 }
@@ -84,9 +81,10 @@ void	*check_death_or_meals(void *philo_pointer)
 
 	philo = (t_philo *)philo_pointer;
 	i = 0;
-	delay(philo->data);
+	// delay(philo->data);
 	while (!(finished(philo->data)))
 	{
+		usleep(1000000);
 		if (must_die(philo))
 		{
 			output(philo, DIED);

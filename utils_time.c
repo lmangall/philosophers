@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:40:46 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 14:38:00 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 23:25:38 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,12 @@ void	delay(t_data *data)
 {
 	uint64_t	time;
 
-	pthread_mutex_lock(&data->lock);
-	time = data->start_time;
-	pthread_mutex_unlock(&data->lock);
-	while (get_time() < time)
-		continue ;
+	(void)time;
+	(void)data;
+
+	// pthread_mutex_lock(&data->lock);
+	// time = data->start_time;
+	// pthread_mutex_unlock(&data->lock);
+	// while (get_time() < time)
+	// 	continue ;
 }

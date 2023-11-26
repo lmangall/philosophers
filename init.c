@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:43 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 17:24:29 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 23:06:53 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	init_philo(t_data *data)
 		philo[i].id = i + 1;
 		philo[i].eat_cont = 0;
 		philo[i].eating = 0;
-		philo[i].last_eat = data->start_time;
+		philo[i].last_eat = 0;
+		philo[i].tto_eat = data->tto_eat;
 		philo[i].t1 = malloc(sizeof(pthread_t));
 		if (!philo[i].t1)
 			error("Malloc error with a philo", data);
@@ -69,7 +70,7 @@ void	init_data(t_data *data, int ac, char **av)
 	if (!data->threads)
 		error("Malloc error with threads", data);
 	data->death_thread_id = 0;
-	data->start_time = get_time() + (data->nb_philo * 2 * 10);
+	data->start_time = get_time() + (10);
 	data->tto_die = (u_int64_t)ft_atoi(av[2]);
 	data->tto_eat = (u_int64_t)ft_atoi(av[3]);
 	data->tto_sleep = (u_int64_t)ft_atoi(av[4]);

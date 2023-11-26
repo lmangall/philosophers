@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:52 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 17:40:13 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 23:25:40 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	output(t_philo *philo, int status)
 			philo->id);
 	else if (status == DIED)
 		if (!(finished(philo->data)))
-			printf("%lu %d is dead\n",
+			printf("%lu %d died\n",
 				get_time() - philo->data->start_time, philo->id);
 	pthread_mutex_unlock(&philo->data->write);
 	return (1);
@@ -41,10 +41,8 @@ int	phi_sleep(t_philo *philo)
 {
 	if (finished(philo->data))
 		return (0);
-	pthread_mutex_lock(&philo->lock);
 	output(philo, SLEEP);
 	ft_usleep(philo->data->tto_sleep);
-	pthread_mutex_unlock(&philo->lock);
 	return (1);
 }
 
@@ -71,7 +69,7 @@ int	eat(void *philo_pointer)
 	pthread_mutex_lock(&philo->lock);
 	philo->eating = 1;
 	philo->last_eat = get_time();
-	ft_usleep(philo->data->tto_eat);
+	ft_usleep(philo->tto_eat);
 	philo->eat_cont++;
 	philo->eating = 0;
 	pthread_mutex_unlock(&philo->lock);

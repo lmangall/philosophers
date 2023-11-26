@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:31:55 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 17:12:17 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 23:35:41 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_philo
 	int				fork_r;
 	uint64_t		last_eat;
 	uint64_t		tto_die;
+	uint64_t		tto_eat;
 	pthread_t		*t1;
 	pthread_t		*eat;
 	pthread_mutex_t	lock;
