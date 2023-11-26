@@ -3,6 +3,29 @@
 
 
 
+number_of_philosophers    time_to_die    time_to_eat    time_to_sleep
+
+ ./philo 4 310 200 100
+
+0 2 has taken a fork
+0 2 has taken a fork
+0 2 is eating
+0 4 has taken a fork
+0 4 has taken a fork
+0 4 is eating        
+200 4 is thinking
+200 4 is sleeping
+200 2 is thinking
+200 1 has taken a fork
+200 1 has taken a fork
+200 3 has taken a fork
+200 3 has taken a fork
+200 3 is eating
+200 1 is eating
+200 2 is sleeping
+311 4 is dead
+
+
 vérifier la fonction check_args
 
 in phi_sleep, philo is locked and in output the finished function try to lock it
