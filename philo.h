@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:31:55 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 13:34:05 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 14:17:03 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int			phi_sleep(t_philo *philo);
 int			think(t_philo *philo);
 void		*routine(void *philo_pointer);
 int			meal_tracker(t_philo *philo);
-void		delay(uint64_t start_time);
+void		delay(t_data *data);
 int			output(t_philo *philo, int status);
 void		*check_death_or_meals(void *philo_pointer);
 int			death(t_data *data);

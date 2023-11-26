@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:52 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 13:17:54 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 14:04:10 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,18 @@ int	eat(void *philo_pointer)
 	if (finished(philo->data))
 		return (0);
 	pthread_mutex_lock(&philo->data->forks[philo->fork_l]);
-	output(philo, FORK_1);
+	if(!(output(philo, FORK_1)))
+	{
+		pthread_mutex_unlock(&philo->data->forks[philo->fork_l]);
+		return(0);
+	}
 	pthread_mutex_lock(&philo->data->forks[philo->fork_r]);
-	output(philo, FORK_2);
+	if(!(output(philo, FORK_2)))
+	{
+		pthread_mutex_unlock(&philo->data->forks[philo->fork_r]);
+		pthread_mutex_unlock(&philo->data->forks[philo->fork_l]);
+		return(0);
+	}
 	output(philo, EAT);
 	pthread_mutex_lock(&philo->lock);
 	philo->eating = 1;

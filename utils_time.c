@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:40:46 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 13:42:35 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 14:19:32 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,12 @@ uint64_t	get_time(void)
 	return (time_in_ms);
 }
 
-void	delay(uint64_t start_time)
+void	delay(t_data *data)
 {
-	while (get_time() < start_time)
+	uint64_t	time;
+	pthread_mutex_lock(&data->lock);
+	time = data->start_time;
+	pthread_mutex_unlock(&data->lock);
+	while (get_time() < time)
 		continue ;
 }

@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:14:01 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 13:19:16 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 14:16:41 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	*routine(void *philo_pointer)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_pointer;
-	delay(philo->data->start_time);
+	delay(philo->data);
 	if (is_even(philo))
 		ft_usleep(1);
 	while (!(finished(philo->data)))

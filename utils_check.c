@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:57 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 13:40:15 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 14:17:28 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@ void	*check_all_ate(void *data_pointer)
 	t_data	*data;
 
 	data = (t_data *)data_pointer;
+	delay(data);
 	while (!(finished(data)))
 	{
 		if (all_ate(data))
 		{
 			pthread_mutex_lock(&data->write);
-			printf("\033[31mAll philosophers ate %d times\033[0m\n", data->nb_eat);
+			printf("All philosophers ate %d times\n", data->nb_eat);
 			pthread_mutex_unlock(&data->write);
 			return (NULL);
 		}
@@ -83,7 +84,7 @@ void	*check_death_or_meals(void *philo_pointer)
 
 	philo = (t_philo *)philo_pointer;
 	i = 0;
-	delay(philo->data->start_time);
+	delay(philo->data);
 	while (!(finished(philo->data)))
 	{
 		if (must_die(philo))
