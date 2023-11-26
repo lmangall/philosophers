@@ -4,41 +4,25 @@
 
 
 
-
-
-
-
-
+vérifier la fonction check_args
 
 in phi_sleep, philo is locked and in output the finished function try to lock it
 
 
 
 
-
-
-
-
-
-
-
+To check the code with Valgrind:
 clear && valgrind -s --tool=helgrind ./philosophers 4 200 60 60
 
+To check the code with Fsanitize
+add -fsanitize=thread to the compiler flags, then execute normally
 
---tool=drd
+Test cases:
+./philosophers 1 800 200 200 => nobody dies
+./philosophers 4 310 200 100 => should die
+./philosophers 5 800 200 200 7 => should stop after eating 7 times
 
-4 310 200 100 = die
-
-
-valgrind -q --leak-check=yes --show-leak-kinds=all ./philosophers 4 310 200 100
-
-
-valgrind --leak-check=yes --show-leak-kinds=all ./philosophers 4 310 200 100
-
-
-printf("Thread %lu in check_death_or_meals\n", pthread_self());
-
-
+Test with 2 philos
 
 
 

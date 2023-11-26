@@ -15,9 +15,8 @@ void	distrib_forks(t_philo *philo)
 	}
 }
 
-
-	void	init_philo(t_data *data)
-	{
+void	init_philo(t_data *data)
+{
 	int		i;
 	t_philo	*philo;
 
@@ -38,7 +37,7 @@ void	distrib_forks(t_philo *philo)
 		pthread_mutex_init(&philo[i].lock, NULL);
 		i++;
 	}
-	}
+}
 
 void	init_data(t_data *data, int ac, char **av)
 {
@@ -62,14 +61,10 @@ void	init_data(t_data *data, int ac, char **av)
 	data->tto_sleep = (u_int64_t)ft_atoi(av[4]);
 	data->death_thread = malloc(sizeof(pthread_t));
 	data->meals = malloc(sizeof(pthread_t));
-	// data->lock = malloc(sizeof(pthread_mutex_t));
-	// data->write = malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(&data->lock, NULL);
 	pthread_mutex_init(&data->write, NULL);
 	pthread_mutex_init(&data->dead_phi_lock, NULL);
 }
-
-
 
 void	init_forks(t_data *data)
 {
