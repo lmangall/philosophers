@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:31:55 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 14:17:03 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:12:17 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,6 @@ void		*check_all_ate(void *data_pointer);
 int			must_die(t_philo *philo);
 int			all_ate(t_data *data);
 int			is_even(t_philo *philo);
+int			error(char *str, t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:57 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 14:17:28 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:20:08 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,11 @@ void	*check_death_or_meals(void *philo_pointer)
 		}
 	}
 	return (NULL);
+}
+
+int	error(char *str, t_data *data)
+{
+	printf("%s\n", str);
+	free_n_exit(data);
+	return (0);
 }

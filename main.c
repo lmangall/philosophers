@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:14:01 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 14:16:41 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:18:16 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int	check_args(char **av)
 		printf("%d 1 died\n", ft_atoi(av[2]));
 		exit(1);
 	}
-	if (ft_atoi(av[1]) < 1)
+	if (ft_atoi(av[1]) < 0)
 		return (0);
-	if (ft_atoi(av[2]) < 1)
+	if (ft_atoi(av[2]) < 0)
 		return (0);
-	if (ft_atoi(av[3]) < 1)
+	if (ft_atoi(av[3]) < 0)
 		return (0);
-	if (ft_atoi(av[4]) < 1)
+	if (ft_atoi(av[4]) < 0)
 		return (0);
 	return (1);
 }
