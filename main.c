@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/26 13:14:01 by lmangall          #+#    #+#             */
+/*   Updated: 2023/11/26 13:19:16 by lmangall         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
 
@@ -61,21 +72,37 @@ void	free_n_exit(t_data *data)
 	exit(1);
 }
 
+void	*routine(void *philo_pointer)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)philo_pointer;
+	delay(philo->data->start_time);
+	if (is_even(philo))
+		ft_usleep(1);
+	while (!(finished(philo->data)))
+	{
+		eat(philo);
+		think(philo);
+		phi_sleep(philo);
+	}
+	return (NULL);
+}
+
 int	main(int ac, char **av)
 {
+	t_data	data;
+
 	if (ac < 5 || ac > 6)
 	{
 		printf("Error: wrong number of arguments\n");
 		return (0);
 	}
-
 	if (!check_args(av))
 	{
 		printf("Error: wrong arguments\n");
 		return (0);
 	}
-
-	t_data data;
 	init_data(&data, ac, av);
 	init_philo(&data);
 	init_forks(&data);
