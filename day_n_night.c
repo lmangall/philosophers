@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:52 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 15:12:32 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:41:23 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	output(t_philo *philo, int status)
 		return (0);
 	pthread_mutex_lock(&philo->data->write);
 	pthread_mutex_lock(&philo->data->lock);
-
 	if (status == FORK_1 || status == FORK_2)
 		printf("%lu %d has taken a fork\n", get_time()
 			- philo->data->start_time, philo->id);
@@ -37,7 +36,6 @@ int	output(t_philo *philo, int status)
 				get_time() - philo->data->start_time, philo->id);
 	pthread_mutex_unlock(&philo->data->lock);
 	pthread_mutex_unlock(&philo->data->write);
-
 	return (1);
 }
 
@@ -88,19 +86,16 @@ void	*routine(void *philo_pointer)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_pointer;
-
 	pthread_mutex_lock(&philo->data->lock);
 	pthread_mutex_lock(&philo->lock);
 	philo->last_eat = get_time();
 	pthread_mutex_unlock(&philo->lock);
 	pthread_mutex_unlock(&philo->data->lock);
-	//delay(philo->data);
 	if (is_even(philo))
 		usleep(1);
 	while (!(finished(philo->data)))
 	{
 		eat(philo);
-		// usleep(500);
 		think(philo);
 		phi_sleep(philo);
 	}

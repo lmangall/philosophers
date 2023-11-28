@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:14:01 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 12:55:28 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:59:56 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,18 @@ void	free_n_exit(t_data *data)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
 		pthread_mutex_destroy(&data->philos[i].lock);
+		free(data->philos[i].t1);
+		free(data->philos[i].eat);
 		i++;
 	}
+	free(data->forks);
+	free(data->philos);
+	free(data->threads);
+	free(data->death_thread);
+	free(data->meals);
 	pthread_mutex_destroy(&data->write);
 	pthread_mutex_destroy(&data->lock);
+	pthread_mutex_destroy(&data->dead_phi_lock);
 	exit(1);
 }
 
@@ -53,10 +61,7 @@ void	a_table(t_data *data)
 	thread_nbr = 0;
 	if (data->nb_eat != -1)
 		pthread_create(data->meals, NULL, check_all_ate, data);
-	
-	pthread_mutex_lock(&data->lock);
 	data->start_time = get_time();
-	pthread_mutex_unlock(&data->lock);
 	while (thread_nbr < data->nb_philo)
 	{
 		pthread_create(data->philos[thread_nbr].t1, NULL, routine,

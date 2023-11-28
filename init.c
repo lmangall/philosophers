@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:43 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 14:33:55 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:02:05 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ void	init_philo(t_data *data)
 	int		i;
 	t_philo	*philo;
 
-	i = 0;
+	i = -1;
 	philo = malloc(sizeof(t_philo) * data->nb_philo);
 	if (!philo)
 		error("Malloc error with the array of philos", data);
 	data->philos = philo;
-	while (i < (data->nb_philo))
+	while (++i < data->nb_philo)
 	{
 		philo[i].data = data;
 		philo[i].id = i + 1;
@@ -44,15 +44,12 @@ void	init_philo(t_data *data)
 		philo[i].eating = 0;
 		philo[i].last_eat = get_time();
 		philo[i].tto_eat = data->tto_eat;
-		philo[i].t1 = malloc(sizeof(pthread_t));
-		if (!philo[i].t1)
-			error("Malloc error with a philo", data);
-		philo[i].eat = malloc(sizeof(pthread_t));
-		if (!philo[i].eat)
-			error("Malloc error with eat thread", data);
+		philo[i].t1 = (pthread_t *)malloc(sizeof(pthread_t));
+		philo[i].eat = (pthread_t *)malloc(sizeof(pthread_t));
 		philo[i].tto_die = data->tto_die;
+		if (!philo[i].t1 || !philo[i].eat)
+			error("Malloc error with a philo or eat thread", data);
 		pthread_mutex_init(&philo[i].lock, NULL);
-		i++;
 	}
 }
 
@@ -71,7 +68,6 @@ void	init_data(t_data *data, int ac, char **av)
 		error("Malloc error with threads", data);
 	data->death_thread_id = 0;
 	data->start_time = get_time();
-	printf("data->start_time: %lu\n", data->start_time);
 	data->tto_die = ft_atoi(av[2]);
 	data->tto_eat = ft_atoi(av[3]);
 	data->tto_sleep = ft_atoi(av[4]);
