@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:43 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 19:20:58 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:43:59 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	init_philo(t_data *data)
 		philo[i].data = data;
 		philo[i].id = i + 1;
 		philo[i].eat_cont = 0;
-		// philo[i].eating = 0;
 		philo[i].last_eat = -1;
 		philo[i].tto_eat = data->tto_eat;
 		philo[i].t1 = (pthread_t *)malloc(sizeof(pthread_t));
@@ -68,7 +67,6 @@ void	init_data(t_data *data, int ac, char **av)
 	pthread_mutex_init(&data->dead_phi_lock, NULL);
 }
 
-
 void	init_forks(t_data *data)
 {
 	int	i;
@@ -95,111 +93,3 @@ void	init_forks(t_data *data)
 		i++;
 	}
 }
-
-// void	init_forks(t_data *data)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
-// 	if (!data->forks)
-// 		error("Malloc error with forks", data);
-// 	while (i < data->nb_philo && !(pthread_mutex_init(&data->forks[i], NULL)))
-// 		i++;
-// 	i = 0;
-// 	while (i < data->nb_philo)
-// 	{
-// 		if (i % 2)
-// 		{
-// 			if (i == data->nb_philo - 1)
-// 				data->philos[i].fork_l = 0;
-// 			else
-// 				data->philos[i].fork_l = (i + 1);
-// 			data->philos[i].fork_r = i;
-// 		}
-// 		else
-// 		{
-// 			data->philos[i].fork_l = i;
-// 			if (i == data->nb_philo - 1)
-// 				data->philos[i].fork_r = 0;
-// 			else
-// 				data->philos[i].fork_r = (i + 1);
-// 		}
-// 		i++;
-// 	}
-// }
-
-// void	init_forks(t_data *data)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
-// 	if (!data->forks)
-// 		error("Malloc error with forks", data);
-// 	while (i < data->nb_philo)
-// 	{
-// 		pthread_mutex_init(&data->forks[i], NULL);
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (i < data->nb_philo)
-// 	{
-// 		data->philos[i].fork_l = i;
-// 		data->philos[i].fork_r = (i + 1) % data->nb_philo;
-// 		i++;
-// 	}
-// }
-
-
-// void init_forks(t_data *data)
-// {
-//     int i;
-
-//     i = 0;
-//     data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
-//     if (!data->forks)
-// {        error("Malloc error with forks", data);
-// }	if (data->nb_philo % 2)
-// 	{
-// 		while (i < data->nb_philo)
-// 		{
-// 			if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-// 				error("Mutex initialization failed", data);
-// 			if (i % 2)
-// 			{
-// 				data->philos[i].fork_l = (i + 1) % data->nb_philo;
-// 				data->philos[i].fork_r = i;
-// 			}
-// 			else
-// 			{
-// 				data->philos[i].fork_l = i;
-// 				data->philos[i].fork_r = (i + 1) % data->nb_philo;
-// 			}
-
-// 			i++;
-// 		}
-// 	}
-// 	else
-// 	{
-// 		while (i < data->nb_philo)
-// 		{
-// 			if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-// 				error("Mutex initialization failed", data);
-// 			if (i % 2)
-// 			{
-// 				data->philos[i].fork_l = i;
-// 				data->philos[i].fork_r = (i + 1) % data->nb_philo;
-// 			}
-// 			else
-// 			{
-// 				data->philos[i].fork_l = (i + 1) % data->nb_philo;
-// 				data->philos[i].fork_r = i;
-// 			}
-
-// 			i++;
-// 		}
-// 	}
-// }
-
-

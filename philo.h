@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:31:55 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 18:58:22 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:44:07 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_philo
 	struct s_data	*data;
 	int				id;
 	int				eat_cont;
-	// int				eating;
 	int				fork_l;
 	int				fork_r;
 	uint64_t		last_eat;

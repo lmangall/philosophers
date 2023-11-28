@@ -6,12 +6,11 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:34:51 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 18:02:19 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:45:56 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 int	finished(t_data *data)
 {
