@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:57 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 19:21:12 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:31:10 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	*check_death_or_meals(void *philo_pointer)
 	pthread_mutex_unlock(&philo->data->dead_phi_lock);	
 	while (!(finished(philo->data)))
 	{
-		usleep(500);
+		usleep(100);
 		// delay_if_odd_philo(philo->data);
 		if (must_die(philo))
 		{

@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:52 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 19:21:25 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:29:42 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,9 @@ void	*routine(void *philo_pointer)
 	while (!(finished(philo->data)))
 	{
 		eat(philo);
-		think(philo);
+		usleep(100);
 		phi_sleep(philo);
+		think(philo);
 	}
 	return (NULL);
 }
