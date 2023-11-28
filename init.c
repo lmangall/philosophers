@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:43 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 23:06:53 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 14:33:55 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	init_philo(t_data *data)
 		philo[i].id = i + 1;
 		philo[i].eat_cont = 0;
 		philo[i].eating = 0;
-		philo[i].last_eat = 0;
+		philo[i].last_eat = get_time();
 		philo[i].tto_eat = data->tto_eat;
 		philo[i].t1 = malloc(sizeof(pthread_t));
 		if (!philo[i].t1)
@@ -70,10 +70,11 @@ void	init_data(t_data *data, int ac, char **av)
 	if (!data->threads)
 		error("Malloc error with threads", data);
 	data->death_thread_id = 0;
-	data->start_time = get_time() + (10);
-	data->tto_die = (u_int64_t)ft_atoi(av[2]);
-	data->tto_eat = (u_int64_t)ft_atoi(av[3]);
-	data->tto_sleep = (u_int64_t)ft_atoi(av[4]);
+	data->start_time = get_time();
+	printf("data->start_time: %lu\n", data->start_time);
+	data->tto_die = ft_atoi(av[2]);
+	data->tto_eat = ft_atoi(av[3]);
+	data->tto_sleep = ft_atoi(av[4]);
 	data->death_thread = malloc(sizeof(pthread_t));
 	if (!data->death_thread)
 		error("Malloc error with death_thread", data);

@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:14:01 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 23:25:41 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 12:55:28 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,22 @@ int	check_args(char **av)
 	if (ft_atoi(av[4]) < 0)
 		return (0);
 	return (1);
+}
+
+void	free_n_exit(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->nb_philo)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		pthread_mutex_destroy(&data->philos[i].lock);
+		i++;
+	}
+	pthread_mutex_destroy(&data->write);
+	pthread_mutex_destroy(&data->lock);
+	exit(1);
 }
 
 void	a_table(t_data *data)
@@ -58,43 +74,6 @@ void	a_table(t_data *data)
 	}
 	if (data->nb_eat != -1)
 		pthread_join(*data->meals, NULL);
-}
-
-void	free_n_exit(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->nb_philo)
-	{
-		pthread_mutex_destroy(&data->forks[i]);
-		pthread_mutex_destroy(&data->philos[i].lock);
-		i++;
-	}
-	pthread_mutex_destroy(&data->write);
-	pthread_mutex_destroy(&data->lock);
-	exit(1);
-}
-
-void	*routine(void *philo_pointer)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)philo_pointer;
-
-	pthread_mutex_lock(&philo->data->lock);
-	philo->last_eat = philo->data->start_time;
-	pthread_mutex_unlock(&philo->data->lock);
-	//delay(philo->data);
-	if (is_even(philo))
-		ft_usleep(1);
-	while (!(finished(philo->data)))
-	{
-		eat(philo);
-		think(philo);
-		phi_sleep(philo);
-	}
-	return (NULL);
 }
 
 int	main(int ac, char **av)

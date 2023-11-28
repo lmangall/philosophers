@@ -1,18 +1,19 @@
 
 
 should work:
-c1b3c3% ./philo 200 410 200 200
+./philo 200 410 200 200
 
 should not work:
-c1b3c3% ./philo 5 400 200 200  
+./philo 5 400 200 200  
 
 
+for an even number of philos
 Time to die should be less then
 2x of time to eat and 2x of time to sleep and eat+sleep
 This is for even case
 
 
-and the condition for odds should be
+for an odd number of philos
 timetodie > (3x time to sleep && 3x time to eat && (1.5x(time to eat+time to sleep) ))
 
 

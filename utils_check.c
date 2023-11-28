@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:57 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/26 23:37:13 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:16:04 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,11 @@ void	*check_all_ate(void *data_pointer)
 	{
 		if (all_ate(data))
 		{
-			pthread_mutex_lock(&data->write);
+			// pthread_mutex_lock(&data->write);
+			pthread_mutex_lock(&data->lock);
 			printf("All philosophers ate %d times\n", data->nb_eat);
-			pthread_mutex_unlock(&data->write);
+			// pthread_mutex_unlock(&data->write);
+			pthread_mutex_unlock(&data->lock);
 			return (NULL);
 		}
 	}
@@ -62,6 +64,11 @@ void	*check_all_ate(void *data_pointer)
 int	meal_tracker(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->lock);
+	if (philo->data->nb_eat == -1)
+	{
+		pthread_mutex_unlock(&philo->data->lock);
+		return(0);
+	}
 	if (philo->eat_cont == philo->data->nb_eat && philo->data->nb_eat != -1
 		&& philo->eat_cont != -1)
 	{
@@ -84,7 +91,7 @@ void	*check_death_or_meals(void *philo_pointer)
 	// delay(philo->data);
 	while (!(finished(philo->data)))
 	{
-		usleep(1000000);
+		usleep(100);
 		if (must_die(philo))
 		{
 			output(philo, DIED);
