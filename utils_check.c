@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:57 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 15:48:59 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:05:34 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	*check_death_or_meals(void *philo_pointer)
 	i = 0;
 	while (!(finished(philo->data)))
 	{
-		usleep(100);
+		usleep(200);
 		if (must_die(philo))
 		{
 			output(philo, DIED);
