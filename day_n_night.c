@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:52 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 15:41:23 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:21:25 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	phi_sleep(t_philo *philo)
 	if (finished(philo->data))
 		return (0);
 	output(philo, SLEEP);
-	usleep(philo->data->tto_sleep);
+	usleep(philo->data->tto_sleep * 1000);
 	return (1);
 }
 
@@ -69,11 +69,9 @@ int	eat(void *philo_pointer)
 	output(philo, FORK_2);
 	output(philo, EAT);
 	pthread_mutex_lock(&philo->lock);
-	philo->eating = 1;
 	philo->last_eat = get_time();
 	usleep(philo->tto_eat * 1000);
 	philo->eat_cont++;
-	philo->eating = 0;
 	pthread_mutex_unlock(&philo->lock);
 	pthread_mutex_unlock(&philo->data->forks[philo->fork_r]);
 	pthread_mutex_unlock(&philo->data->forks[philo->fork_l]);
@@ -86,11 +84,6 @@ void	*routine(void *philo_pointer)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_pointer;
-	pthread_mutex_lock(&philo->data->lock);
-	pthread_mutex_lock(&philo->lock);
-	philo->last_eat = get_time();
-	pthread_mutex_unlock(&philo->lock);
-	pthread_mutex_unlock(&philo->data->lock);
 	if (is_even(philo))
 		usleep(1);
 	while (!(finished(philo->data)))

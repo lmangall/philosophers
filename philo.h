@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:31:55 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 14:12:18 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:58:22 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_philo
 	struct s_data	*data;
 	int				id;
 	int				eat_cont;
-	int				eating;
+	// int				eating;
 	int				fork_l;
 	int				fork_r;
 	uint64_t		last_eat;
@@ -72,7 +72,6 @@ int			check_args(char **av);
 void		*check_meals(void *philo_pointer);
 void		a_table(t_data *data);
 void		free_n_exit(t_data *data);
-void		distrib_forks(t_philo *philo);
 void		init_forks(t_data *data);
 void		init_philo(t_data *data);
 void		init_data(t_data *data, int ac, char **av);

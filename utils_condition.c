@@ -6,11 +6,12 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:34:51 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 15:48:27 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:02:19 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
 
 int	finished(t_data *data)
 {
@@ -26,10 +27,8 @@ int	finished(t_data *data)
 int	must_die(t_philo *philo)
 {
 	int				should_die;
-	uint64_t		time_in_ms;
 
 	should_die = 0;
-	time_in_ms = get_time();
 	pthread_mutex_lock(&philo->lock);
 	if (get_time() - philo->last_eat > philo->tto_die)
 		should_die = 1;
