@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:57 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/05 11:23:21 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:27:28 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	*check_all_ate(void *data_pointer)
 	return (NULL);
 }
 
+//		philo->eat_cont = -1;                    might need a mutex
 int	meal_tracker(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->lock);
@@ -85,12 +86,12 @@ void	*check_death_or_meals(void *philo_pointer)
 
 	philo = (t_philo *)philo_pointer;
 	i = 0;
-	pthread_mutex_lock(&philo->lock);
+	pthread_mutex_lock(&philo->food_lock);
 	philo->last_eat = get_time();
-	pthread_mutex_unlock(&philo->lock);
+	pthread_mutex_unlock(&philo->food_lock);
 	while (!(finished(philo->data)))
 	{
-		usleep(100);
+		usleep(1);//was 100
 		if (must_die(philo))
 		{
 			output(philo, DIED);

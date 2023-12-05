@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:43 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 20:43:59 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:15:24 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	init_philo(t_data *data)
 		philo[i].tto_die = data->tto_die;
 		if (!philo[i].t1 || !philo[i].eat)
 			error("Malloc error with a philo or eat thread", data);
-		pthread_mutex_init(&philo[i].lock, NULL);
+		pthread_mutex_init(&philo[i].eat_cont_lock, NULL);
+		pthread_mutex_init(&philo[i].food_lock, NULL);
 	}
 }
 

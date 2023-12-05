@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:52 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/05 13:04:27 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:41:23 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,17 @@ int	eat(void *philo_pointer)
 	pthread_mutex_lock(&philo->data->forks[philo->fork_r]);
 	output(philo, FORK_2);
 	output(philo, EAT);
-	pthread_mutex_lock(&philo->lock);
+	pthread_mutex_lock(&philo->food_lock);
 	philo->last_eat = get_time();
+	pthread_mutex_unlock(&philo->food_lock);
 	usleep(philo->tto_eat * 1000);
+	// pthread_mutex_lock(&philo->eat_cont_lock);
 	philo->eat_cont++;
-	pthread_mutex_unlock(&philo->lock);
+	// if (is_even(philo))
+	// 	usleep(1);
+	// pthread_mutex_unlock(&philo->eat_cont_lock);
+	if (is_even(philo))
+	 	usleep(1);
 	pthread_mutex_unlock(&philo->data->forks[philo->fork_r]);
 	pthread_mutex_unlock(&philo->data->forks[philo->fork_l]);
 	meal_tracker(philo);
@@ -82,12 +88,12 @@ void	*routine(void *philo_pointer)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_pointer;
-	if (is_even(philo))
-		usleep(1);
+	// if (!(is_even(philo)))
+	// 	usleep(1);
 	while (!(finished(philo->data)))
 	{
 		eat(philo);
-		usleep(100);
+		// usleep(100);
 		phi_sleep(philo);
 		think(philo);
 	}

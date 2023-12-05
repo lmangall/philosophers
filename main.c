@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:14:01 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/05 12:53:21 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:22:18 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	free_n_exit(t_data *data)
 	while (i < data->nb_philo)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
-		pthread_mutex_destroy(&data->philos[i].lock);
+		pthread_mutex_destroy(&data->philos[i].eat_cont_lock);
+		pthread_mutex_destroy(&data->philos[i].food_lock);
 		free(data->philos[i].t1);
 		free(data->philos[i].eat);
 		i++;

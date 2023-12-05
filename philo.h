@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:31:55 by lmangall          #+#    #+#             */
-/*   Updated: 2023/11/28 20:44:07 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:21:31 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ typedef struct s_philo
 	uint64_t		tto_eat;
 	pthread_t		*t1;
 	pthread_t		*eat;
-	pthread_mutex_t	lock;
+	pthread_mutex_t	eat_cont_lock;
+	pthread_mutex_t	food_lock;
 }	t_philo;
 
 typedef struct s_data

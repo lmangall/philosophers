@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:34:51 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/05 13:04:37 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:06:05 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ int	must_die(t_philo *philo)
 	int				should_die;
 
 	should_die = 0;
-	pthread_mutex_lock(&philo->lock);
+	pthread_mutex_lock(&philo->food_lock);
 	if (get_time() - philo->last_eat > philo->data->tto_die)
 		should_die = 1;
-	pthread_mutex_unlock(&philo->lock);
+	pthread_mutex_unlock(&philo->food_lock);
 	return (should_die);
 }
 
