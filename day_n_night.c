@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:52 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/05 11:17:11 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:04:27 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	output(t_philo *philo, int status)
 	if (finished(philo->data))
 		return (0);
 	pthread_mutex_lock(&philo->data->write);
-	pthread_mutex_lock(&philo->data->lock);
 	if (status == FORK_1 || status == FORK_2)
 		printf("%lu %d has taken a fork\n", get_time()
 			- philo->data->start_time, philo->id);
@@ -34,7 +33,6 @@ int	output(t_philo *philo, int status)
 		if (!(finished(philo->data)))
 			printf("%lu %d died\n",
 				get_time() - philo->data->start_time, philo->id);
-	pthread_mutex_unlock(&philo->data->lock);
 	pthread_mutex_unlock(&philo->data->write);
 	return (1);
 }

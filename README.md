@@ -2,13 +2,14 @@
 
 should work:
 ./philo 200 410 200 200
+./philo 3 610 200 100 
 
 should not work:
 ./philo 5 400 200 200  
 
 
 for an even number of philos
-Time to die should be less then
+Time to die should be more than
 2x of time to eat and 2x of time to sleep and eat+sleep
 This is for even case
 
@@ -16,6 +17,10 @@ This is for even case
 for an odd number of philos
 timetodie > (3x time to sleep && 3x time to eat && (1.5x(time to eat+time to sleep) ))
 
+
+
+
+valgrind --tool=helgrind ./philo 4 310 200 100
 
 
 
@@ -47,7 +52,7 @@ vérifier la fonction check_args
 in phi_sleep, philo is locked and in output the finished function try to lock it
 
 
-
+P
 
 To check the code with Valgrind:
 clear && valgrind -s --tool=helgrind ./philosophers 4 200 60 60
