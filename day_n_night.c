@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:52 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/05 13:41:23 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/05 21:18:57 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	think(t_philo *philo)
 	return (1);
 }
 
+
 int	eat(void *philo_pointer)
 {
 	t_philo	*philo;
@@ -83,19 +84,41 @@ int	eat(void *philo_pointer)
 	return (1);
 }
 
+static int starve(t_philo *philo)
+{
+	int starve_time;
+	uint64_t time_since_last_eat;
+
+	pthread_mutex_lock(&philo->food_lock);
+	time_since_last_eat = get_time() - philo->last_eat;
+	pthread_mutex_unlock(&philo->food_lock);
+
+	if (time_since_last_eat < (uint64_t)philo->data->tto_die)
+	{
+		starve_time = philo->data->tto_die - time_since_last_eat;
+		starve_time = 0.95 * starve_time;
+		usleep(starve_time * 1000);
+		// printf("   starving\n");
+	}
+
+	return 1;
+}
+
 void	*routine(void *philo_pointer)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_pointer;
-	// if (!(is_even(philo)))
-	// 	usleep(1);
+	if (!(is_even(philo)))
+		usleep(1);
 	while (!(finished(philo->data)))
 	{
 		eat(philo);
 		// usleep(100);
 		phi_sleep(philo);
 		think(philo);
+		//if (is_even(philo))
+			starve(philo);
 	}
 	return (NULL);
 }

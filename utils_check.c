@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:57 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/05 13:27:28 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/05 20:37:03 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	*check_death_or_meals(void *philo_pointer)
 	pthread_mutex_unlock(&philo->food_lock);
 	while (!(finished(philo->data)))
 	{
-		usleep(1);//was 100
+		usleep(100);//was 100
 		if (must_die(philo))
 		{
 			output(philo, DIED);
