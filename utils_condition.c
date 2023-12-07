@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:34:51 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/05 20:18:59 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/07 13:12:00 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,38 @@ int	is_even(t_philo *philo)
 	if (philo->id % 2)
 		is_even = 1;
 	return (is_even);
+}
+
+/**
+ * @brief Manages the acquisition or release of forks for a philosopher.
+ * If the number of philosophers is odd,
+ * it follows a specific order for locking and unlocking to prevent deadlock.
+ */
+int	manage_forks(t_philo *philo, int lock)
+{
+	if (philo->data->nb_philo % 2 && !(lock))
+	{
+		pthread_mutex_lock(&philo->data->forks[philo->fork_l]);
+		output(philo, FORK_1);
+		pthread_mutex_lock(&philo->data->forks[philo->fork_r]);
+		output(philo, FORK_2);
+	}
+	if (philo->data->nb_philo % 2 && lock)
+	{
+		pthread_mutex_unlock(&philo->data->forks[philo->fork_r]);
+		pthread_mutex_unlock(&philo->data->forks[philo->fork_l]);
+	}
+	if (!(philo->data->nb_philo % 2) && !(lock))
+	{
+		pthread_mutex_lock(&philo->data->forks[philo->fork_r]);
+		output(philo, FORK_2);
+		pthread_mutex_lock(&philo->data->forks[philo->fork_l]);
+		output(philo, FORK_1);
+	}
+	if (!(philo->data->nb_philo % 2) && lock)
+	{
+		pthread_mutex_unlock(&philo->data->forks[philo->fork_l]);
+		pthread_mutex_unlock(&philo->data->forks[philo->fork_r]);
+	}
+	return (1);
 }

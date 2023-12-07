@@ -95,7 +95,7 @@ in phi_sleep, philo is locked and in output the finished function try to lock it
 P
 
 To check the code with Valgrind:
-clear && valgrind -s --tool=helgrind ./philosophers 4 200 60 60
+clear && valgrind -s --tool=helgrind ./philo 4 200 60 60
 
 To check the code with Fsanitize
 add -fsanitize=thread to the compiler flags, then execute normally

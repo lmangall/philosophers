@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:43 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/07 12:40:31 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/07 13:13:13 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	init_philo(t_data *data)
 		philo[i].data = data;
 		philo[i].id = i + 1;
 		philo[i].eat_cont = 0;
-		philo[i].last_eat = (uint64_t)-1;
+		philo[i].last_eat = (uint64_t) - 1;
 		philo[i].tto_eat = data->tto_eat;
 		philo[i].t1 = (pthread_t *)malloc(sizeof(pthread_t));
 		philo[i].eat = (pthread_t *)malloc(sizeof(pthread_t));

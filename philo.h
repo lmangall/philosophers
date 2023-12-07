@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:31:55 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/05 13:21:31 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/07 13:13:39 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,7 @@ int			must_die(t_philo *philo);
 int			all_ate(t_data *data);
 int			is_even(t_philo *philo);
 int			error(char *str, t_data *data);
+int			starve(t_philo *philo);
+int			manage_forks(t_philo *philo, int lock);
 
 #endif

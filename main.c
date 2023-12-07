@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:14:01 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/05 13:22:18 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/07 13:09:48 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,27 @@ void	free_n_exit(t_data *data)
 	pthread_mutex_destroy(&data->lock);
 	pthread_mutex_destroy(&data->dead_phi_lock);
 	exit(1);
+}
+
+void	*routine(void *philo_pointer)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)philo_pointer;
+	pthread_mutex_lock(&philo->food_lock);
+	if (philo->last_eat == (uint64_t)-1)
+		philo->last_eat = get_time();
+	pthread_mutex_unlock(&philo->food_lock);
+	if (!(is_even(philo)))
+		usleep(1);
+	while (!(finished(philo->data)))
+	{
+		eat(philo);
+		phi_sleep(philo);
+		think(philo);
+		starve(philo);
+	}
+	return (NULL);
 }
 
 void	a_table(t_data *data)
