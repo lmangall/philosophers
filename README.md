@@ -21,6 +21,9 @@ doesn't work with even numbers
 
 
 
+The left or right fork are assigned differently depending of the philo being odd or even numbered
+
+The order of locking and unlocking mutexes forks also depends on wether the total number of philo is even or odd
 
 
 
