@@ -43,6 +43,7 @@ doesn't work with even numbers
 should work:
 ./philo 200 410 200 200
 ./philo 3 610 200 100 
+./philo 199 610 200 100 
 
 should not work:
 ./philo 5 400 200 200  

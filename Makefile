@@ -6,7 +6,7 @@
 #    By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/26 13:14:20 by lmangall          #+#    #+#              #
-#    Updated: 2023/12/07 12:59:32 by lmangall         ###   ########.fr        #
+#    Updated: 2023/12/07 13:31:04 by lmangall         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread #-fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread
 
 # Target executable
 NAME = philo

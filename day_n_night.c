@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:52 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/07 13:11:27 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/07 13:33:54 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,27 +54,6 @@ int	think(t_philo *philo)
 	return (1);
 }
 
-int	eat(void *philo_pointer)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)philo_pointer;
-	if (finished(philo->data))
-		return (0);
-	manage_forks(philo, 0);
-	output(philo, EAT);
-	pthread_mutex_lock(&philo->food_lock);
-	philo->last_eat = get_time();
-	pthread_mutex_unlock(&philo->food_lock);
-	usleep(philo->tto_eat * 1000);
-	pthread_mutex_lock(&philo->eat_cont_lock);
-	philo->eat_cont++;
-	pthread_mutex_unlock(&philo->eat_cont_lock);
-	manage_forks(philo, 1);
-	meal_tracker(philo);
-	return (1);
-}
-
 int	starve(t_philo *philo)
 {
 	int			starve_time;
@@ -89,5 +68,26 @@ int	starve(t_philo *philo)
 		starve_time = 0.85 * starve_time;
 		usleep(starve_time * 1000);
 	}
+	return (1);
+}
+
+int	eat(void *philo_pointer)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)philo_pointer;
+	if (finished(philo->data) || philo->data->nb_philo == 1)
+		return (0);
+	manage_forks(philo, 0);
+	output(philo, EAT);
+	pthread_mutex_lock(&philo->food_lock);
+	philo->last_eat = get_time();
+	pthread_mutex_unlock(&philo->food_lock);
+	usleep(philo->tto_eat * 1000);
+	pthread_mutex_lock(&philo->eat_cont_lock);
+	philo->eat_cont++;
+	pthread_mutex_unlock(&philo->eat_cont_lock);
+	manage_forks(philo, 1);
+	meal_tracker(philo);
 	return (1);
 }
