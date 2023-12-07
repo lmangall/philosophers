@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:52 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/07 11:40:16 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/07 12:43:35 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int starve(t_philo *philo)
 	if (time_since_last_eat < (uint64_t)philo->data->tto_die)
 	{
 		starve_time = philo->data->tto_die - time_since_last_eat;
-		starve_time = 0.80 * starve_time;
+		starve_time = 0.85 * starve_time;
 		usleep(starve_time * 1000);
 		// printf("   starving\n");
 	}
@@ -108,7 +108,13 @@ void	*routine(void *philo_pointer)
 {
 	t_philo	*philo;
 
+
 	philo = (t_philo *)philo_pointer;
+
+	pthread_mutex_lock(&philo->food_lock);
+	if (philo->last_eat == (uint64_t)-1)
+		philo->last_eat = get_time();
+	pthread_mutex_unlock(&philo->food_lock);
 	if (!(is_even(philo)))
 		usleep(1);
 	while (!(finished(philo->data)))
@@ -117,7 +123,7 @@ void	*routine(void *philo_pointer)
 		// usleep(100);
 		phi_sleep(philo);
 		think(philo);
-		//if (is_even(philo))
+		// if (is_even(philo))
 			starve(philo);
 	}
 	return (NULL);

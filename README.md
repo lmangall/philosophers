@@ -1,5 +1,45 @@
 
 
+
+
+
+
+
+
+
+
+		starve_time = 0.50 * starve_time;       in starve
+		usleep(50);                             in check_death_or_meals
+works with:
+./philo 3 610 200 200
+doesn't work with:
+./philo 199 610 200 200
+doesn't work with even numbers
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 should work:
 ./philo 200 410 200 200
 ./philo 3 610 200 100 

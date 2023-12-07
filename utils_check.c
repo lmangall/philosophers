@@ -6,7 +6,7 @@
 /*   By: lmangall <lmangall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:13:57 by lmangall          #+#    #+#             */
-/*   Updated: 2023/12/05 20:37:03 by lmangall         ###   ########.fr       */
+/*   Updated: 2023/12/07 12:43:08 by lmangall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ int	meal_tracker(t_philo *philo)
 	return (0);
 }
 
+/*
+initialize the last_eat value then enters in the loop to check
+*/
 void	*check_death_or_meals(void *philo_pointer)
 {
 	t_philo	*philo;
@@ -87,11 +90,12 @@ void	*check_death_or_meals(void *philo_pointer)
 	philo = (t_philo *)philo_pointer;
 	i = 0;
 	pthread_mutex_lock(&philo->food_lock);
-	philo->last_eat = get_time();
+	if (philo->last_eat == (uint64_t)-1)
+		philo->last_eat = get_time();
 	pthread_mutex_unlock(&philo->food_lock);
 	while (!(finished(philo->data)))
 	{
-		usleep(100);//was 100
+		usleep(100);
 		if (must_die(philo))
 		{
 			output(philo, DIED);
